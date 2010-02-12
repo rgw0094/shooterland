@@ -1,10 +1,12 @@
 package com.shooterland.framework;
 
+import com.shooterland.SL;
+
 public class InputManager 
 {
 	private boolean _mouseDown;
 	private boolean _mouseDownLastFrame;
-	private float _mouseX, _mouseY;
+	private int _mouseX, _mouseY;
 	
 	public void update(float dt)
 	{
@@ -31,16 +33,16 @@ public class InputManager
 	public void handleClick(float x, float y)
 	{
 		_mouseDown = true;
-		_mouseX = x;
-		_mouseY = y;
+		_mouseX = (int)x;
+		_mouseY = (int)y;
 	}
 	
-	public float getMouseX()
+	public int getMouseX()
 	{
 		return _mouseX;
 	}
 	
-	public float getMouseY()
+	public int getMouseY()
 	{
 		return _mouseY;
 	}
