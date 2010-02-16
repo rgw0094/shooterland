@@ -7,5 +7,6 @@ public class SessionManager
 		
 	}
 	
-	public int CurrentLevel = 1;
+	public int Level = 1;
+	public int World = 1;
 }

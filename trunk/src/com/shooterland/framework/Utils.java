@@ -5,6 +5,8 @@ import java.util.Random;
 
 import com.shooterland.SL;
 
+import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.text.format.Time;
 
 public class Utils 
@@ -32,6 +34,16 @@ public class Utils
 		return _random.nextInt(max - min) + min;
 	}
 	
+	public static int getPercentOfScreenHeight(float percent)
+	{
+		return (int)((float)SL.ScreenHeight * percent);
+	}
+	
+	public static int getPercentOfScreenWidth(float percent)
+	{
+		return (int)((float)SL.ScreenWidth * percent);
+	}
+	
 	public static int distance(float x1, float y1, float x2, float y2)
 	{
 		if (x1 == x2) return (int) Math.abs(y1 - y2);
@@ -39,11 +51,45 @@ public class Utils
 		return (int) Math.sqrt(((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1)));
 	}
 	
+	public static String formatException(Exception e)
+	{
+		StringBuffer sb = new StringBuffer(e.getClass().toString() + "\n");
+		
+		for (StackTraceElement ste : e.getStackTrace())
+		{
+			sb.append(ste.toString() + "\n");
+		}
+		
+		return sb.toString();
+	}
+	
 	public static int distance(int x1, int y1, int x2, int y2) 
 	{
 		if (x1 == x2) return Math.abs(y1 - y2);
 		if (y1 == y2) return Math.abs(x1 - x2);
 		return (int) Math.sqrt(((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1)));
+	}
+	
+	public static void fillExtraSideSpace(Canvas canvas)
+	{
+		if (SL.GameAreaX == 0)
+			return;
+		
+		canvas.drawRect(new Rect(0, 0, SL.GameAreaX, SL.ScreenHeight), SL.GraphicsManager.BlackPaint);
+		canvas.drawRect(new Rect(SL.GameAreaX + SL.GameAreaWidth, 0, SL.ScreenWidth, SL.ScreenHeight), SL.GraphicsManager.BlackPaint);
+		
+		int size = 15;
+
+		for (int x = SL.GameAreaX; x > 0; x -= size)
+			canvas.drawLine(x, 0, x, SL.ScreenHeight, SL.GraphicsManager.DarkGreenPaint);
+		for (int x = SL.GameAreaX + SL.GameAreaWidth; x < SL.ScreenWidth; x += size)
+			canvas.drawLine(x, 0, x, SL.ScreenHeight, SL.GraphicsManager.DarkGreenPaint);
+		
+		for (int y = 0; y < SL.ScreenHeight; y += size)
+		{	
+			canvas.drawLine(0, y, SL.GameAreaX, y, SL.GraphicsManager.DarkGreenPaint);
+			canvas.drawLine(SL.GameAreaX + SL.GameAreaWidth, y, SL.ScreenWidth, y, SL.GraphicsManager.DarkGreenPaint);
+		}
 	}
 
 }

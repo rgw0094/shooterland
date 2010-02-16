@@ -16,19 +16,31 @@ public final class R {
         public static final int image=0x7f020002;
         public static final int mainmenubackground=0x7f020003;
         public static final int rightshooter=0x7f020004;
-        public static final int world1background=0x7f020005;
-        public static final int world1thingie1=0x7f020006;
-        public static final int world1thingie2=0x7f020007;
-        public static final int world1thingie3=0x7f020008;
-        public static final int world1thingie4=0x7f020009;
-        public static final int world1thingie5=0x7f02000a;
-        public static final int world1thingie6=0x7f02000b;
+        public static final int roscoedown1=0x7f020005;
+        public static final int roscoedown2=0x7f020006;
+        public static final int roscoeup1=0x7f020007;
+        public static final int roscoeup2=0x7f020008;
+        public static final int world1background=0x7f020009;
+        public static final int world1thingie1=0x7f02000a;
+        public static final int world1thingie2=0x7f02000b;
+        public static final int world1thingie3=0x7f02000c;
+        public static final int world1thingie4=0x7f02000d;
+        public static final int world1thingie5=0x7f02000e;
+        public static final int world1thingie6=0x7f02000f;
+        public static final int worldmap=0x7f020010;
     }
     public static final class layout {
         public static final int main=0x7f030000;
     }
     public static final class raw {
-        public static final int world1=0x7f040000;
+        public static final int titlescreen=0x7f040000;
+        public static final int world1=0x7f040001;
+        public static final int world2=0x7f040002;
+        public static final int world3=0x7f040003;
+        public static final int world4=0x7f040004;
+        public static final int world5=0x7f040005;
+        public static final int world6=0x7f040006;
+        public static final int world7=0x7f040007;
     }
     public static final class string {
         public static final int app_name=0x7f050001;
