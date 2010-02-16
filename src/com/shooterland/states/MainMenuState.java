@@ -10,7 +10,7 @@ public class MainMenuState extends AbstractState
 	@Override
 	public void enterState() 
 	{
-		
+		SL.SoundManager.playMenuMusic();
 	}
 
 	@Override
@@ -24,7 +24,7 @@ public class MainMenuState extends AbstractState
 	{
 		if (SL.Input.isMouseClicked())
 		{
-			SL.enterState(new GameState());
+			SL.enterState(new OverworldState());
 		}
 	}
 
@@ -32,8 +32,17 @@ public class MainMenuState extends AbstractState
 	public void draw(Canvas canvas, float dt) 
 	{
 		canvas.drawBitmap(SL.GraphicsManager.MainMenuBackground, 0, 0, null);
-		
-		canvas.drawText("Touch to begin", SL.ScreenCenterX, SL.ScreenCenterY, SL.GraphicsManager.TitlePaint);
+	}
 
+	@Override
+	public void pause() 
+	{
+		//No need to pause the main menu
+	}
+
+	@Override
+	public void resume() 
+	{
+		// No need to pause the main menu	
 	}
 }

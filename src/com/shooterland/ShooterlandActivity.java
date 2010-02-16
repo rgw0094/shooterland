@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.text.format.Time;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -119,8 +120,8 @@ public class ShooterlandActivity extends Activity
     			}
     			catch (Exception e)
     			{
-    				System.out.println(e.getStackTrace());
-    				_running = false;
+    				Log.e("Shooterland", Utils.formatException(e));
+    				System.exit(0);
     			}
     			finally
     			{

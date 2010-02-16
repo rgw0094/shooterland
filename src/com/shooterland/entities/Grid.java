@@ -1,26 +1,35 @@
 package com.shooterland.entities;
 
+import java.util.ArrayList;
+
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.location.Location;
 
 import com.shooterland.SL;
-import com.shooterland.framework.AbstractEntity;
+import com.shooterland.enums.*;
+import com.shooterland.states.GameState;
 
-public class Grid extends AbstractEntity
+public class Grid
 {
+	private GameState _state;
 	private Rect _pixelBounds;
-	private int[][] _grid;
-
-	public Grid()
+	private Tile[][] _tiles;
+	private boolean [][] _visit;
+	
+	public Grid(GameState state)
 	{
-		_grid = new int[SL.GridWidth][SL.GridHeight];
+		_state = state;
+		_tiles = new Tile[SL.GridWidth][SL.GridHeight];
+		_visit = new boolean[SL.GridWidth][SL.GridHeight];
 		reset();
 		
+		int padding = (int)(SL.ScreenHeight * 0.02f);
+		
 		_pixelBounds = new Rect();
-		_pixelBounds.top = 5;
-		_pixelBounds.left = 100;
+		_pixelBounds.top = padding;
+		_pixelBounds.left = SL.GameAreaX + padding;
 		_pixelBounds.bottom = _pixelBounds.top + SL.GridHeight * SL.GridSquareSize;
 		_pixelBounds.right = _pixelBounds.left + SL.GridWidth * SL.GridSquareSize;
 	}
@@ -41,16 +50,51 @@ public class Grid extends AbstractEntity
 		return _pixelBounds.contains((int)pixelX, (int)pixelY);
 	}
 	
+	public boolean isInGridBounds(int x, int y)
+	{
+		return x >= 0 && x < SL.GridWidth && y >= 0 && y < SL.GridHeight;
+	}
+	
 	public Rect getPixelBounds()
 	{
 		return _pixelBounds;
 	}
 	
-	public void addThingie(int gridX, int gridY, int thingie)
+	public int getPixelX(int gridX)
 	{
-		_grid[gridX][gridY] = thingie;
+		return _pixelBounds.left + gridX * SL.GridSquareSize;
 	}
-		
+	
+	public int getPixelY(int gridY)
+	{
+		return _pixelBounds.top + gridY * SL.GridSquareSize;
+	}
+	
+	public int getGridX(float pixelX)
+	{
+		return ((int)pixelX - _pixelBounds.left) / SL.GridSquareSize; 
+	}
+	
+	public int getGridY(float pixelY)
+	{
+		return ((int)pixelY - _pixelBounds.top) / SL.GridSquareSize; 
+	}
+	
+	public void setTile(int gridX, int gridY, Tile tile)
+	{
+		_tiles[gridX][gridY] = tile;
+	}
+	
+	public Tile getTile(int gridX, int gridY)
+	{
+		return _tiles[gridX][gridY];
+	}
+	
+	public Tile getTile(float pixelX, float pixelY)
+	{
+		return _tiles[getGridX(pixelX)][getGridY(pixelY)];
+	}
+	
 	/**
 	 * Gets the left-most column with an empty space in the given row. Returns -1
 	 * if the row is full.
@@ -60,14 +104,14 @@ public class Grid extends AbstractEntity
 		for (int i = SL.GridWidth - 1; i >= 0; i--)
 		{
 			//Check if row is full
-			if (_grid[i][row] != -1)
+			if (!_tiles[i][row].isEmpty())
 				return -1;
 			
 			//We reached the end of the row
 			if (i == 0)
 				return 0;
 			
-			if (_grid[i][row] == -1 && _grid[i-1][row] != -1)
+			if (_tiles[i][row].isEmpty() && !_tiles[i-1][row].isEmpty())
 				return i;
 		}
 		
@@ -83,51 +127,99 @@ public class Grid extends AbstractEntity
 		for (int i = SL.GridHeight - 1; i >= 0; i--)
 		{
 			//Check if column is full
-			if (_grid[column][i] != -1)
+			if (!_tiles[column][i].isEmpty())
 				return -1;
 			
 			//We've reached the top of the column
 			if (i == 0)
 				return 0;
 			
-			if (_grid[column][i] == -1 && _grid[column][i-1] != -1)
+			if (_tiles[column][i].isEmpty() && !_tiles[column][i-1].isEmpty())
 				return i;
 		}
 		
 		return -1; //impossible
 	}
 	
-	@Override
 	public void draw(Canvas canvas, float dt) 
 	{
-		for (int i = 0; i <= SL.GridWidth; i++)
+		for (int col = 0; col <= SL.GridWidth; col++)
 		{
-			//Vertical lines
-			int x = _pixelBounds.left + i*SL.GridSquareSize;
-			canvas.drawLine(x, _pixelBounds.top, x, _pixelBounds.bottom, SL.GraphicsManager.BlackPaint);
+			canvas.drawLine(getPixelX(col), _pixelBounds.top, getPixelX(col), _pixelBounds.bottom, SL.GraphicsManager.GridPaint);
+		}
 			
-			for (int j = 0; j <= SL.GridHeight; j++)
+		for (int row = 0; row <= SL.GridHeight; row++)
+		{
+			canvas.drawLine(_pixelBounds.left, getPixelY(row), _pixelBounds.right, getPixelY(row), SL.GraphicsManager.GridPaint);
+		}
+					
+		for (int i = 0; i < SL.GridWidth; i++)
+		{
+			for (int j = 0; j < SL.GridHeight; j++)
 			{
-				//Horizontal lines
-				int y = _pixelBounds.top + j * SL.GridSquareSize;
-				canvas.drawLine(_pixelBounds.left, y, _pixelBounds.right, y, SL.GraphicsManager.BlackPaint);
-				
-				if (i < SL.GridWidth && j < SL.GridHeight && _grid[i][j] >= 0)
-					canvas.drawBitmap(SL.GraphicsManager.Thingies[SL.SessionManager.CurrentLevel - 1][_grid[i][j]], x, y, null);
+				if (!_tiles[i][j].isEmpty())
+				{
+					canvas.drawBitmap(_tiles[i][j].getBitmap(), getPixelX(i), getPixelY(j), null);
+				}
 			}
 		}
 	}
+		
+	/**
+	 * Returns an ArrayList of points that comprises a combo at the given point, or
+	 * returns null if there is no combo there.
+	 */
+	public ArrayList<Point> getComboAt(int gridX, int gridY)
+	{
+		ArrayList<Point> combo = new ArrayList<Point>();
+		traverse(gridX, gridY, _tiles[gridX][gridY], combo);
+		resetVisitArray();
+		
+		if (combo.size() >= 3)
+			return combo;
+		return null;
+	}
+	
+	private void traverse(int x, int y, Tile tile, ArrayList<Point> points)
+	{
+		if (_tiles[x][y] != tile)
+			return;
+		
+		points.add(new Point(x, y));
+		_visit[x][y] = true;
+		
+		//left
+		if (isInGridBounds(x-1, y) && !_visit[x-1][y])
+			traverse(x-1, y, tile, points);
+		
+		//right
+		if (isInGridBounds(x+1, y) && !_visit[x+1][y])
+			traverse(x+1, y, tile, points);
+		
+		//up
+		if (isInGridBounds(x, y-1) && !_visit[x][y-1])
+			traverse(x, y-1, tile, points);
+		
+		//down
+		if (isInGridBounds(x, y+1) && !_visit[x][y+1])
+			traverse(x, y+1, tile, points);
+	}
 
-	@Override
+	public void highlightRow(Canvas canvas, int row)
+	{
+		canvas.drawLine(_pixelBounds.left, getPixelY(row), _pixelBounds.right, getPixelY(row), SL.GraphicsManager.RedPaint);
+		canvas.drawLine(_pixelBounds.left, getPixelY(row) + SL.GridSquareSize, _pixelBounds.right, getPixelY(row) + SL.GridSquareSize, SL.GraphicsManager.RedPaint);
+	}
+	
+	public void highlightColumn(Canvas canvas, int col)
+	{
+		canvas.drawLine(getPixelX(col), _pixelBounds.top, getPixelX(col), _pixelBounds.bottom, SL.GraphicsManager.RedPaint);
+		canvas.drawLine(getPixelX(col) + SL.GridSquareSize, _pixelBounds.top, getPixelX(col) + SL.GridSquareSize, _pixelBounds.bottom, SL.GraphicsManager.RedPaint);
+	}
+	
 	public void update(float dt) 
 	{
 		
-	}
-
-	@Override
-	public boolean isAlive() 
-	{
-		return true;
 	}
 	
 	private void reset()
@@ -136,9 +228,19 @@ public class Grid extends AbstractEntity
 		{
 			for (int j = 0; j < SL.GridHeight; j++)
 			{
-				_grid[i][j] = -1;
+				_tiles[i][j] = Tile.Empty;
+			}
+		}
+	}	
+	
+	private void resetVisitArray()
+	{
+		for (int i = 0; i < SL.GridWidth; i++)
+		{
+			for (int j = 0; j < SL.GridHeight; j++)
+			{
+				_visit[i][j] = false;
 			}
 		}
 	}
-	
 }

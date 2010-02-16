@@ -4,21 +4,22 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 import com.shooterland.SL;
-import com.shooterland.framework.AbstractEntity;
 import com.shooterland.enums.*;
 
-public class Shooter extends AbstractEntity 
+public class Shooter 
 {
 	private float _x = 0.0f;
 	private float _y = 0.0f;
 	private int _gridCoord = 0;
 	private Bitmap _bitmap;
-	private int _thingie;
+	private Tile _tile;
 	private ShooterType _shooterType;
+	private Grid _grid;
 	
-	public Shooter(ShooterType shooterType)
+	public Shooter(Grid grid, ShooterType shooterType)
 	{
-		_thingie = -1;
+		_grid = grid;
+		_tile = Tile.Empty;
 		_shooterType = shooterType;
 		
 		if (_shooterType == ShooterType.SingleBottom)
@@ -34,14 +35,32 @@ public class Shooter extends AbstractEntity
 		_y = y;
 	}
 	
-	public int getThingie()
+	public boolean canShoot()
 	{
-		return _thingie;
+		if (_shooterType == ShooterType.SingleRight)
+		{
+			return _grid.getTile(SL.GridWidth - 1, _gridCoord).isEmpty();
+		}
+		else if (_shooterType == ShooterType.SingleBottom)
+		{
+			return _grid.getTile(_gridCoord, SL.GridHeight - 1).isEmpty();
+		}
+		return false;
 	}
 	
-	public void setThingie(int thingie)
+	public ShooterType getShooterType()
 	{
-		_thingie = thingie; 
+		return _shooterType;
+	}
+	
+	public Tile getTile()
+	{
+		return _tile;
+	}
+	
+	public void setTile(Tile tile)
+	{
+		_tile = tile;
 	}
 	
 	public float getX()
@@ -59,27 +78,18 @@ public class Shooter extends AbstractEntity
 		return _gridCoord;
 	}
 	
-	@Override
 	public void draw(Canvas canvas, float dt) 
 	{
 		canvas.drawBitmap(_bitmap, _x, _y, null);
 		
-		if (_thingie != -1)
+		if (!_tile.isEmpty())
 		{
-			canvas.drawBitmap(SL.GraphicsManager.Thingies[SL.SessionManager.CurrentLevel - 1][_thingie], _x, _y, null);
+			canvas.drawBitmap(_tile.getBitmap(), _x, _y, null);
 		}
 	}
 
-	@Override
 	public void update(float dt) 
 	{
 		
 	}
-
-	@Override
-	public boolean isAlive() 
-	{
-		return true;
-	}
-
 }
