@@ -1,6 +1,7 @@
 package com.shooterland.entities;
 
 import com.shooterland.SL;
+import com.shooterland.enums.Tile;
 import com.shooterland.states.GameState;
 
 import android.graphics.Canvas;
@@ -13,8 +14,8 @@ public class GameMenu
 	private int _rightX;
 	private int _width;
 	private int _money;
-	private int _nextBottomThingie;
-	private int _nextRightThingie;
+	private Tile _nextBottomThingie;
+	private Tile _nextRightThingie;
 	private Rect _shootButton;
 	private String _levelString;
 	
@@ -25,6 +26,8 @@ public class GameMenu
 		_leftX = SL.GameAreaX + SL.ScreenHeight;
 		_rightX = _leftX + (SL.GameAreaWidth - SL.ScreenHeight);
 		_width = _rightX - _leftX;
+		_levelString = "Level " + SL.SessionManager.World + " - " + SL.SessionManager.Level;
+		_money = 0;
 		
 		_shootButton = new Rect();
 		_shootButton.left = _leftX + (int)((float)_width * 0.123f);
@@ -32,8 +35,7 @@ public class GameMenu
 		_shootButton.bottom = SL.ScreenHeight - (int)((float)SL.ScreenHeight * 0.05f);
 		_shootButton.top = _shootButton.bottom - (int)((float)SL.ScreenHeight * 0.14f);
 		
-		_levelString = "Level " + SL.SessionManager.World + " - " + SL.SessionManager.Level;
-		_money = 0;
+		generateNextThingies();
 	}
 	
 	public void update(float dt)
@@ -61,15 +63,16 @@ public class GameMenu
 	
 	public void generateNextThingies()
 	{
-		
+		_nextBottomThingie = Tile.randomThingie();
+		_nextRightThingie = Tile.randomThingie();
 	}
 	
-	public int getNextBottomThingie()
+	public Tile getNextBottomThingie()
 	{
 		return _nextBottomThingie;
 	}
 	
-	public int getNextRightThingie()
+	public Tile getNextRightThingie()
 	{
 		return _nextRightThingie;
 	}
@@ -83,5 +86,8 @@ public class GameMenu
 	{
 		canvas.drawText(_levelString, _leftX + _width / 2, (int)((float)SL.ScreenHeight * 0.09), SL.GraphicsManager.LevelPaint);
 		canvas.drawText(_money + "", _leftX + (int)((float)_width * 0.43f), (int)((float)SL.ScreenHeight * 0.185), SL.GraphicsManager.MoneyPaint);
+		
+		canvas.drawBitmap(_nextRightThingie.getBitmap(), _leftX + (int)((float)_width * 0.72f), (int)((float)SL.ScreenHeight * 0.59f), null);
+		canvas.drawBitmap(_nextBottomThingie.getBitmap(), _leftX + (int)((float)_width * 0.5f), (int)((float)SL.ScreenHeight * 0.7f), null);
 	} 
 }

@@ -7,7 +7,7 @@ namespace ShooterlandEditor
 {
     public class Constants
     {
-        public const int GridSize = 10;
+        public const byte GridSize = 11;
         public const int NumTiles = 17;
     }
 }

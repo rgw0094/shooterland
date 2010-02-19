@@ -8,7 +8,6 @@ namespace ShooterlandEditor
 {
     public class Grid
     {
-        private int[,] _tiles;
         private int _x, _y, _size;
 
         public Grid(int x, int y)
@@ -16,11 +15,24 @@ namespace ShooterlandEditor
             _x = x;
             _y = y;
             _size = Constants.GridSize * 40;
-            _tiles = new int[Constants.GridSize, Constants.GridSize];
+            Tiles = new byte[Constants.GridSize, Constants.GridSize];
         }
 
         public float X { get; set; }
         public float Y { get; set; }
+        public byte[,] Tiles { get; private set; }
+
+        public bool Contains(int x, int y)
+        {
+            return x > _x && x < _x + _size && y > _y && y < _y + _size;
+        }
+
+        public void SetTile(int x, int y, byte tile)
+        {
+            int gridX = (x - _x) / 40;
+            int gridY = (y - _y) / 40;
+            Tiles[gridX, gridY] = tile;
+        }
 
         public void Draw(Graphics g)
         {
@@ -31,16 +43,16 @@ namespace ShooterlandEditor
                 g.DrawLine(Pens.Black, new Point(_x, _y + j * 40), new Point(_x + _size, _y + j * 40));
 
 
-            //for (int i = 0; i < Constants.GridSize; i++)
-            //{
-            //    for (int j = 0; j < Constants.GridSize; j++)
-            //    {
-            //        if (_tiles[i,j] != -1)
-            //        {
-            //            g.DrawImage(Utils.GetBitmap(_tiles[i, j]), 0.0f, 0.0f);
-            //        }
-            //    }
-            //}
+            for (int i = 0; i < Constants.GridSize; i++)
+            {
+                for (int j = 0; j < Constants.GridSize; j++)
+                {
+                    if (Tiles[i, j] > 0)
+                    {
+                        g.DrawImage(Utils.GetBitmap(Tiles[i, j]), _x + i * 40, _y + j * 40);
+                    }
+                }
+            }
         }
 
 

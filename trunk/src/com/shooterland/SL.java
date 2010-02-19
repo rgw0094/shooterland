@@ -1,5 +1,6 @@
 package com.shooterland;
 
+import com.shooterland.ShooterlandActivity.ShooterlandView;
 import com.shooterland.entities.*;
 import com.shooterland.framework.*;
 import com.shooterland.states.*;
@@ -19,6 +20,7 @@ import android.graphics.Rect;
  */
 public class SL 
 {	
+	public static ShooterlandActivity Activity;
 	public static Context Context;
 	public static Resources Resources;
 	public static GraphicsManager GraphicsManager;
@@ -29,6 +31,7 @@ public class SL
 		
 	public static float GameTime;
 	public static float RealTime;
+	public static boolean Initialized;
 	
 	//Constants that get initialized based on screen size
 	public static int ScreenWidth;
@@ -42,17 +45,24 @@ public class SL
 	public static int GameAreaHeight;
 	public static int GameAreaX;
 		
-	public static void  init(Context context)
-	{
-		Context = context;
+	private static AbstractState _nextState;
+	
+	public static void  init(ShooterlandActivity activity)
+	{	
+		Activity = activity;
+		Context = activity.getApplicationContext();
 		Resources = Context.getResources();
+		
+		if (Initialized)
+			return;
+		
 		GraphicsManager = new GraphicsManager();
 		Input = new InputManager();
 		SessionManager = new SessionManager();
 		SoundManager = new SoundManager();
-				
 		RealTime = GameTime = 0.0f;
-		
+		Initialized = true;
+
 		enterState(new MainMenuState());
 	}
 	
@@ -62,8 +72,8 @@ public class SL
 		ScreenHeight = height;
 		ScreenCenterX = ScreenWidth / 2;
 		ScreenCenterY = ScreenHeight / 2;
-		GridWidth = 10;
-		GridHeight = 10;
+		GridWidth = 11;
+		GridHeight = 11;
 		GridSquareSize = (int)(((float)ScreenHeight * 0.98f) / ((float)GridHeight + 1.0f));
 		
 		GameAreaHeight = ScreenHeight;
@@ -72,7 +82,18 @@ public class SL
 	}
 	
 	public static void update(float dt)
-	{
+	{		
+		//If there is a state change queued up, do it now
+		if (_nextState != null)
+		{
+			if (CurrentState != null)
+				CurrentState.leaveState();
+			
+			CurrentState = _nextState;
+			CurrentState.enterState();
+			_nextState = null;
+		}
+		
 		GameTime += dt;
 		RealTime += dt;
 		
@@ -82,22 +103,23 @@ public class SL
 	}
 	
 	public static void draw(Canvas canvas, float dt)
-	{		
+	{			
 		CurrentState.draw(canvas, dt);
 	}
 	
-	public static void cleanUp()
+	public static void pauseExecution()
 	{
-		SL.SoundManager.stopMusic();
+		SoundManager.pauseMusic();
+	}
+	
+	public static void resumeExecution()
+	{
+		SoundManager.resumeMusic();
 	}
 	
 	public static void enterState(AbstractState newState)
 	{
-		if (CurrentState != null)
-			CurrentState.leaveState();
-		
-		CurrentState = newState;
-		CurrentState.enterState();
+		_nextState = newState;
 	}
 	
 }

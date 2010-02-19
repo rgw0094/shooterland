@@ -7,18 +7,24 @@ import android.graphics.Bitmap;
 
 public enum Tile 
 {
-	Empty (-1),
-	Thingie1 (0),
-	Thingie2 (1),
-	Thingie3 (2),
-	Thingie4 (3),
-	Thingie5 (4),
-	Thingie6 (5),
+	Empty (0),
+	Thingie1 (1),
+	Thingie2 (2),
+	Thingie3 (3),
+	Thingie4 (4),
+	Thingie5 (5),
 	Baddie1 (6),
 	Baddie2 (7),
 	Baddle3 (8),
 	Baddie4 (9),
-	Baddie5 (10);
+	Baddie5 (10),
+	Block (11),
+	BaddieBlock1 (12),
+	BaddieBlock2 (13),
+	BaddieBlock3 (14),
+	BaddieBlock4 (15),
+	BaddieBlock5 (16),
+	CrackedBlock (17);
 	
 	private int _id;
 	
@@ -36,7 +42,7 @@ public enum Tile
 	{
 		try
 		{
-			return SL.GraphicsManager.Tiles[SL.SessionManager.World - 1][_id]; 
+			return SL.GraphicsManager.Tiles[SL.SessionManager.World - 1][_id - 1]; 
 		}
 		catch (ArrayIndexOutOfBoundsException e)
 		{
@@ -51,7 +57,7 @@ public enum Tile
 	
 	public boolean isThingie()
 	{
-		return _id >= Thingie1.getId() && _id <= Thingie6.getId();
+		return _id >= Thingie1.getId() && _id <= Thingie5.getId();
 	}
 	
 	public boolean isBaddie()
@@ -73,8 +79,6 @@ public enum Tile
 				return Thingie4;
 			case 4:
 				return Thingie5;
-			case 5:
-				return Thingie6;
 			default:
 				return null;
 		}
