@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BitStream.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Grid.cs" />
     <Compile Include="ShooterlandEditor.cs">

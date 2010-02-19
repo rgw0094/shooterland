@@ -9,6 +9,7 @@ import android.location.Location;
 
 import com.shooterland.SL;
 import com.shooterland.enums.*;
+import com.shooterland.framework.Utils;
 import com.shooterland.states.GameState;
 
 public class Grid
@@ -25,7 +26,7 @@ public class Grid
 		_visit = new boolean[SL.GridWidth][SL.GridHeight];
 		reset();
 		
-		int padding = (int)(SL.ScreenHeight * 0.02f);
+		int padding = (int)(SL.ScreenHeight * 0.015f);
 		
 		_pixelBounds = new Rect();
 		_pixelBounds.top = padding;
@@ -157,10 +158,13 @@ public class Grid
 		{
 			for (int j = 0; j < SL.GridHeight; j++)
 			{
+				float x = getPixelX(i);
+				float y = getPixelY(j);
 				if (!_tiles[i][j].isEmpty())
-				{
 					canvas.drawBitmap(_tiles[i][j].getBitmap(), getPixelX(i), getPixelY(j), null);
-				}
+				
+				if (_tiles[i][j].isBaddie())
+					canvas.drawRect(x, y, x + 39, y + 39, SL.GraphicsManager.BaddieSquarePaint);
 			}
 		}
 	}

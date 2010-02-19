@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.Paint.Align;
+import android.graphics.Paint.Style;
 
 public class GraphicsManager 
 {
@@ -18,12 +19,13 @@ public class GraphicsManager
 	public Paint MoneyPaint;
 	public Paint GridPaint;
 	public Paint LevelPaint;
+	public Paint BaddieSquarePaint;
 		
 	//Keep any images that don't need to be transformed as bitmaps because they draw faster.
 	public Bitmap MainMenuBackground;
 	public Bitmap WorldMapBackground;
 	public Bitmap[] WorldBackgrounds = new Bitmap[1];
-	public Bitmap[][] Tiles = new Bitmap[1][6];
+	public Bitmap[][] Tiles = new Bitmap[1][10];
 	public Bitmap BottomShooter;
 	public Bitmap RightShooter;
 	public Bitmap RoscoeUp1;
@@ -45,6 +47,12 @@ public class GraphicsManager
 		RedPaint = new Paint();
 		RedPaint.setAntiAlias(true);
 		RedPaint.setARGB(255, 255, 0, 0);
+		
+		BaddieSquarePaint = new Paint();
+		BaddieSquarePaint.setAntiAlias(true);
+		BaddieSquarePaint.setARGB(255, 255, 0, 0);
+		BaddieSquarePaint.setStrokeWidth(2.0f);
+		BaddieSquarePaint.setStyle(Style.STROKE);
 		
 		TitlePaint = new Paint();
 		TitlePaint.setAntiAlias(true);
@@ -93,7 +101,11 @@ public class GraphicsManager
 		Tiles[0][2] = BuildBitmap(R.drawable.world1thingie3, SL.GridSquareSize);
 		Tiles[0][3] = BuildBitmap(R.drawable.world1thingie4, SL.GridSquareSize);
 		Tiles[0][4] = BuildBitmap(R.drawable.world1thingie5, SL.GridSquareSize);
-		Tiles[0][5] = BuildBitmap(R.drawable.world1thingie6, SL.GridSquareSize);
+		Tiles[0][5] = BuildBitmap(R.drawable.baddie1, SL.GridSquareSize);
+		Tiles[0][6] = BuildBitmap(R.drawable.baddie2, SL.GridSquareSize);
+		Tiles[0][7] = BuildBitmap(R.drawable.baddie3, SL.GridSquareSize);
+		Tiles[0][8] = BuildBitmap(R.drawable.baddie4, SL.GridSquareSize);
+		Tiles[0][9] = BuildBitmap(R.drawable.baddie5, SL.GridSquareSize);
 	}
 	
 	private Bitmap BuildBitmap(int id, int size)

@@ -33,16 +33,4 @@ public class MainMenuState extends AbstractState
 	{
 		canvas.drawBitmap(SL.GraphicsManager.MainMenuBackground, 0, 0, null);
 	}
-
-	@Override
-	public void pause() 
-	{
-		//No need to pause the main menu
-	}
-
-	@Override
-	public void resume() 
-	{
-		// No need to pause the main menu	
-	}
 }

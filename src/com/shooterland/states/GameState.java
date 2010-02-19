@@ -1,5 +1,7 @@
 package com.shooterland.states;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import android.R.raw;
@@ -20,6 +22,7 @@ public class GameState extends AbstractState
 	private Shooter _bottomShooter;
 	private Shooter _rightShooter;
 	private Roscoe _roscoe;
+	private int _baddieCount;
 	private ArrayList<FlyingTile> _flyingTiles = new ArrayList<FlyingTile>();
 	private ArrayList<Point> _recentlyPlacedThingies = new ArrayList<Point>();
 	private ArrayList<FadingTile> _fadingTiles = new ArrayList<FadingTile>();;
@@ -35,6 +38,7 @@ public class GameState extends AbstractState
 		moveBottomShooter(4);
 		moveRightShooter(4);
 		replenishShooters();
+		loadLevel();
 	}
 
 	@Override
@@ -96,6 +100,11 @@ public class GameState extends AbstractState
 				moveBottomShooter(p.x);
 				moveRightShooter(p.y);
 			} 
+		}
+		
+		if (_baddieCount == 0)
+		{
+			SL.enterState(new LevelCompleteState());
 		}
 	}
 
@@ -180,8 +189,9 @@ public class GameState extends AbstractState
 	
 	private void replenishShooters()
 	{
-		_bottomShooter.setTile(Tile.randomThingie());
-		_rightShooter.setTile(Tile.randomThingie());
+		_bottomShooter.setTile(_menu.getNextBottomThingie());
+		_rightShooter.setTile(_menu.getNextRightThingie());
+		_menu.generateNextThingies();
 	}
 	
 	private void doCombos(ArrayList<Point> recentlyPlacedThingies)
@@ -200,6 +210,20 @@ public class GameState extends AbstractState
 				{
 					_fadingTiles.add(new FadingTile(_grid.getTile(p.x, p.y), _grid.getPixelX(p.x), _grid.getPixelY(p.y)));
 					_grid.setTile(p.x, p.y, Tile.Empty);
+					
+					//Kill adjacent cronies
+					for (int i = p.x-1; i <= p.x+1; i++)
+					{
+						for (int j = p.y-1; j <= p.y+1; j++)
+						{
+							if (_grid.isInGridBounds(i, j) && _grid.getTile(i, j) == Tile.Baddie1)
+							{
+								_fadingTiles.add(new FadingTile(Tile.Baddie1, _grid.getPixelX(i), _grid.getPixelY(j)));
+								_grid.setTile(i, j, Tile.Empty);
+								_baddieCount--;
+							}
+						}
+					}
 				}
 			}
 		}
@@ -211,7 +235,7 @@ public class GameState extends AbstractState
 	 */
 	private void moveBottomShooter(int gridX)
 	{
-		_bottomShooter.moveTo(gridX, _grid.getPixelBounds().left + SL.GridSquareSize * gridX, _grid.getPixelBounds().bottom + 3);
+		_bottomShooter.moveTo(gridX, _grid.getPixelBounds().left + SL.GridSquareSize * gridX, _grid.getPixelBounds().bottom);
 	}
 	
 	/**
@@ -220,18 +244,42 @@ public class GameState extends AbstractState
 	 */
 	private void moveRightShooter(int gridY)
 	{
-		_rightShooter.moveTo(gridY, _grid.getPixelBounds().right + 3, _grid.getPixelBounds().top + SL.GridSquareSize * gridY);
+		_rightShooter.moveTo(gridY, _grid.getPixelBounds().right, _grid.getPixelBounds().top + SL.GridSquareSize * gridY);
 	}
 
-	@Override
-	public void pause() 
+	private void loadLevel()
 	{
-		//TODO
-	}
-
-	@Override
-	public void resume() 
-	{
-		//TODO
+		String fileName = "world" + SL.SessionManager.World + "level" + SL.SessionManager.Level + ".sll";
+		InputStream is = SL.Resources.openRawResource(R.raw.world1level1);
+		_baddieCount = 0;
+		
+		try
+		{
+			is.read();
+			is.read();
+			is.read();
+			is.read();
+			is.read();
+			
+			for (int i = 0; i < SL.GridWidth; i++)
+			{
+				for (int j = 0; j < SL.GridHeight; j++)
+				{
+					Tile tile = Tile.class.getEnumConstants()[is.read()];
+					_grid.setTile(i, j, tile);
+					
+					if (tile.isBaddie())
+						_baddieCount++;
+				}
+			}
+		}
+		catch (IOException ioe)
+		{
+			
+		}
+		finally
+		{
+			try { is.close(); } catch (IOException ioe) { }
+		}
 	}
 }

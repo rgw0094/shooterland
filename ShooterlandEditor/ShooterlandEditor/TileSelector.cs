@@ -24,17 +24,21 @@ namespace ShooterlandEditor
             _rightClickY = _leftClickY;
         }
 
-        public int LeftClickSelection { get; private set; }
-        public int RightClickSelection { get; private set; }
+        public byte LeftClickSelection { get; private set; }
+        public byte RightClickSelection { get; private set; }
 
         public bool Contains(int x, int y)
         {
-            return x >= _x && x <= _x + 5 * 40 && y >= _y && y <= _y + 3 * 40;
+            return x >= _x && x <= _x + 5 * 40 && y >= _y && y <= _y + 4 * 40;
         }
 
         public void onClick(int x, int y, MouseButtons button)
         {
-            int selection = Math.Min(Constants.NumTiles, (((y - _y) - ((y - _y)) % 40) / 40) * 5 + (((x - _x) - ((x - _x)) % 40) / 40));
+            int s = (((y - _y) - ((y - _y)) % 40) / 40) * 5 + (((x - _x) - ((x - _x)) % 40) / 40);
+            byte selection = (byte)s;
+            
+            if (selection > Constants.NumTiles) 
+                selection = 0;
 
             if (button == MouseButtons.Left)
                 LeftClickSelection = selection;
@@ -44,7 +48,7 @@ namespace ShooterlandEditor
 
         public void Draw(Graphics g)
         {
-            for (int i = 0; i < Constants.NumTiles; i++)
+            for (int i = 1; i <= Constants.NumTiles; i++)
             {
                 Point p = new Point(_x + (i % 5) * 40,
                                     _y + (i / 5) * 40);

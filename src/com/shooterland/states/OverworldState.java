@@ -18,7 +18,6 @@ public class OverworldState extends AbstractState
 	@Override
 	public void enterState() 
 	{
-		
 	}
 
 	@Override
@@ -30,7 +29,7 @@ public class OverworldState extends AbstractState
 	@Override
 	public void update(float dt) 
 	{
-		if (Utils.timeSince(_timeEntered) > 0.5 && SL.Input.isMouseClicked())
+		if (Utils.timeSince(_timeEntered) > 0.35 && SL.Input.isMouseClicked())
 		{
 			SL.enterState(new GameState());
 		}
@@ -49,17 +48,5 @@ public class OverworldState extends AbstractState
 			canvas.drawLine(0, y, SL.ScreenWidth, y, SL.GraphicsManager.DarkGreenPaint);
 		
 		canvas.drawBitmap(SL.GraphicsManager.WorldMapBackground, SL.GameAreaX, 0, null);
-	}
-
-	@Override
-	public void pause() 
-	{
-		//No need to pause the overworld	
-	}
-
-	@Override
-	public void resume() 
-	{
-		//No need to pause the overworld	
 	}
 }

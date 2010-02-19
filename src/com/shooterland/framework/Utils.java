@@ -5,9 +5,15 @@ import java.util.Random;
 
 import com.shooterland.SL;
 
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.text.format.Time;
+import android.view.Gravity;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
 public class Utils 
 {
@@ -70,6 +76,14 @@ public class Utils
 		return (int) Math.sqrt(((x2 - x1)*(x2 - x1) + (y2 - y1)*(y2 - y1)));
 	}
 	
+	public static void drawSquare(Canvas canvas, float x, float y, int radius, Paint paint)
+	{
+		canvas.drawLine(x, y, x + radius, y, paint);
+		canvas.drawLine(x + radius, y, x + radius, y + radius, paint);
+		canvas.drawLine(x + radius, y + radius, x, y + radius, paint);
+		canvas.drawLine(x, y + radius, x, y, paint);
+	}
+	
 	public static void fillExtraSideSpace(Canvas canvas)
 	{
 		if (SL.GameAreaX == 0)
@@ -90,6 +104,23 @@ public class Utils
 			canvas.drawLine(0, y, SL.GameAreaX, y, SL.GraphicsManager.DarkGreenPaint);
 			canvas.drawLine(SL.GameAreaX + SL.GameAreaWidth, y, SL.ScreenWidth, y, SL.GraphicsManager.DarkGreenPaint);
 		}
+	}
+	
+	public static void showExceptionWindow(Exception e)
+	{
+		/**
+		Builder builder = new AlertDialog.Builder(SL.Activity);
+        builder.setTitle("Fatal Error");
+        builder.setMessage(formatException(e));
+        builder.setPositiveButton("Close", null);
+        builder.show();*/
+		
+		Builder builder = new AlertDialog.Builder(SL.Activity);
+        builder.setTitle("beer or wine");
+        builder.setMessage("which one do you prefer?");
+        builder.setPositiveButton("ok", null);
+        builder.setNegativeButton("cancel", null);
+        builder.show(); 
 	}
 
 }
