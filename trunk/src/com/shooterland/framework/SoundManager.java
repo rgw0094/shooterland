@@ -48,7 +48,7 @@ public class SoundManager
 	public void playWorldMusic(int world)
 	{
 		if (world == 1)
-			playMusic(R.raw.world2);
+			playMusic(R.raw.world1);
 		else
 			return;
 	}

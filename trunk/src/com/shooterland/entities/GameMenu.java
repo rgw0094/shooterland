@@ -21,7 +21,6 @@ public class GameMenu
 	
 	public GameMenu(GameState state)
 	{
-		SL.SoundManager.playWorldMusic(SL.SessionManager.World);
 		_state = state;
 		_leftX = SL.GameAreaX + SL.ScreenHeight;
 		_rightX = _leftX + (SL.GameAreaWidth - SL.ScreenHeight);

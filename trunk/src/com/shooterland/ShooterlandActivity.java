@@ -10,6 +10,7 @@ import android.graphics.Canvas;
 import android.os.Bundle;
 import android.text.format.Time;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -33,6 +34,20 @@ public class ShooterlandActivity extends Activity
 	    _view = new ShooterlandView(this);
 	    setContentView(_view);
 	}
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu)
+	{
+		super.onPrepareOptionsMenu(menu);
+		
+		menu.clear();
+		
+		if (SL.CurrentState != null)
+			SL.CurrentState.buildMenu(menu);
+		
+		return true;
+	}
+
 	
 	protected void onPause()
 	{

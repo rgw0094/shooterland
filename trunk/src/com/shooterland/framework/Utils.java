@@ -45,6 +45,19 @@ public class Utils
 		return (int)((float)SL.ScreenHeight * percent);
 	}
 	
+	public static Rect BuildCollisionRect(float percentStartX, float percentStartY, float percentWidth, float percentHeight)
+	{
+		Rect rect = new Rect();
+		
+
+		rect.left = (int)((float)SL.GameAreaX + (float)SL.GameAreaWidth * percentStartX);
+		rect.top = (int)((float)SL.GameAreaHeight * percentStartY);
+		rect.right = rect.left + (int)((float)SL.GameAreaWidth * percentWidth);
+		rect.bottom = rect.top + (int)((float)SL.GameAreaHeight * percentHeight);
+		
+		return rect;
+	}
+	
 	public static int getPercentOfScreenWidth(float percent)
 	{
 		return (int)((float)SL.ScreenWidth * percent);
