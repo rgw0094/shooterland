@@ -32,7 +32,8 @@ public final class R {
         public static final int world1thingie4=0x7f020012;
         public static final int world1thingie5=0x7f020013;
         public static final int world1thingie6=0x7f020014;
-        public static final int worldmap=0x7f020015;
+        public static final int world1title=0x7f020015;
+        public static final int worldmap=0x7f020016;
     }
     public static final class layout {
         public static final int main=0x7f030000;
@@ -41,15 +42,20 @@ public final class R {
         public static final int titlescreen=0x7f040000;
         public static final int world1=0x7f040001;
         public static final int world1level1=0x7f040002;
-        public static final int world2=0x7f040003;
-        public static final int world3=0x7f040004;
-        public static final int world4=0x7f040005;
-        public static final int world5=0x7f040006;
-        public static final int world6=0x7f040007;
-        public static final int world7=0x7f040008;
+        public static final int world1level2=0x7f040003;
+        public static final int world1level3=0x7f040004;
+        public static final int world2=0x7f040005;
+        public static final int world3=0x7f040006;
+        public static final int world4=0x7f040007;
+        public static final int world5=0x7f040008;
+        public static final int world6=0x7f040009;
+        public static final int world7=0x7f04000a;
     }
     public static final class string {
         public static final int app_name=0x7f050001;
         public static final int hello=0x7f050000;
+        public static final int menu_achievements=0x7f050002;
+        public static final int menu_help=0x7f050004;
+        public static final int menu_pause=0x7f050003;
     }
 }

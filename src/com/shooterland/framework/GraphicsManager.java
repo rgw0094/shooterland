@@ -24,8 +24,9 @@ public class GraphicsManager
 	//Keep any images that don't need to be transformed as bitmaps because they draw faster.
 	public Bitmap MainMenuBackground;
 	public Bitmap WorldMapBackground;
-	public Bitmap[] WorldBackgrounds = new Bitmap[1];
-	public Bitmap[][] Tiles = new Bitmap[1][10];
+	public Bitmap[] WorldBackgrounds = new Bitmap[SL.NumWorlds];
+	public Bitmap[] WorldTitles = new Bitmap[SL.NumWorlds];
+	public Bitmap[][] Tiles = new Bitmap[SL.NumWorlds][10];
 	public Bitmap BottomShooter;
 	public Bitmap RightShooter;
 	public Bitmap RoscoeUp1;
@@ -96,6 +97,7 @@ public class GraphicsManager
 	public void LoadWorld1()
 	{
 		WorldBackgrounds[0] = BuildBitmap(R.drawable.world1background, SL.GameAreaWidth, SL.GameAreaHeight);
+		WorldTitles[0] = BuildBitmap(R.drawable.world1title, (int)((float)SL.GameAreaWidth * 0.284f), (int)((float)SL.GameAreaHeight * 0.05f));
 		Tiles[0][0] = BuildBitmap(R.drawable.world1thingie1, SL.GridSquareSize);
 		Tiles[0][1] = BuildBitmap(R.drawable.world1thingie2, SL.GridSquareSize);
 		Tiles[0][2] = BuildBitmap(R.drawable.world1thingie3, SL.GridSquareSize);

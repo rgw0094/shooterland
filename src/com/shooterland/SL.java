@@ -13,6 +13,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.view.Menu;
 
 /**
  * Main game singleton. Except its just a static class and not a singleton so that
@@ -22,6 +23,7 @@ public class SL
 {	
 	public static ShooterlandActivity Activity;
 	public static Context Context;
+	public static Menu Menu;
 	public static Resources Resources;
 	public static GraphicsManager GraphicsManager;
 	public static AbstractState CurrentState;
@@ -33,7 +35,7 @@ public class SL
 	public static float RealTime;
 	public static boolean Initialized;
 	
-	//Constants that get initialized based on screen size
+	//Constants
 	public static int ScreenWidth;
 	public static int ScreenHeight;
 	public static int ScreenCenterX;
@@ -44,6 +46,8 @@ public class SL
 	public static int GameAreaWidth;
 	public static int GameAreaHeight;
 	public static int GameAreaX;
+	public static final int LevelsPerWorld = 30;
+	public static final int NumWorlds = 5;
 		
 	private static AbstractState _nextState;
 	
@@ -63,7 +67,8 @@ public class SL
 		RealTime = GameTime = 0.0f;
 		Initialized = true;
 
-		enterState(new MainMenuState());
+		//enterState(new MainMenuState());
+		enterState(new OverworldState());
 	}
 	
 	public static void setScreenSize(int width, int height)

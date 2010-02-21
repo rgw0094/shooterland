@@ -2,6 +2,7 @@ package com.shooterland.states;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import android.R.raw;
@@ -9,6 +10,8 @@ import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.media.MediaPlayer;
+import android.util.Log;
+import android.view.Menu;
 
 import com.shooterland.*;
 import com.shooterland.entities.*;
@@ -29,7 +32,7 @@ public class GameState extends AbstractState
 
 	@Override
 	public void enterState() 
-	{
+	{		
 		_grid = new Grid(this);
 		_menu = new GameMenu(this);
 		_roscoe = new Roscoe(this, 2.0f, 5.0f, _menu.getLeftX() + (float)_menu.getWidth() * 0.1f);
@@ -39,6 +42,8 @@ public class GameState extends AbstractState
 		moveRightShooter(4);
 		replenishShooters();
 		loadLevel();
+		
+		SL.SoundManager.playWorldMusic(SL.SessionManager.World);
 	}
 
 	@Override
@@ -102,7 +107,7 @@ public class GameState extends AbstractState
 			} 
 		}
 		
-		if (_baddieCount == 0)
+		if (_baddieCount == 0 && _fadingTiles.size() == 0)
 		{
 			SL.enterState(new LevelCompleteState());
 		}
@@ -249,12 +254,14 @@ public class GameState extends AbstractState
 
 	private void loadLevel()
 	{
-		String fileName = "world" + SL.SessionManager.World + "level" + SL.SessionManager.Level + ".sll";
-		InputStream is = SL.Resources.openRawResource(R.raw.world1level1);
 		_baddieCount = 0;
-		
+		InputStream is = null;
 		try
 		{
+			String fileName = "world" + SL.SessionManager.World + "level" + SL.SessionManager.Level;
+			int resId = SL.Resources.getIdentifier(fileName, "raw", "com.shooterland");
+	        is = SL.Resources.openRawResource(resId);
+            
 			is.read();
 			is.read();
 			is.read();
@@ -273,13 +280,26 @@ public class GameState extends AbstractState
 				}
 			}
 		}
-		catch (IOException ioe)
+		catch (Exception e)
 		{
-			
+			Log.e("Loading Level", Utils.formatException(e));
 		}
 		finally
 		{
-			try { is.close(); } catch (IOException ioe) { }
+			try 
+			{ 
+				if (is != null)
+					is.close(); 
+			} catch (IOException ioe) { }
 		}
+	}
+
+	@Override
+	public void buildMenu(Menu menu) 
+	{
+		MenuItem.Achievements.addToMenu(menu);
+		MenuItem.ToggleSound.addToMenu(menu);
+		MenuItem.Help.addToMenu(menu);
+		MenuItem.Pause.addToMenu(menu);
 	}
 }
