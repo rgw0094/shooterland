@@ -8,6 +8,7 @@ import android.media.MediaPlayer;
 public class SoundManager 
 {
 	private MediaPlayer _mediaPlayer;
+	private int _currentMusic = -1;
 	
 	public SoundManager()
 	{
@@ -55,6 +56,11 @@ public class SoundManager
 	
 	private void playMusic(int id)
 	{
+		if (id == _currentMusic)
+			return;
+		
+		_currentMusic = id;
+		
 		if (isMusicPlaying())
 			stopMusic();
 		

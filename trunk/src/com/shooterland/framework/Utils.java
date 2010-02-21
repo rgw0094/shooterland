@@ -6,7 +6,10 @@ import java.util.Random;
 import com.shooterland.SL;
 
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.AlertDialog.Builder;
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -14,6 +17,7 @@ import android.text.format.Time;
 import android.view.Gravity;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Utils 
 {

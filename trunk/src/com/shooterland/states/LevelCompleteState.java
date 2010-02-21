@@ -33,6 +33,12 @@ public class LevelCompleteState extends AbstractState
 	@Override
 	public void update(float dt) 
 	{
+		if (SL.Input.isBackClicked())
+		{
+			SL.enterState(new OverworldState());
+			return;
+		}
+		
 		if (Utils.timeSince(_timeEnteredState) > 0.4 && SL.Input.isMouseClicked())
 		{
 			SL.enterState(new OverworldState());

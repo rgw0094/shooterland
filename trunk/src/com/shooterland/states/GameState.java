@@ -54,9 +54,14 @@ public class GameState extends AbstractState
 	@Override
 	public void update(float dt) 
 	{
+		if (SL.Input.isBackClicked())
+		{
+			SL.enterState(new OverworldState());
+			return;
+		}
+		
 		_menu.update(dt);
 		_roscoe.update(dt);
-		
 		
 		boolean areFlyingTiles = _flyingTiles.size() > 0;
 		for (FlyingTile t : _flyingTiles)

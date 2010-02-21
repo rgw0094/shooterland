@@ -1,5 +1,6 @@
 package com.shooterland;
 
+import com.shooterland.enums.MessageCode;
 import com.shooterland.framework.Utils;
 
 import android.app.Activity;
@@ -8,14 +9,19 @@ import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.text.format.Time;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 public class ShooterlandActivity extends Activity
 {	
@@ -48,6 +54,17 @@ public class ShooterlandActivity extends Activity
 		return true;
 	}
 
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) 
+	{
+		if (keyCode == KeyEvent.KEYCODE_BACK)
+		{
+			SL.Input.handleBackButton();
+			return true;
+		}	
+		
+		return false;
+	}
 	
 	protected void onPause()
 	{
@@ -61,6 +78,18 @@ public class ShooterlandActivity extends Activity
 		super.onResume();
 		_view.getThread().resumeExecution();
 	}
+	
+	public Handler Handler = new Handler() 
+	{
+		@Override
+		public void handleMessage(Message msg) 
+		{	
+			if (msg.arg1 == MessageCode.Notification.getId())
+			{
+				Toast.makeText(SL.Context, (String)msg.obj, Toast.LENGTH_SHORT).show();
+			}
+		}
+	};
 			
 	public class ShooterlandView extends SurfaceView implements SurfaceHolder.Callback
 	{
@@ -74,7 +103,7 @@ public class ShooterlandActivity extends Activity
 			_activity = activity;
 			SurfaceHolder holder = getHolder();
 			holder.addCallback(this);
-			_thread = new ShooterlandThread(activity, this);
+			_thread = new ShooterlandThread(activity, holder);
 			
 			setFocusable(true);
 		}
@@ -120,17 +149,15 @@ public class ShooterlandActivity extends Activity
 		
 	public class ShooterlandThread extends Thread
     {
-		private ShooterlandView _view;
 		private ShooterlandActivity _activity;
     	private SurfaceHolder _surfaceHolder;
     	private boolean _running = true;
     	private long _lastFrameMillis;
     	
-    	public ShooterlandThread(ShooterlandActivity activity, ShooterlandView view)
+    	public ShooterlandThread(ShooterlandActivity activity, SurfaceHolder surfaceHolder)
     	{
     		_activity = activity;
-    		_view = view;
-    		_surfaceHolder = view.getHolder();
+    		_surfaceHolder = surfaceHolder;
     	}
     	
     	public void setRunning(boolean running)
@@ -164,9 +191,11 @@ public class ShooterlandActivity extends Activity
     		_lastFrameMillis = Utils.currentMillis();
     		
     		SL.init(_activity);
+    		            
+    		_activity.Handler.sendEmptyMessage(0);
     		
-    		while (_running)
-    		{
+            while (_running)
+        	{
     			Canvas canvas = null;
     			try
     			{    		
@@ -184,7 +213,9 @@ public class ShooterlandActivity extends Activity
     			catch (Exception e)
     			{
     				_running = false;
-    				Log.e("Shooterland", Utils.formatException(e));
+    				String exceptionString = Utils.formatException(e);
+    				Log.e("Shooterland", exceptionString);
+    				SL.showNotification(exceptionString);
     			}
     			finally
     			{
@@ -193,7 +224,7 @@ public class ShooterlandActivity extends Activity
     					_surfaceHolder.unlockCanvasAndPost(canvas);
     				}
     			}
-    		}
+    		}    		
     	}
     }
 }
