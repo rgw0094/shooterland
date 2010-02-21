@@ -6,12 +6,16 @@ public class InputManager
 {
 	private boolean _mouseDown;
 	private boolean _mouseDownLastFrame;
+	private boolean _backDown;
+	private boolean _backDownLastFrame;
 	private int _mouseX, _mouseY;
 	
 	public void update(float dt)
 	{
 		_mouseDownLastFrame = _mouseDown;
 		_mouseDown = false;
+		_backDownLastFrame = _backDown;
+		_backDown = false;
 	}
 	
 	/**
@@ -28,6 +32,19 @@ public class InputManager
 	public boolean isMouseClicked()
 	{
 		return _mouseDown && !_mouseDownLastFrame;
+	}
+	
+	/**
+	 * @return Whether or not the back button was clicked this frame.
+	 */
+	public boolean isBackClicked()
+	{
+		return _backDown && !_backDownLastFrame;
+	}
+	
+	public void handleBackButton()
+	{
+		_backDown = true;
 	}
 	
 	public void handleClick(float x, float y)

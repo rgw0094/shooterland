@@ -1,18 +1,13 @@
 package com.shooterland;
 
-import com.shooterland.ShooterlandActivity.ShooterlandView;
-import com.shooterland.entities.*;
+import com.shooterland.enums.MessageCode;
 import com.shooterland.framework.*;
 import com.shooterland.states.*;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
+import android.os.Message;
 import android.view.Menu;
 
 /**
@@ -67,8 +62,7 @@ public class SL
 		RealTime = GameTime = 0.0f;
 		Initialized = true;
 
-		//enterState(new MainMenuState());
-		enterState(new OverworldState());
+		enterState(new MainMenuState());
 	}
 	
 	public static void setScreenSize(int width, int height)
@@ -127,4 +121,11 @@ public class SL
 		_nextState = newState;
 	}
 	
+	public static void showNotification(String text)
+	{
+		Message message = new Message();
+		message.arg1 = MessageCode.Notification.getId();
+		message.obj = text;
+		Activity.Handler.sendMessage(message);
+	}
 }

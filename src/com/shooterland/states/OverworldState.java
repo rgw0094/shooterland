@@ -1,5 +1,6 @@
 package com.shooterland.states;
 
+import android.app.NotificationManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -7,6 +8,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.Paint.Align;
 import android.view.Menu;
+import android.widget.Toast;
 
 import com.shooterland.SL;
 import com.shooterland.enums.MenuItem;
@@ -55,6 +57,7 @@ public class OverworldState extends AbstractState
 	@Override
 	public void enterState() 
 	{
+		SL.SoundManager.playMenuMusic();
 	}
 
 	@Override
@@ -71,10 +74,19 @@ public class OverworldState extends AbstractState
 			if (_menuRect.contains(SL.Input.getMouseX(), SL.Input.getMouseY()))
 			{
 				SL.enterState(new MainMenuState());
+				return;
 			}
 			else if (_playLevelRect.contains(SL.Input.getMouseX(), SL.Input.getMouseY()))
 			{
-				SL.enterState(new GameState());
+				if (SL.SessionManager.isLevelUnlocked(SL.SessionManager.Level))
+				{
+					SL.enterState(new GameState());
+					return;
+				}			
+				else
+				{
+					SL.showNotification("Level not unlocked yet.");
+				}
 			}
 			else
 			{
@@ -83,10 +95,15 @@ public class OverworldState extends AbstractState
 					if (Utils.distance(_levelPoints[i].x, _levelPoints[i].y, SL.Input.getMouseX(), SL.Input.getMouseY()) <= (_levelPointRadius * 2.0f))
 					{
 						selectLevel(i + 1);
-						break;
 					}
 				}
 			}
+		}
+		
+		if (SL.Input.isBackClicked())
+		{
+			SL.enterState(new MainMenuState());
+			return;
 		}
 	}
 
