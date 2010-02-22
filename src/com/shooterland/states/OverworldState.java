@@ -85,7 +85,7 @@ public class OverworldState extends AbstractState
 				}			
 				else
 				{
-					SL.showNotification("Level not unlocked yet.");
+					SL.showShortNotification("Level not unlocked yet.");
 				}
 			}
 			else
@@ -186,8 +186,8 @@ public class OverworldState extends AbstractState
 			else 
 				angle += angleDt;
 			
-			x = (float)SL.ScreenCenterX + (angle * 15.0f) * (float)Math.cos(angle);
-			y = (float)SL.GameAreaHeight * 0.45f + (angle * 5.7f) * (float)Math.sin(angle);
+			x = (float)SL.ScreenCenterX + (angle * (float)SL.GameAreaWidth * 0.0208333f) * (float)Math.cos(angle);
+			y = (float)SL.GameAreaHeight * 0.45f + (angle * (float)SL.GameAreaHeight * 0.011875f) * (float)Math.sin(angle);
 			
 			if (i == 0)
 			{

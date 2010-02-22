@@ -8,7 +8,9 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.os.Message;
+import android.view.Display;
 import android.view.Menu;
+import android.widget.Toast;
 
 /**
  * Main game singleton. Except its just a static class and not a singleton so that
@@ -48,13 +50,12 @@ public class SL
 	
 	public static void  init(ShooterlandActivity activity)
 	{	
+		Display display = activity.getWindowManager().getDefaultDisplay();
+        setScreenSize(display.getWidth(), display.getHeight());		
+		
 		Activity = activity;
 		Context = activity.getApplicationContext();
-		Resources = Context.getResources();
-		
-		if (Initialized)
-			return;
-		
+		Resources = Context.getResources();		
 		GraphicsManager = new GraphicsManager();
 		Input = new InputManager();
 		SessionManager = new SessionManager();
@@ -121,10 +122,20 @@ public class SL
 		_nextState = newState;
 	}
 	
-	public static void showNotification(String text)
+	public static void showShortNotification(String text)
 	{
 		Message message = new Message();
 		message.arg1 = MessageCode.Notification.getId();
+		message.arg2 = Toast.LENGTH_SHORT;
+		message.obj = text;
+		Activity.Handler.sendMessage(message);
+	}
+	
+	public static void showLongNotification(String text)
+	{
+		Message message = new Message();
+		message.arg1 = MessageCode.Notification.getId();
+		message.arg2 = Toast.LENGTH_LONG;
 		message.obj = text;
 		Activity.Handler.sendMessage(message);
 	}
