@@ -14,6 +14,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.text.format.Time;
 import android.util.Log;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MotionEvent;
@@ -35,6 +36,9 @@ public class ShooterlandActivity extends Activity
 		Window window = getWindow();
 		window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setRequestedOrientation(0);
+		
+		if (!SL.Initialized)
+			SL.init(this);
 		
 	    requestWindowFeature(Window.FEATURE_NO_TITLE);
 	    _view = new ShooterlandView(this);
@@ -68,6 +72,7 @@ public class ShooterlandActivity extends Activity
 	
 	protected void onPause()
 	{
+		
 		_view.getThread().pauseExecution();
 		super.onPause();
 	}
@@ -94,16 +99,15 @@ public class ShooterlandActivity extends Activity
 	public class ShooterlandView extends SurfaceView implements SurfaceHolder.Callback
 	{
 		private ShooterlandThread _thread;
-		private ShooterlandActivity _activity;
 		
 		public ShooterlandView(ShooterlandActivity activity)
 		{
 			super(activity.getApplicationContext());
 			
-			_activity = activity;
 			SurfaceHolder holder = getHolder();
 			holder.addCallback(this);
 			_thread = new ShooterlandThread(activity, holder);
+			_thread.start();
 			
 			setFocusable(true);
 		}
@@ -121,29 +125,16 @@ public class ShooterlandActivity extends Activity
 		
 		public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) 
 		{
-			SL.setScreenSize(width, height);
 		}
 
 		public void surfaceCreated(SurfaceHolder holder) 
 		{
-			_thread.start();
+			_thread.setRunning(true);
 		}
 
 		public void surfaceDestroyed(SurfaceHolder holder) 
 		{
-			//We have to tell thread to shut down & wait for it to finish, or else
-	        //it might touch the Surface after we return and explode
-			boolean retry = true;
 			_thread.setRunning(false);
-	        while (retry) 
-	        {
-	            try 
-	            {
-	            	_thread.join();
-	                retry = false;
-	            } 
-	            catch (InterruptedException e) { }
-	        }
 		}
 	}
 		
@@ -151,7 +142,7 @@ public class ShooterlandActivity extends Activity
     {
 		private ShooterlandActivity _activity;
     	private SurfaceHolder _surfaceHolder;
-    	private boolean _running = true;
+    	private boolean _running = false;
     	private long _lastFrameMillis;
     	
     	public ShooterlandThread(ShooterlandActivity activity, SurfaceHolder surfaceHolder)
@@ -162,7 +153,10 @@ public class ShooterlandActivity extends Activity
     	
     	public void setRunning(boolean running)
     	{
-    		_running = running;
+    		synchronized(_surfaceHolder)
+    		{
+    			_running = running;
+    		}
     	}
     	
     	public void pauseExecution()
@@ -188,14 +182,15 @@ public class ShooterlandActivity extends Activity
     	@Override
     	public void run()
     	{    		            
-    		_lastFrameMillis = Utils.currentMillis();
+    		_lastFrameMillis = Utils.currentMillis();    		           
     		
-    		SL.init(_activity);
-    		            
-    		_activity.Handler.sendEmptyMessage(0);
-    		
-            while (_running)
+            while (true)
         	{
+				while (!_running)
+				{
+					yield();
+				}
+            	
     			Canvas canvas = null;
     			try
     			{    		
@@ -215,7 +210,7 @@ public class ShooterlandActivity extends Activity
     				_running = false;
     				String exceptionString = Utils.formatException(e);
     				Log.e("Shooterland", exceptionString);
-    				SL.showNotification(exceptionString);
+    				SL.showLongNotification(exceptionString);
     			}
     			finally
     			{
