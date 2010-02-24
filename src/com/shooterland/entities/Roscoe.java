@@ -74,14 +74,14 @@ public class Roscoe
 		
 		if (_state == RoscoeState.MovingToPiggy)
 		{
-			if (i > 350)
+			if (_gameState.isPaused() || i > 350)
 				canvas.drawBitmap(SL.GraphicsManager.RoscoeUp1, _x, _y, null);
 			else
 				canvas.drawBitmap(SL.GraphicsManager.RoscoeUp2, _x, _y, null);
 		}
 		else if (_state == RoscoeState.MovingToTrunk)
 		{
-			if (i > 350)
+			if (_gameState.isPaused() || i > 350)
 				canvas.drawBitmap(SL.GraphicsManager.RoscoeDown1, _x, _y, null);
 			else
 				canvas.drawBitmap(SL.GraphicsManager.RoscoeDown2, _x, _y, null);

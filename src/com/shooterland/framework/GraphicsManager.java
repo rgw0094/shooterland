@@ -42,6 +42,12 @@ public class GraphicsManager
 	public Bitmap Complete_E;
 	public Bitmap Complete_T;
 	
+	public Bitmap Pause_P;
+	public Bitmap Pause_A;
+	public Bitmap Pause_U;
+	public Bitmap Pause_S;
+	public Bitmap Pause_E;
+	
 	public GraphicsManager()
 	{
 		initResources();
@@ -108,6 +114,12 @@ public class GraphicsManager
 		Complete_L = BuildBitmap(R.drawable.complete_l, w, h);
 		Complete_E = BuildBitmap(R.drawable.complete_e, w, h);
 		Complete_T = BuildBitmap(R.drawable.complete_t, w, h);
+		
+		Pause_P = BuildBitmap(R.drawable.pause_p, BottomShooter.getWidth() * 2, BottomShooter.getHeight() * 2);
+		Pause_A = BuildBitmap(R.drawable.pause_a, BottomShooter.getWidth() * 2, BottomShooter.getHeight() * 2);
+		Pause_U = BuildBitmap(R.drawable.pause_u, BottomShooter.getWidth() * 2, BottomShooter.getHeight() * 2);
+		Pause_S = BuildBitmap(R.drawable.pause_s, BottomShooter.getWidth() * 2, BottomShooter.getHeight() * 2);
+		Pause_E = BuildBitmap(R.drawable.pause_e, BottomShooter.getWidth() * 2, BottomShooter.getHeight() * 2);
 		
 		LoadWorld1();
 	}

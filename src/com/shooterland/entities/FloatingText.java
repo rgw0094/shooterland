@@ -31,7 +31,11 @@ public class FloatingText
 		} 
 		else if (type == FloatingTextType.Pause)
 		{
-			
+			_bitmaps.add(SL.GraphicsManager.Pause_P);
+			_bitmaps.add(SL.GraphicsManager.Pause_A);
+			_bitmaps.add(SL.GraphicsManager.Pause_U);
+			_bitmaps.add(SL.GraphicsManager.Pause_S);
+			_bitmaps.add(SL.GraphicsManager.Pause_E);
 		}
 	}
 	
