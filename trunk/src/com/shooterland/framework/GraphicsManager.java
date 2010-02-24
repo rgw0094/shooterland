@@ -102,12 +102,12 @@ public class GraphicsManager
 		int w = (int)((float)SL.GameAreaWidth * 0.083333f);
 		int h = (int)((float)SL.GameAreaWidth * 0.083333f * (5.0f/6.0f));
 		Complete_C = BuildBitmap(R.drawable.complete_c, w, h);
-		Complete_O = BuildBitmap(R.drawable.complete_c, w, h);
-		Complete_M = BuildBitmap(R.drawable.complete_c, w, h);
-		Complete_P = BuildBitmap(R.drawable.complete_c, w, h);
-		Complete_L = BuildBitmap(R.drawable.complete_c, w, h);
-		Complete_E = BuildBitmap(R.drawable.complete_c, w, h);
-		Complete_T = BuildBitmap(R.drawable.complete_c, w, h);
+		Complete_O = BuildBitmap(R.drawable.complete_o, w, h);
+		Complete_M = BuildBitmap(R.drawable.complete_m, w, h);
+		Complete_P = BuildBitmap(R.drawable.complete_p, w, h);
+		Complete_L = BuildBitmap(R.drawable.complete_l, w, h);
+		Complete_E = BuildBitmap(R.drawable.complete_e, w, h);
+		Complete_T = BuildBitmap(R.drawable.complete_t, w, h);
 		
 		LoadWorld1();
 	}
