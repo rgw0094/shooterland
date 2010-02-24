@@ -34,6 +34,14 @@ public class GraphicsManager
 	public Bitmap RoscoeDown1;
 	public Bitmap RoscoeDown2;
 	
+	public Bitmap Complete_C;
+	public Bitmap Complete_O;
+	public Bitmap Complete_M;
+	public Bitmap Complete_P;
+	public Bitmap Complete_L;
+	public Bitmap Complete_E;
+	public Bitmap Complete_T;
+	
 	public GraphicsManager()
 	{
 		initResources();
@@ -90,6 +98,16 @@ public class GraphicsManager
 		RoscoeDown2 = BuildBitmap(R.drawable.roscoedown2, SL.GridSquareSize);
 		MainMenuBackground = BuildBitmap(R.drawable.mainmenubackground, SL.ScreenWidth, SL.ScreenHeight);
 		WorldMapBackground = BuildBitmap(R.drawable.worldmap, SL.GameAreaWidth, SL.GameAreaHeight);
+		
+		int w = (int)((float)SL.GameAreaWidth * 0.083333f);
+		int h = (int)((float)SL.GameAreaWidth * 0.083333f * (5.0f/6.0f));
+		Complete_C = BuildBitmap(R.drawable.complete_c, w, h);
+		Complete_O = BuildBitmap(R.drawable.complete_c, w, h);
+		Complete_M = BuildBitmap(R.drawable.complete_c, w, h);
+		Complete_P = BuildBitmap(R.drawable.complete_c, w, h);
+		Complete_L = BuildBitmap(R.drawable.complete_c, w, h);
+		Complete_E = BuildBitmap(R.drawable.complete_c, w, h);
+		Complete_T = BuildBitmap(R.drawable.complete_c, w, h);
 		
 		LoadWorld1();
 	}
