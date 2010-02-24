@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import android.R.raw;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.media.MediaPlayer;
@@ -31,6 +32,8 @@ public class GameState extends AbstractState
 	private ArrayList<FadingTile> _fadingTiles = new ArrayList<FadingTile>();
 	private float _timeInState = 0.0f;
 	private boolean _paused;
+	private Paint _blackScreenPaint;
+	private FloatingText _pauseFloatingText;
 
 	@Override
 	public void enterState() 
@@ -40,10 +43,15 @@ public class GameState extends AbstractState
 		_roscoe = new Roscoe(this, 2.0f, 5.0f, _menu.getLeftX() + (float)_menu.getWidth() * 0.1f);
 		_bottomShooter = new Shooter(_grid, ShooterType.SingleBottom);
 		_rightShooter = new Shooter(_grid, ShooterType.SingleRight);
+		_pauseFloatingText = new FloatingText((float)SL.GameAreaWidth * 0.3f, (float)SL.GameAreaHeight * 0.3f, FloatingText.FloatingTextType.Pause);
 		moveBottomShooter(4);
 		moveRightShooter(4);
 		replenishShooters();
 		loadLevel();
+		
+		_blackScreenPaint = new Paint();
+		_blackScreenPaint.setARGB(180, 0, 0, 0);
+		_blackScreenPaint.setAntiAlias(true);
 		
 		SL.SoundManager.playWorldMusic(SL.SessionManager.World);
 	}
@@ -153,12 +161,23 @@ public class GameState extends AbstractState
 			ft.draw(canvas, dt);
 		}
 		
+		if (_paused)
+		{
+			canvas.drawRect(new Rect(SL.GameAreaX, 0, SL.GameAreaX + SL.GameAreaWidth, SL.GameAreaHeight), _blackScreenPaint);
+			_pauseFloatingText.draw(canvas, dt);
+		}
+		
 		Utils.fillExtraSideSpace(canvas);
 	}
 	
 	public float getTimeInState()
 	{
 		return _timeInState;
+	}
+	
+	public boolean isPaused()
+	{
+		return _paused;
 	}
 	
 	public void onShootButtonClicked()

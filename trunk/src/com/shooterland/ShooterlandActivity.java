@@ -1,5 +1,6 @@
 package com.shooterland;
 
+import com.shooterland.enums.MenuItem;
 import com.shooterland.enums.MessageCode;
 import com.shooterland.framework.Utils;
 
@@ -54,9 +55,41 @@ public class ShooterlandActivity extends Activity
 		
 		if (SL.CurrentState != null)
 			SL.CurrentState.buildMenu(menu);
-		
 		return true;
 	}
+	
+	/**
+	@Override
+    public boolean onOptionsItemSelected(MenuItem item) 
+	{
+        switch (item.getItemId()) {
+            case MENU_START:
+                mLunarThread.doStart();
+                return true;
+            case MENU_STOP:
+                mLunarThread.setState(LunarThread.STATE_LOSE,
+                        getText(R.string.message_stopped));
+                return true;
+            case MENU_PAUSE:
+                mLunarThread.pause();
+                return true;
+            case MENU_RESUME:
+                mLunarThread.unpause();
+                return true;
+            case MENU_EASY:
+                mLunarThread.setDifficulty(LunarThread.DIFFICULTY_EASY);
+                return true;
+            case MENU_MEDIUM:
+                mLunarThread.setDifficulty(LunarThread.DIFFICULTY_MEDIUM);
+                return true;
+            case MENU_HARD:
+                mLunarThread.setDifficulty(LunarThread.DIFFICULTY_HARD);
+                return true;
+        }
+
+        return false;
+    }*/
+
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) 
