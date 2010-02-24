@@ -28,7 +28,9 @@ public class GameState extends AbstractState
 	private int _baddieCount;
 	private ArrayList<FlyingTile> _flyingTiles = new ArrayList<FlyingTile>();
 	private ArrayList<Point> _recentlyPlacedThingies = new ArrayList<Point>();
-	private ArrayList<FadingTile> _fadingTiles = new ArrayList<FadingTile>();;
+	private ArrayList<FadingTile> _fadingTiles = new ArrayList<FadingTile>();
+	private float _timeInState = 0.0f;
+	private boolean _paused;
 
 	@Override
 	public void enterState() 
@@ -60,61 +62,70 @@ public class GameState extends AbstractState
 			return;
 		}
 		
-		_menu.update(dt);
-		_roscoe.update(dt);
-		
-		boolean areFlyingTiles = _flyingTiles.size() > 0;
-		for (FlyingTile t : _flyingTiles)
+		if (_paused)
 		{
-			t.update(dt);
+		
+		}
+		else
+		{
+			_timeInState += dt;
 			
-			if (t.reachedTarget())
+			_menu.update(dt);
+			_roscoe.update(dt);
+			
+			boolean areFlyingTiles = _flyingTiles.size() > 0;
+			for (FlyingTile t : _flyingTiles)
 			{
-				_grid.setTile(t.getTargetCol(), t.getTargetRow(), t.getTile());
-				_flyingTiles.remove(t);
+				t.update(dt);
 				
-				//If this is a thingie, remember where it landed so we can check for combos
-				//once all the flying thingies have landed.
-				if (t.getTile().isThingie())
+				if (t.reachedTarget())
 				{
-					_recentlyPlacedThingies.add(new Point(t.getTargetCol(), t.getTargetRow()));
+					_grid.setTile(t.getTargetCol(), t.getTargetRow(), t.getTile());
+					_flyingTiles.remove(t);
+					
+					//If this is a thingie, remember where it landed so we can check for combos
+					//once all the flying thingies have landed.
+					if (t.getTile().isThingie())
+					{
+						_recentlyPlacedThingies.add(new Point(t.getTargetCol(), t.getTargetRow()));
+					}
 				}
 			}
-		}
-		
-		//When all of the thingies reach their destination, replenish the shooters
-		//and check for combos.
-		if (areFlyingTiles && _flyingTiles.size() == 0)
-		{
-			doCombos(_recentlyPlacedThingies);
-			replenishShooters();
-			_recentlyPlacedThingies.clear();
-		}
-		
-		//Update fading tiles
-		ArrayList<FadingTile> fadedTiles = new ArrayList<FadingTile>();
-		for (FadingTile ft : _fadingTiles)
-		{
-			ft.update(dt);
-			if (ft.doneFading())
-				fadedTiles.add(ft);
-		}
-		for (FadingTile ft : fadedTiles)
-			_fadingTiles.remove(ft);
-		
-		if (SL.Input.isMouseDown())
-		{
-			if (_grid.isInBounds(SL.Input.getMouseX(), SL.Input.getMouseY()))
+			
+			//When all of the thingies reach their destination, replenish the shooters
+			//and check for combos.
+			if (areFlyingTiles && _flyingTiles.size() == 0)
 			{
-				Point p = _grid.getGridSquare(SL.Input.getMouseX(), SL.Input.getMouseY());
-				moveBottomShooter(p.x);
-				moveRightShooter(p.y);
-			} 
-		}
-		
-		if (_baddieCount == 0 && _fadingTiles.size() == 0)
-		{
-			SL.enterState(new LevelCompleteState());
+				doCombos(_recentlyPlacedThingies);
+				replenishShooters();
+				_recentlyPlacedThingies.clear();
+			}
+			
+			//Update fading tiles
+			ArrayList<FadingTile> fadedTiles = new ArrayList<FadingTile>();
+			for (FadingTile ft : _fadingTiles)
+			{
+				ft.update(dt);
+				if (ft.doneFading())
+					fadedTiles.add(ft);
+			}
+			for (FadingTile ft : fadedTiles)
+				_fadingTiles.remove(ft);
+			
+			if (SL.Input.isMouseDown())
+			{
+				if (_grid.isInBounds(SL.Input.getMouseX(), SL.Input.getMouseY()))
+				{
+					Point p = _grid.getGridSquare(SL.Input.getMouseX(), SL.Input.getMouseY());
+					moveBottomShooter(p.x);
+					moveRightShooter(p.y);
+				} 
+			}
+			
+			if (_baddieCount == 0 && _fadingTiles.size() == 0)
+			{
+				SL.enterState(new LevelCompleteState());
+			}
 		}
 	}
 
@@ -143,6 +154,11 @@ public class GameState extends AbstractState
 		}
 		
 		Utils.fillExtraSideSpace(canvas);
+	}
+	
+	public float getTimeInState()
+	{
+		return _timeInState;
 	}
 	
 	public void onShootButtonClicked()
@@ -305,6 +321,18 @@ public class GameState extends AbstractState
 		MenuItem.Achievements.addToMenu(menu);
 		MenuItem.ToggleSound.addToMenu(menu);
 		MenuItem.Help.addToMenu(menu);
-		MenuItem.Pause.addToMenu(menu);
+		
+		if (_paused)
+			MenuItem.Resume.addToMenu(menu);
+		else
+			MenuItem.Pause.addToMenu(menu);
+	}
+
+	/**
+	 * Called when the application is paused (by the user hitting the home key for example).
+	 */
+	public void notifyAppPaused() 
+	{
+		_paused = true;
 	}
 }

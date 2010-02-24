@@ -8,7 +8,8 @@ public enum MenuItem
 	Pause (1, "Pause"),
 	Achievements (2, "Achievements"),
 	Help (3, "Help"),
-	ToggleSound (4, "Toggle Sound");
+	ToggleSound (4, "Toggle Sound"),
+	Resume (5, "Resume");
 	
 	private int _id;
 	private String _text;

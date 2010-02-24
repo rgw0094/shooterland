@@ -37,18 +37,18 @@ public class FloatingText
 	
 	public void draw(Canvas canvas, float dt)
 	{		
-		float width = _bitmaps.get(0).getWidth();		
-		float totalWidth = _bitmaps.size() * width;
 		float count = 1.0f;
 		float x, y;
 		
+		float offset = 0.0f;
 		for (Bitmap bitmap : _bitmaps)
 		{
-			x = _centerX - (totalWidth * 0.5f) + count * width; 
-			y = _centerY + (float)Math.sin(SL.GameTime);
+			x = _centerX - ((float)(_bitmaps.size() * _bitmaps.get(0).getWidth()) * 0.5f) + count * (float)bitmap.getWidth(); 
+			y = _centerY + (float)Math.sin(SL.GameTime * 1.5 + offset) * (float)bitmap.getHeight() * 0.5f;
 			
 			canvas.drawBitmap(bitmap, x, y, null);
-			count += 1.0f;;
+			count += 1.0f;
+			offset += (float)(Math.PI / 3.0);
 		}
 	}
 	
@@ -57,18 +57,5 @@ public class FloatingText
 		Complete, 
 		Pause,
 		Defeat
-	}
-	
-	private class Letter
-	{
-		public float X, Y;
-		Bitmap Bitmap;
-		
-		public Letter(float x, float y, Bitmap bitmap)
-		{
-			X = x;
-			Y = y;
-			Bitmap = bitmap;
-		}
 	}
 }

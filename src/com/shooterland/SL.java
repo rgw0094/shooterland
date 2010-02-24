@@ -30,8 +30,8 @@ public class SL
 		
 	public static float GameTime;
 	public static float RealTime;
-	public static boolean Initialized;
-	
+	public static boolean Initialized = false;
+
 	//Constants
 	public static int ScreenWidth;
 	public static int ScreenHeight;
@@ -63,8 +63,7 @@ public class SL
 		RealTime = GameTime = 0.0f;
 		Initialized = true;
 
-		//enterState(new MainMenuState());
-		enterState(new LevelCompleteState());
+		enterState(new MainMenuState());
 	}
 	
 	public static void setScreenSize(int width, int height)
@@ -83,7 +82,7 @@ public class SL
 	}
 	
 	public static void update(float dt)
-	{		
+	{	
 		//If there is a state change queued up, do it now
 		if (_nextState != null)
 		{
@@ -95,8 +94,8 @@ public class SL
 			_nextState = null;
 		}
 		
-		GameTime += dt;
 		RealTime += dt;
+		GameTime += dt;
 		
 		CurrentState.update(dt);
 		Input.update(dt);
@@ -111,6 +110,11 @@ public class SL
 	public static void pauseExecution()
 	{
 		SoundManager.pauseMusic();
+		
+		if (CurrentState != null && CurrentState instanceof GameState)
+		{
+			((GameState)CurrentState).notifyAppPaused();
+		}
 	}
 	
 	public static void resumeExecution()
