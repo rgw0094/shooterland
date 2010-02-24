@@ -63,7 +63,8 @@ public class SL
 		RealTime = GameTime = 0.0f;
 		Initialized = true;
 
-		enterState(new MainMenuState());
+		//enterState(new MainMenuState());
+		enterState(new LevelCompleteState());
 	}
 	
 	public static void setScreenSize(int width, int height)

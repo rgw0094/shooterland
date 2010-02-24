@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.view.Menu;
 
 import com.shooterland.SL;
+import com.shooterland.entities.FloatingText;
 import com.shooterland.enums.MenuItem;
 import com.shooterland.framework.AbstractState;
 import com.shooterland.framework.Utils;
@@ -11,12 +12,20 @@ import com.shooterland.framework.Utils;
 public class LevelCompleteState extends AbstractState 
 {
 	private float _timeEnteredState;
+	private FloatingText _floatingText;
+	
+	public LevelCompleteState()
+	{
+		_floatingText = new FloatingText(SL.ScreenCenterX, 50.0f, FloatingText.FloatingTextType.Complete);
+	}
 	
 	@Override
 	public void draw(Canvas canvas, float dt) 
 	{
 		canvas.drawBitmap(SL.GraphicsManager.WorldBackgrounds[SL.SessionManager.World - 1], SL.GameAreaX, 0, null);
 		Utils.fillExtraSideSpace(canvas);
+		
+		_floatingText.draw(canvas, dt);
 	}
 
 	@Override
