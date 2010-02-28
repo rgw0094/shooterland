@@ -11,7 +11,7 @@ import android.view.Menu;
 import android.widget.Toast;
 
 import com.shooterland.SL;
-import com.shooterland.enums.MenuItem;
+import com.shooterland.enums.MenuOption;
 import com.shooterland.framework.*;
 
 public class OverworldState extends AbstractState
@@ -138,10 +138,17 @@ public class OverworldState extends AbstractState
 		for (int i = 0; i < SL.LevelsPerWorld; i++)
 		{
 			canvas.drawCircle(_levelPoints[i].x, _levelPoints[i].y, _levelPointRadius, _connectorPaint);
+			if (SL.SessionManager.isLevelUnlocked(i+1))
+				canvas.drawCircle(_levelPoints[i].x, _levelPoints[i].y, _levelPointRadius * 0.8f, SL.GraphicsManager.YellowPaint);
 		}
 		
 		for (int i = 0; i < SL.LevelsPerWorld; i++)
 		{	
+			if (SL.SessionManager.isLevelUnlocked(i+1))
+				_levelNumberPaint.setARGB(255,0, 0, 0);
+			else
+				_levelNumberPaint.setARGB(255, 255, 255, 255);
+			
 			canvas.drawText((i + 1) + "", _levelPoints[i].x, _levelPoints[i].y + _levelPointRadius * 0.5f, _levelNumberPaint);
 		}
 		
@@ -154,9 +161,9 @@ public class OverworldState extends AbstractState
 	@Override
 	public void buildMenu(Menu menu) 
 	{
-		MenuItem.Achievements.addToMenu(menu);
-		MenuItem.ToggleSound.addToMenu(menu);
-		MenuItem.Help.addToMenu(menu);	
+		MenuOption.Achievements.addToMenu(menu);
+		MenuOption.ToggleSound.addToMenu(menu);
+		MenuOption.Help.addToMenu(menu);	
 	}
 	
 	private void selectLevel(int level)

@@ -1,13 +1,16 @@
 package com.shooterland;
 
-import com.shooterland.enums.MenuItem;
+import com.shooterland.enums.MenuOption;
 import com.shooterland.enums.MessageCode;
 import com.shooterland.framework.Utils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,6 +21,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -58,37 +62,13 @@ public class ShooterlandActivity extends Activity
 		return true;
 	}
 	
-	/**
 	@Override
-    public boolean onOptionsItemSelected(MenuItem item) 
+	public boolean onOptionsItemSelected(MenuItem item) 
 	{
-        switch (item.getItemId()) {
-            case MENU_START:
-                mLunarThread.doStart();
-                return true;
-            case MENU_STOP:
-                mLunarThread.setState(LunarThread.STATE_LOSE,
-                        getText(R.string.message_stopped));
-                return true;
-            case MENU_PAUSE:
-                mLunarThread.pause();
-                return true;
-            case MENU_RESUME:
-                mLunarThread.unpause();
-                return true;
-            case MENU_EASY:
-                mLunarThread.setDifficulty(LunarThread.DIFFICULTY_EASY);
-                return true;
-            case MENU_MEDIUM:
-                mLunarThread.setDifficulty(LunarThread.DIFFICULTY_MEDIUM);
-                return true;
-            case MENU_HARD:
-                mLunarThread.setDifficulty(LunarThread.DIFFICULTY_HARD);
-                return true;
-        }
+		
 
         return false;
-    }*/
+    }
 
 
 	@Override
@@ -96,7 +76,8 @@ public class ShooterlandActivity extends Activity
 	{
 		if (keyCode == KeyEvent.KEYCODE_BACK)
 		{
-			SL.Input.handleBackButton();
+			if (SL.BigHackToDoPrompts != 3)
+				SL.Input.handleBackButton();
 			return true;
 		}	
 		
@@ -125,6 +106,32 @@ public class ShooterlandActivity extends Activity
 			if (msg.arg1 == MessageCode.Notification.getId())
 			{
 				Toast.makeText(SL.Context, (String)msg.obj, Toast.LENGTH_SHORT).show();
+			}
+			else if (msg.arg1 == MessageCode.Prompt.getId())
+			{
+                Builder builder = new AlertDialog.Builder(SL.Activity);
+                builder.setPositiveButton("Yes", null);
+                builder.setNegativeButton("No", null);
+                Dialog dialog = builder.create();
+                dialog.show();
+			}
+		}
+		
+		class YesListener implements OnClickListener
+		{
+			public void onClick(DialogInterface arg0, int arg1)
+			{
+				arg0.dismiss();
+				SL.BigHackToDoPrompts = 0;
+			}	
+		}
+		
+		class NoListener implements OnClickListener
+		{
+			public void onClick(DialogInterface arg0, int arg1)
+			{
+				arg0.dismiss();
+				SL.BigHackToDoPrompts = 1;
 			}
 		}
 	};
@@ -240,7 +247,6 @@ public class ShooterlandActivity extends Activity
     			}
     			catch (Exception e)
     			{
-    				_running = false;
     				String exceptionString = Utils.formatException(e);
     				Log.e("Shooterland", exceptionString);
     				SL.showLongNotification(exceptionString);

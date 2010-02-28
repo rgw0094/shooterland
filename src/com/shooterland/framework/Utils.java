@@ -86,6 +86,12 @@ public class Utils
 		return sb.toString();
 	}
 	
+	public static int getCurrentLevelResourceId()
+	{
+		String fileName = "world" + SL.SessionManager.World + "level" + SL.SessionManager.Level;
+		return SL.Resources.getIdentifier(fileName, "raw", "com.shooterland");
+	}
+	
 	public static int distance(int x1, int y1, int x2, int y2) 
 	{
 		if (x1 == x2) return Math.abs(y1 - y2);

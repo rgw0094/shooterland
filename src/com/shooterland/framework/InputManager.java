@@ -1,5 +1,7 @@
 package com.shooterland.framework;
 
+import android.graphics.Rect;
+
 import com.shooterland.SL;
 
 public class InputManager 
@@ -45,6 +47,11 @@ public class InputManager
 	public void handleBackButton()
 	{
 		_backDown = true;
+	}
+	
+	public boolean isClicked(Rect rect)
+	{
+		return isMouseClicked() && rect.contains(_mouseX, _mouseY);
 	}
 	
 	public void handleClick(float x, float y)

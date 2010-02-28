@@ -5,7 +5,7 @@ import android.view.Menu;
 
 import com.shooterland.SL;
 import com.shooterland.entities.FloatingText;
-import com.shooterland.enums.MenuItem;
+import com.shooterland.enums.MenuOption;
 import com.shooterland.framework.AbstractState;
 import com.shooterland.framework.Utils;
 
@@ -57,8 +57,8 @@ public class LevelCompleteState extends AbstractState
 	@Override
 	public void buildMenu(Menu menu) 
 	{
-		MenuItem.Achievements.addToMenu(menu);
-		MenuItem.ToggleSound.addToMenu(menu);
-		MenuItem.Help.addToMenu(menu);	
+		MenuOption.Achievements.addToMenu(menu);
+		MenuOption.ToggleSound.addToMenu(menu);
+		MenuOption.Help.addToMenu(menu);	
 	}
 }

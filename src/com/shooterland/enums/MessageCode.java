@@ -2,7 +2,8 @@ package com.shooterland.enums;
 
 public enum MessageCode 
 {
-	Notification (234223252);
+	Notification (234223252),
+	Prompt (234234324);
 	
 	private int _id;
 	
