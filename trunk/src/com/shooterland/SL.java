@@ -31,6 +31,7 @@ public class SL
 	public static float GameTime;
 	public static float RealTime;
 	public static boolean Initialized = false;
+	public static int BigHackToDoPrompts;
 
 	//Constants
 	public static int ScreenWidth;
@@ -143,5 +144,24 @@ public class SL
 		message.arg2 = Toast.LENGTH_LONG;
 		message.obj = text;
 		Activity.Handler.sendMessage(message);
+	}
+	
+	public static boolean showPrompt(String text)
+	{
+		BigHackToDoPrompts = 3;
+		Message message = new Message();
+		message.arg1 = MessageCode.Prompt.getId();
+		message.obj = text;
+		
+		Activity.Handler.handleMessage(message);
+		while (BigHackToDoPrompts == 3)
+		{
+			try
+			{
+				Thread.sleep(100);
+			} catch (InterruptedException e) { }
+		}
+		
+		return BigHackToDoPrompts == 1;
 	}
 }

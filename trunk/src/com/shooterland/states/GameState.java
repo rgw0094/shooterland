@@ -298,8 +298,7 @@ public class GameState extends AbstractState
 		InputStream is = null;
 		try
 		{
-			String fileName = "world" + SL.SessionManager.World + "level" + SL.SessionManager.Level;
-			int resId = SL.Resources.getIdentifier(fileName, "raw", "com.shooterland");
+			int resId = Utils.getCurrentLevelResourceId();
 	        is = SL.Resources.openRawResource(resId);
             
 			is.read();
@@ -337,14 +336,14 @@ public class GameState extends AbstractState
 	@Override
 	public void buildMenu(Menu menu) 
 	{
-		MenuItem.Achievements.addToMenu(menu);
-		MenuItem.ToggleSound.addToMenu(menu);
-		MenuItem.Help.addToMenu(menu);
+		MenuOption.Achievements.addToMenu(menu);
+		MenuOption.ToggleSound.addToMenu(menu);
+		MenuOption.Help.addToMenu(menu);
 		
 		if (_paused)
-			MenuItem.Resume.addToMenu(menu);
+			MenuOption.Resume.addToMenu(menu);
 		else
-			MenuItem.Pause.addToMenu(menu);
+			MenuOption.Pause.addToMenu(menu);
 	}
 
 	/**

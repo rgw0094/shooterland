@@ -5,6 +5,7 @@ import com.shooterland.SL;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.Paint.Align;
@@ -19,6 +20,7 @@ public class GraphicsManager
 	public Paint MoneyPaint;
 	public Paint GridPaint;
 	public Paint LevelPaint;
+	public Paint YellowPaint;
 	public Paint BaddieSquarePaint;
 		
 	//Keep any images that don't need to be transformed as bitmaps because they draw faster.
@@ -33,6 +35,9 @@ public class GraphicsManager
 	public Bitmap RoscoeUp2;
 	public Bitmap RoscoeDown1;
 	public Bitmap RoscoeDown2;
+	public Bitmap MenuButtonForward;
+	public Bitmap MenuButtonBack;
+	public Bitmap MenuButtonRound;
 	
 	public Bitmap Complete_C;
 	public Bitmap Complete_O;
@@ -62,6 +67,10 @@ public class GraphicsManager
 		RedPaint = new Paint();
 		RedPaint.setAntiAlias(true);
 		RedPaint.setARGB(255, 255, 0, 0);
+		
+		YellowPaint = new Paint();
+		YellowPaint.setARGB(255, 0, 255, 255);
+		YellowPaint.setAntiAlias(true);
 		
 		BaddieSquarePaint = new Paint();
 		BaddieSquarePaint.setAntiAlias(true);
@@ -104,6 +113,9 @@ public class GraphicsManager
 		RoscoeDown2 = BuildBitmap(R.drawable.roscoedown2, SL.GridSquareSize);
 		MainMenuBackground = BuildBitmap(R.drawable.mainmenubackground, SL.ScreenWidth, SL.ScreenHeight);
 		WorldMapBackground = BuildBitmap(R.drawable.worldmap, SL.GameAreaWidth, SL.GameAreaHeight);
+		MenuButtonForward = BuildBitmap(R.drawable.menubutton, (int)((float)SL.GameAreaWidth * 0.288f), (int)((float)SL.GameAreaHeight * 0.120833));
+		MenuButtonRound = BuildBitmap(R.drawable.menubutton2, (int)((float)SL.GameAreaWidth * 0.288f), (int)((float)SL.GameAreaHeight * 0.120833));
+		MenuButtonBack = CreateRotatedBitmap(MenuButtonForward, 180);
 		
 		int w = (int)((float)SL.GameAreaWidth * 0.083333f);
 		int h = (int)((float)SL.GameAreaWidth * 0.083333f * (5.0f/6.0f));
@@ -148,5 +160,12 @@ public class GraphicsManager
 	private Bitmap BuildBitmap(int id, int width, int height)
 	{
 		return Bitmap.createScaledBitmap(BitmapFactory.decodeResource(SL.Resources, id), width, height, true);
+	}
+	
+	private Bitmap CreateRotatedBitmap(Bitmap bitmap, float angle)
+	{
+		Matrix m = new Matrix();
+		m.postRotate(angle);
+		return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), m, true);
 	}
 }

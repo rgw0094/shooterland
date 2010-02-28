@@ -2,7 +2,7 @@ package com.shooterland.enums;
 
 import android.view.Menu;
 
-public enum MenuItem
+public enum MenuOption
 {
 
 	Pause (1, "Pause"),
@@ -14,7 +14,7 @@ public enum MenuItem
 	private int _id;
 	private String _text;
 	
-	MenuItem(int id, String text)
+	MenuOption(int id, String text)
 	{
 		_id = id;
 		_text = text;
