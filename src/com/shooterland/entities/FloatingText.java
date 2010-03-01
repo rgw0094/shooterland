@@ -20,22 +20,22 @@ public class FloatingText
 		
 		if (type == FloatingTextType.Complete)
 		{
-			_bitmaps.add(SL.GraphicsManager.Complete_C);
-			_bitmaps.add(SL.GraphicsManager.Complete_O);
-			_bitmaps.add(SL.GraphicsManager.Complete_M);
-			_bitmaps.add(SL.GraphicsManager.Complete_P);
-			_bitmaps.add(SL.GraphicsManager.Complete_L);
-			_bitmaps.add(SL.GraphicsManager.Complete_E);
-			_bitmaps.add(SL.GraphicsManager.Complete_T);
-			_bitmaps.add(SL.GraphicsManager.Complete_E);
+			_bitmaps.add(SL.Graphics.Complete_C);
+			_bitmaps.add(SL.Graphics.Complete_O);
+			_bitmaps.add(SL.Graphics.Complete_M);
+			_bitmaps.add(SL.Graphics.Complete_P);
+			_bitmaps.add(SL.Graphics.Complete_L);
+			_bitmaps.add(SL.Graphics.Complete_E);
+			_bitmaps.add(SL.Graphics.Complete_T);
+			_bitmaps.add(SL.Graphics.Complete_E);
 		} 
 		else if (type == FloatingTextType.Pause)
 		{
-			_bitmaps.add(SL.GraphicsManager.Pause_P);
-			_bitmaps.add(SL.GraphicsManager.Pause_A);
-			_bitmaps.add(SL.GraphicsManager.Pause_U);
-			_bitmaps.add(SL.GraphicsManager.Pause_S);
-			_bitmaps.add(SL.GraphicsManager.Pause_E);
+			_bitmaps.add(SL.Graphics.Pause_P);
+			_bitmaps.add(SL.Graphics.Pause_A);
+			_bitmaps.add(SL.Graphics.Pause_U);
+			_bitmaps.add(SL.Graphics.Pause_S);
+			_bitmaps.add(SL.Graphics.Pause_E);
 		}
 	}
 	

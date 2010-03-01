@@ -23,9 +23,9 @@ public class Shooter
 		_shooterType = shooterType;
 		
 		if (_shooterType == ShooterType.SingleBottom)
-			_bitmap = SL.GraphicsManager.BottomShooter;
+			_bitmap = SL.Graphics.BottomShooter;
 		else if (_shooterType == ShooterType.SingleRight)
-			_bitmap = SL.GraphicsManager.RightShooter;
+			_bitmap = SL.Graphics.RightShooter;
 	}
 	
 	public void moveTo(int gridCoord, float x, float y)

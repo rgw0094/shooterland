@@ -22,7 +22,7 @@ public class LevelCompleteState extends AbstractState
 	@Override
 	public void draw(Canvas canvas, float dt) 
 	{
-		canvas.drawBitmap(SL.GraphicsManager.WorldBackgrounds[SL.SessionManager.World - 1], SL.GameAreaX, 0, null);
+		canvas.drawBitmap(SL.Graphics.WorldBackgrounds[SL.Session.World - 1], SL.GameAreaX, 0, null);
 		Utils.fillExtraSideSpace(canvas);
 		
 		_floatingText.draw(canvas, dt);
@@ -32,6 +32,10 @@ public class LevelCompleteState extends AbstractState
 	public void enterState() 
 	{	
 		_timeEnteredState = SL.GameTime;
+		
+		SL.Session.unlockLevel(SL.Session.World, SL.Session.World + 1);
+		
+		SL.Session.save();
 	}
 
 	@Override

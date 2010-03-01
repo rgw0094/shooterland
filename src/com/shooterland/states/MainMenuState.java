@@ -17,11 +17,11 @@ public class MainMenuState extends AbstractState
 	@Override
 	public void enterState() 
 	{
-		SL.SoundManager.playMenuMusic();
+		SL.Sound.playMenuMusic();
 				
-		_buttons.add(new Button(SL.GraphicsManager.MenuButtonForward, "Play", (float)SL.ScreenWidth * 0.85f, (float)SL.ScreenHeight * 0.9f));
-		_buttons.add(new Button(SL.GraphicsManager.MenuButtonBack, "Quit", (float)SL.ScreenWidth * 0.15f, (float)SL.ScreenHeight * 0.9f));
-		_buttons.add(new Button(SL.GraphicsManager.MenuButtonRound, "Clear Data", SL.ScreenCenterX, (float)SL.ScreenHeight * 0.9f));
+		_buttons.add(new Button(SL.Graphics.MenuButtonForward, "Play", (float)SL.ScreenWidth * 0.85f, (float)SL.ScreenHeight * 0.9f));
+		_buttons.add(new Button(SL.Graphics.MenuButtonBack, "Quit", (float)SL.ScreenWidth * 0.15f, (float)SL.ScreenHeight * 0.9f));
+		_buttons.add(new Button(SL.Graphics.MenuButtonRound, "Clear Data", SL.ScreenCenterX, (float)SL.ScreenHeight * 0.9f));
 	}
 
 	@Override
@@ -38,17 +38,18 @@ public class MainMenuState extends AbstractState
 			{
 				if (button.getText() == "Quit")
 				{
-					SL.SessionManager.save();
 					System.exit(0);
 				}
 				else if (button.getText() == "Play")
 				{
 					SL.enterState(new OverworldState());
-					SL.SessionManager.load();
 				} 
 				else if (button.getText() == "Clear Data")
 				{
-					if (SL.showPrompt("Are you sure you wish to clear Shooterland application data? All saved progress will be lost"));
+					if (SL.showPrompt("Are you sure you wish to clear Shooterland application data? All saved progress will be lost"))
+					{
+						SL.Session.resetSaveFile();
+					}
 				}
 				break;
 			}
@@ -58,8 +59,8 @@ public class MainMenuState extends AbstractState
 	@Override
 	public void draw(Canvas canvas, float dt) 
 	{
-		canvas.drawBitmap(SL.GraphicsManager.MainMenuBackground, 0, 0, null);
-		
+		canvas.drawBitmap(SL.Graphics.MainMenuBackground, 0, 0, null);
+				
 		for (Button button : _buttons)
 		{
 			button.draw(canvas);

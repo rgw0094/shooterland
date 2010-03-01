@@ -53,7 +53,7 @@ public class GameState extends AbstractState
 		_blackScreenPaint.setARGB(180, 0, 0, 0);
 		_blackScreenPaint.setAntiAlias(true);
 		
-		SL.SoundManager.playWorldMusic(SL.SessionManager.World);
+		SL.Sound.playWorldMusic(SL.Session.World);
 	}
 
 	@Override
@@ -140,7 +140,7 @@ public class GameState extends AbstractState
 	@Override
 	public void draw(Canvas canvas, float dt) 
 	{
-		canvas.drawBitmap(SL.GraphicsManager.WorldBackgrounds[SL.SessionManager.World - 1], SL.GameAreaX, 0, null);
+		canvas.drawBitmap(SL.Graphics.WorldBackgrounds[SL.Session.World - 1], SL.GameAreaX, 0, null);
 		
 		_menu.draw(canvas, dt);
 		_roscoe.draw(canvas, dt);

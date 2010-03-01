@@ -6,18 +6,10 @@ import java.util.Random;
 import com.shooterland.SL;
 
 import android.app.AlertDialog;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.AlertDialog.Builder;
-import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.text.format.Time;
-import android.view.Gravity;
-import android.widget.PopupWindow;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class Utils 
 {
@@ -88,7 +80,7 @@ public class Utils
 	
 	public static int getCurrentLevelResourceId()
 	{
-		String fileName = "world" + SL.SessionManager.World + "level" + SL.SessionManager.Level;
+		String fileName = "world" + SL.Session.World + "level" + SL.Session.Level;
 		return SL.Resources.getIdentifier(fileName, "raw", "com.shooterland");
 	}
 	
@@ -112,20 +104,20 @@ public class Utils
 		if (SL.GameAreaX == 0)
 			return;
 		
-		canvas.drawRect(new Rect(0, 0, SL.GameAreaX, SL.ScreenHeight), SL.GraphicsManager.BlackPaint);
-		canvas.drawRect(new Rect(SL.GameAreaX + SL.GameAreaWidth, 0, SL.ScreenWidth, SL.ScreenHeight), SL.GraphicsManager.BlackPaint);
+		canvas.drawRect(new Rect(0, 0, SL.GameAreaX, SL.ScreenHeight), SL.Graphics.BlackPaint);
+		canvas.drawRect(new Rect(SL.GameAreaX + SL.GameAreaWidth, 0, SL.ScreenWidth, SL.ScreenHeight), SL.Graphics.BlackPaint);
 		
 		int size = 15;
 
 		for (int x = SL.GameAreaX; x > 0; x -= size)
-			canvas.drawLine(x, 0, x, SL.ScreenHeight, SL.GraphicsManager.DarkGreenPaint);
+			canvas.drawLine(x, 0, x, SL.ScreenHeight, SL.Graphics.DarkGreenPaint);
 		for (int x = SL.GameAreaX + SL.GameAreaWidth; x < SL.ScreenWidth; x += size)
-			canvas.drawLine(x, 0, x, SL.ScreenHeight, SL.GraphicsManager.DarkGreenPaint);
+			canvas.drawLine(x, 0, x, SL.ScreenHeight, SL.Graphics.DarkGreenPaint);
 		
 		for (int y = 0; y < SL.ScreenHeight; y += size)
 		{	
-			canvas.drawLine(0, y, SL.GameAreaX, y, SL.GraphicsManager.DarkGreenPaint);
-			canvas.drawLine(SL.GameAreaX + SL.GameAreaWidth, y, SL.ScreenWidth, y, SL.GraphicsManager.DarkGreenPaint);
+			canvas.drawLine(0, y, SL.GameAreaX, y, SL.Graphics.DarkGreenPaint);
+			canvas.drawLine(SL.GameAreaX + SL.GameAreaWidth, y, SL.ScreenWidth, y, SL.Graphics.DarkGreenPaint);
 		}
 	}
 	

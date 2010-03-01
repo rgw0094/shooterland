@@ -1,6 +1,5 @@
 package com.shooterland.states;
 
-import android.app.NotificationManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -57,7 +56,7 @@ public class OverworldState extends AbstractState
 	@Override
 	public void enterState() 
 	{
-		SL.SoundManager.playMenuMusic();
+		SL.Sound.playMenuMusic();
 	}
 
 	@Override
@@ -78,14 +77,14 @@ public class OverworldState extends AbstractState
 			}
 			else if (_playLevelRect.contains(SL.Input.getMouseX(), SL.Input.getMouseY()))
 			{
-				if (SL.SessionManager.isLevelUnlocked(SL.SessionManager.Level))
+				if (SL.Session.isLevelUnlocked(SL.Session.World, SL.Session.Level))
 				{
 					SL.enterState(new GameState());
 					return;
 				}			
 				else
 				{
-					SL.showShortNotification("Level not unlocked yet.");
+					SL.showNotification("Level not unlocked yet.", Toast.LENGTH_SHORT);
 				}
 			}
 			else
@@ -110,19 +109,19 @@ public class OverworldState extends AbstractState
 	@Override
 	public void draw(Canvas canvas, float dt) 
 	{
-		canvas.drawRect(new Rect(0, 0, SL.ScreenWidth, SL.ScreenHeight), SL.GraphicsManager.BlackPaint);
+		canvas.drawRect(new Rect(0, 0, SL.ScreenWidth, SL.ScreenHeight), SL.Graphics.BlackPaint);
 		
 		int size = 15;
 
 		for (int x = 0; x <= SL.ScreenWidth; x += size)
-			canvas.drawLine(x, 0, x, SL.ScreenHeight, SL.GraphicsManager.DarkGreenPaint);
+			canvas.drawLine(x, 0, x, SL.ScreenHeight, SL.Graphics.DarkGreenPaint);
 		for (int y = 0; y <= SL.ScreenHeight; y += size)
-			canvas.drawLine(0, y, SL.ScreenWidth, y, SL.GraphicsManager.DarkGreenPaint);
+			canvas.drawLine(0, y, SL.ScreenWidth, y, SL.Graphics.DarkGreenPaint);
 		
 		//Background and title
-		canvas.drawBitmap(SL.GraphicsManager.WorldMapBackground, SL.GameAreaX, 0, null);
+		canvas.drawBitmap(SL.Graphics.WorldMapBackground, SL.GameAreaX, 0, null);
 		
-		Bitmap title = SL.GraphicsManager.WorldTitles[SL.SessionManager.World-1];
+		Bitmap title = SL.Graphics.WorldTitles[SL.Session.World-1];
 		canvas.drawBitmap(title, SL.ScreenCenterX - ((float)title.getWidth() * 0.5f), (float)SL.GameAreaHeight * 0.14f, null);
 		
 		//Draw level points
@@ -138,13 +137,13 @@ public class OverworldState extends AbstractState
 		for (int i = 0; i < SL.LevelsPerWorld; i++)
 		{
 			canvas.drawCircle(_levelPoints[i].x, _levelPoints[i].y, _levelPointRadius, _connectorPaint);
-			if (SL.SessionManager.isLevelUnlocked(i+1))
-				canvas.drawCircle(_levelPoints[i].x, _levelPoints[i].y, _levelPointRadius * 0.8f, SL.GraphicsManager.YellowPaint);
+			if (SL.Session.isLevelUnlocked(SL.Session.World, i+1))
+				canvas.drawCircle(_levelPoints[i].x, _levelPoints[i].y, _levelPointRadius * 0.8f, SL.Graphics.YellowPaint);
 		}
 		
 		for (int i = 0; i < SL.LevelsPerWorld; i++)
 		{	
-			if (SL.SessionManager.isLevelUnlocked(i+1))
+			if (SL.Session.isLevelUnlocked(SL.Session.World, i+1))
 				_levelNumberPaint.setARGB(255,0, 0, 0);
 			else
 				_levelNumberPaint.setARGB(255, 255, 255, 255);
@@ -153,8 +152,8 @@ public class OverworldState extends AbstractState
 		}
 		
 		//Draw level selection
-		canvas.drawBitmap(SL.GraphicsManager.BottomShooter, _levelPoints[SL.SessionManager.Level - 1].x - ((float)SL.GraphicsManager.BottomShooter.getWidth() * 0.5f), 
-				_levelPoints[SL.SessionManager.Level - 1].y - ((float)SL.GraphicsManager.BottomShooter.getHeight() * 0.5f), null);
+		canvas.drawBitmap(SL.Graphics.BottomShooter, _levelPoints[SL.Session.Level - 1].x - ((float)SL.Graphics.BottomShooter.getWidth() * 0.5f), 
+				_levelPoints[SL.Session.Level - 1].y - ((float)SL.Graphics.BottomShooter.getHeight() * 0.5f), null);
 		canvas.drawText(_selectedLevelString, SL.GameAreaX + (float)SL.GameAreaWidth * 0.2f, SL.GameAreaHeight * 0.69f, _selectedLevelPaint);
 	}
 
@@ -168,8 +167,8 @@ public class OverworldState extends AbstractState
 	
 	private void selectLevel(int level)
 	{
-		SL.SessionManager.Level = level;
-		_selectedLevelString = "Level " + SL.SessionManager.World + "-" + SL.SessionManager.Level;
+		SL.Session.Level = level;
+		_selectedLevelString = "Level " + SL.Session.World + "-" + SL.Session.Level;
 	}
 	
 	private void initLevelPoints()
