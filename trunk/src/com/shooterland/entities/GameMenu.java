@@ -25,7 +25,7 @@ public class GameMenu
 		_leftX = SL.GameAreaX + SL.ScreenHeight;
 		_rightX = _leftX + (SL.GameAreaWidth - SL.ScreenHeight);
 		_width = _rightX - _leftX;
-		_levelString = "Level " + SL.SessionManager.World + " - " + SL.SessionManager.Level;
+		_levelString = "Level " + SL.Session.World + " - " + SL.Session.Level;
 		_money = 0;
 		
 		_shootButton = new Rect();
@@ -83,8 +83,8 @@ public class GameMenu
 	
 	public void draw(Canvas canvas, float dt)
 	{
-		canvas.drawText(_levelString, _leftX + _width / 2, (int)((float)SL.ScreenHeight * 0.09), SL.GraphicsManager.LevelPaint);
-		canvas.drawText(_money + "", _leftX + (int)((float)_width * 0.43f), (int)((float)SL.ScreenHeight * 0.185), SL.GraphicsManager.MoneyPaint);
+		canvas.drawText(_levelString, _leftX + _width / 2, (int)((float)SL.ScreenHeight * 0.09), SL.Graphics.LevelPaint);
+		canvas.drawText(_money + "", _leftX + (int)((float)_width * 0.43f), (int)((float)SL.ScreenHeight * 0.185), SL.Graphics.MoneyPaint);
 		
 		canvas.drawBitmap(_nextRightThingie.getBitmap(), _leftX + (int)((float)_width * 0.72f), (int)((float)SL.ScreenHeight * 0.59f), null);
 		canvas.drawBitmap(_nextBottomThingie.getBitmap(), _leftX + (int)((float)_width * 0.5f), (int)((float)SL.ScreenHeight * 0.7f), null);

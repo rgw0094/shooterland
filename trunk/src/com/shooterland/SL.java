@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.os.Message;
+import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.widget.Toast;
@@ -22,15 +23,17 @@ public class SL
 	public static Context Context;
 	public static Menu Menu;
 	public static Resources Resources;
-	public static GraphicsManager GraphicsManager;
+	public static GraphicsManager Graphics;
 	public static AbstractState CurrentState;
 	public static InputManager Input;
-	public static SessionManager SessionManager;
-	public static SoundManager SoundManager;
+	public static SessionManager Session;
+	public static SoundManager Sound;
 		
 	public static float GameTime;
 	public static float RealTime;
 	public static boolean Initialized = false;
+	public static boolean ResourcesLoadedYet = false;
+	public static boolean LoadingDone = false;
 	public static int BigHackToDoPrompts;
 
 	//Constants
@@ -49,7 +52,7 @@ public class SL
 		
 	private static AbstractState _nextState;
 	
-	public static void  init(ShooterlandActivity activity)
+	public static void init(ShooterlandActivity activity)
 	{	
 		Display display = activity.getWindowManager().getDefaultDisplay();
         setScreenSize(display.getWidth(), display.getHeight());		
@@ -57,29 +60,21 @@ public class SL
 		Activity = activity;
 		Context = activity.getApplicationContext();
 		Resources = Context.getResources();		
-		GraphicsManager = new GraphicsManager();
+		Graphics = new GraphicsManager();
 		Input = new InputManager();
-		SessionManager = new SessionManager();
-		SoundManager = new SoundManager();
+		Session = new SessionManager();
+		Sound = new SoundManager();
 		RealTime = GameTime = 0.0f;
+		loadResources();
 		Initialized = true;
-
+		
 		enterState(new MainMenuState());
 	}
 	
-	public static void setScreenSize(int width, int height)
+	public static void loadResources()
 	{
-		ScreenWidth = width;
-		ScreenHeight = height;
-		ScreenCenterX = ScreenWidth / 2;
-		ScreenCenterY = ScreenHeight / 2;
-		GridWidth = 11;
-		GridHeight = 11;
-		GridSquareSize = (int)(((float)ScreenHeight * 0.98f) / ((float)GridHeight + 1.0f));
-		
-		GameAreaHeight = ScreenHeight;
-		GameAreaWidth = (int)((float)ScreenHeight * 1.5f);
-		GameAreaX = (int)((float)(ScreenWidth - GameAreaWidth) / 2.0f);
+		Session.load();
+		Graphics.initResources();
 	}
 	
 	public static void update(float dt)
@@ -100,7 +95,7 @@ public class SL
 		
 		CurrentState.update(dt);
 		Input.update(dt);
-		SoundManager.update(dt);
+		Sound.update(dt);
 	}
 	
 	public static void draw(Canvas canvas, float dt)
@@ -110,7 +105,7 @@ public class SL
 	
 	public static void pauseExecution()
 	{
-		SoundManager.pauseMusic();
+		Sound.pauseMusic();
 		
 		if (CurrentState != null && CurrentState instanceof GameState)
 		{
@@ -120,7 +115,7 @@ public class SL
 	
 	public static void resumeExecution()
 	{
-		SoundManager.resumeMusic();
+		Sound.resumeMusic();
 	}
 	
 	public static void enterState(AbstractState newState)
@@ -128,22 +123,24 @@ public class SL
 		_nextState = newState;
 	}
 	
-	public static void showShortNotification(String text)
+	/**
+	 * @param text	 The text to show
+	 * @param length User Toast for length constants
+	 */
+	public static void showNotification(String text, int length)
 	{
 		Message message = new Message();
 		message.arg1 = MessageCode.Notification.getId();
-		message.arg2 = Toast.LENGTH_SHORT;
+		message.arg2 = length;
 		message.obj = text;
 		Activity.Handler.sendMessage(message);
 	}
-	
-	public static void showLongNotification(String text)
+		
+	public static void handleException(Exception e)
 	{
-		Message message = new Message();
-		message.arg1 = MessageCode.Notification.getId();
-		message.arg2 = Toast.LENGTH_LONG;
-		message.obj = text;
-		Activity.Handler.sendMessage(message);
+		String exceptionString = Utils.formatException(e);
+		Log.e("Shooterland", exceptionString);
+		showNotification(exceptionString, Toast.LENGTH_LONG);
 	}
 	
 	public static boolean showPrompt(String text)
@@ -163,5 +160,20 @@ public class SL
 		}
 		
 		return BigHackToDoPrompts == 1;
+	}
+	
+	private static void setScreenSize(int width, int height)
+	{
+		ScreenWidth = width;
+		ScreenHeight = height;
+		ScreenCenterX = ScreenWidth / 2;
+		ScreenCenterY = ScreenHeight / 2;
+		GridWidth = 11;
+		GridHeight = 11;
+		GridSquareSize = (int)(((float)ScreenHeight * 0.98f) / ((float)GridHeight + 1.0f));
+		
+		GameAreaHeight = ScreenHeight;
+		GameAreaWidth = (int)((float)ScreenHeight * 1.5f);
+		GameAreaX = (int)((float)(ScreenWidth - GameAreaWidth) / 2.0f);
 	}
 }

@@ -12,13 +12,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Paint.Align;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
-import android.text.format.Time;
-import android.util.Log;
-import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -84,18 +82,20 @@ public class ShooterlandActivity extends Activity
 		return false;
 	}
 	
+	@Override
 	protected void onPause()
 	{
-		
-		_view.getThread().pauseExecution();
+		SL.pauseExecution();
+		//_view.getThread().pauseExecution();
 		super.onPause();
 	}
 	
 	@Override
 	protected void onResume()
 	{	
+		SL.resumeExecution();
 		super.onResume();
-		_view.getThread().resumeExecution();
+		//_view.getThread().resumeExecution();
 	}
 	
 	public Handler Handler = new Handler() 
@@ -109,11 +109,17 @@ public class ShooterlandActivity extends Activity
 			}
 			else if (msg.arg1 == MessageCode.Prompt.getId())
 			{
+				try
+				{
                 Builder builder = new AlertDialog.Builder(SL.Activity);
-                builder.setPositiveButton("Yes", null);
-                builder.setNegativeButton("No", null);
+                builder.setPositiveButton("Yes", new YesListener());
+                builder.setNegativeButton("No", new NoListener());
                 Dialog dialog = builder.create();
                 dialog.show();
+				} catch (Exception e)
+				{
+					int i = 0;
+				}
 			}
 		}
 		
@@ -146,7 +152,7 @@ public class ShooterlandActivity extends Activity
 			
 			SurfaceHolder holder = getHolder();
 			holder.addCallback(this);
-			_thread = new ShooterlandThread(activity, holder);
+			_thread = new ShooterlandThread(holder);
 			_thread.start();
 			
 			setFocusable(true);
@@ -159,8 +165,12 @@ public class ShooterlandActivity extends Activity
 		
 	    public boolean onTouchEvent(MotionEvent me) 
 		{
-	    	SL.Input.handleClick(me.getX(), me.getY());
-	    	return true;
+	    	if (me.getAction() == MotionEvent.ACTION_DOWN)
+	    	{
+		    	SL.Input.handleClick(me.getX(), me.getY());
+		    	return true;
+	    	}
+	    	return false;
 		}
 		
 		public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) 
@@ -180,14 +190,12 @@ public class ShooterlandActivity extends Activity
 		
 	public class ShooterlandThread extends Thread
     {
-		private ShooterlandActivity _activity;
     	private SurfaceHolder _surfaceHolder;
     	private boolean _running = false;
     	private long _lastFrameMillis;
     	
-    	public ShooterlandThread(ShooterlandActivity activity, SurfaceHolder surfaceHolder)
+    	public ShooterlandThread(SurfaceHolder surfaceHolder)
     	{
-    		_activity = activity;
     		_surfaceHolder = surfaceHolder;
     	}
     	
@@ -222,13 +230,27 @@ public class ShooterlandActivity extends Activity
     	@Override
     	public void run()
     	{    		            
-    		_lastFrameMillis = Utils.currentMillis();    		           
+    		long millis = 0;
+    		_lastFrameMillis = Utils.currentMillis();
     		
             while (true)
         	{
-				while (!_running)
+            	while (!_running)
 				{
 					yield();
+				}
+				
+				if (!SL.ResourcesLoadedYet)
+				{
+					doLoadScreen();
+					SL.ResourcesLoadedYet = true;
+				}
+				
+				if (!SL.LoadingDone)
+				{
+					if (Utils.currentMillis() - millis < 1500)
+	            		continue;
+					SL.LoadingDone = true;
 				}
             	
     			Canvas canvas = null;
@@ -242,14 +264,14 @@ public class ShooterlandActivity extends Activity
     					_lastFrameMillis = currentMillis;
     					
     					SL.update(dt);
-    					SL.draw(canvas, dt);
+    					
+    					if (canvas != null)
+    						SL.draw(canvas, dt);
     				}
     			}
     			catch (Exception e)
     			{
-    				String exceptionString = Utils.formatException(e);
-    				Log.e("Shooterland", exceptionString);
-    				SL.showLongNotification(exceptionString);
+    				SL.handleException(e);
     			}
     			finally
     			{
@@ -259,6 +281,31 @@ public class ShooterlandActivity extends Activity
     				}
     			}
     		}    		
+    	}
+    	
+    	private void doLoadScreen()
+    	{
+    		Paint paint = new Paint();
+			paint.setARGB(255, 255, 255, 255);
+			paint.setTextSize((float)SL.ScreenHeight * 0.2f);
+			paint.setAntiAlias(true);
+			paint.setTextAlign(Align.CENTER);
+    		Canvas canvas = null;
+    		
+    		while (canvas == null)
+    		{
+				synchronized (_surfaceHolder)
+				{
+					canvas =  _surfaceHolder.lockCanvas();
+					if (canvas != null)
+					{
+						canvas.drawText("Loading...", SL.ScreenCenterX, SL.ScreenCenterY, paint);
+					}
+				}
+    		}
+
+			_surfaceHolder.unlockCanvasAndPost(canvas);
+			SL.loadResources();
     	}
     }
 }

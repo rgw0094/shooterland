@@ -53,12 +53,7 @@ public class GraphicsManager
 	public Bitmap Pause_S;
 	public Bitmap Pause_E;
 	
-	public GraphicsManager()
-	{
-		initResources();
-	}
-			
-	private void initResources()
+	public void initResources()
 	{
 		BlackPaint = new Paint();
 		BlackPaint.setAntiAlias(true);
@@ -105,13 +100,13 @@ public class GraphicsManager
 		MoneyPaint.setTypeface(Typeface.DEFAULT_BOLD);
 		MoneyPaint.setTextSize(22.0f);
 		
+		MainMenuBackground = BuildBitmap(R.drawable.mainmenubackground, SL.ScreenWidth, SL.ScreenHeight);
 		BottomShooter = BuildBitmap(R.drawable.bottomshooter, SL.GridSquareSize);
 		RightShooter = BuildBitmap(R.drawable.rightshooter, SL.GridSquareSize);
 		RoscoeUp1 = BuildBitmap(R.drawable.roscoeup1, SL.GridSquareSize);
 		RoscoeUp2 = BuildBitmap(R.drawable.roscoeup2, SL.GridSquareSize);
 		RoscoeDown1 = BuildBitmap(R.drawable.roscoedown1, SL.GridSquareSize);
 		RoscoeDown2 = BuildBitmap(R.drawable.roscoedown2, SL.GridSquareSize);
-		MainMenuBackground = BuildBitmap(R.drawable.mainmenubackground, SL.ScreenWidth, SL.ScreenHeight);
 		WorldMapBackground = BuildBitmap(R.drawable.worldmap, SL.GameAreaWidth, SL.GameAreaHeight);
 		MenuButtonForward = BuildBitmap(R.drawable.menubutton, (int)((float)SL.GameAreaWidth * 0.288f), (int)((float)SL.GameAreaHeight * 0.120833));
 		MenuButtonRound = BuildBitmap(R.drawable.menubutton2, (int)((float)SL.GameAreaWidth * 0.288f), (int)((float)SL.GameAreaHeight * 0.120833));

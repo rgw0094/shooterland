@@ -42,11 +42,11 @@ public enum Tile
 	{
 		try
 		{
-			return SL.GraphicsManager.Tiles[SL.SessionManager.World - 1][_id - 1]; 
+			return SL.Graphics.Tiles[SL.Session.World - 1][_id - 1]; 
 		}
 		catch (ArrayIndexOutOfBoundsException e)
 		{
-			return SL.GraphicsManager.RoscoeDown1;
+			return SL.Graphics.RoscoeDown1;
 		}
 	}
 	

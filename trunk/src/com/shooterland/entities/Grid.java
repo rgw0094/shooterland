@@ -146,12 +146,12 @@ public class Grid
 	{
 		for (int col = 0; col <= SL.GridWidth; col++)
 		{
-			canvas.drawLine(getPixelX(col), _pixelBounds.top, getPixelX(col), _pixelBounds.bottom, SL.GraphicsManager.GridPaint);
+			canvas.drawLine(getPixelX(col), _pixelBounds.top, getPixelX(col), _pixelBounds.bottom, SL.Graphics.GridPaint);
 		}
 			
 		for (int row = 0; row <= SL.GridHeight; row++)
 		{
-			canvas.drawLine(_pixelBounds.left, getPixelY(row), _pixelBounds.right, getPixelY(row), SL.GraphicsManager.GridPaint);
+			canvas.drawLine(_pixelBounds.left, getPixelY(row), _pixelBounds.right, getPixelY(row), SL.Graphics.GridPaint);
 		}
 					
 		for (int i = 0; i < SL.GridWidth; i++)
@@ -164,7 +164,7 @@ public class Grid
 					canvas.drawBitmap(_tiles[i][j].getBitmap(), getPixelX(i), getPixelY(j), null);
 				
 				if (_tiles[i][j].isBaddie())
-					canvas.drawRect(x, y, x + 39, y + 39, SL.GraphicsManager.BaddieSquarePaint);
+					canvas.drawRect(x, y, x + 39, y + 39, SL.Graphics.BaddieSquarePaint);
 			}
 		}
 	}
@@ -211,14 +211,14 @@ public class Grid
 
 	public void highlightRow(Canvas canvas, int row)
 	{
-		canvas.drawLine(_pixelBounds.left, getPixelY(row), _pixelBounds.right, getPixelY(row), SL.GraphicsManager.RedPaint);
-		canvas.drawLine(_pixelBounds.left, getPixelY(row) + SL.GridSquareSize, _pixelBounds.right, getPixelY(row) + SL.GridSquareSize, SL.GraphicsManager.RedPaint);
+		canvas.drawLine(_pixelBounds.left, getPixelY(row), _pixelBounds.right, getPixelY(row), SL.Graphics.RedPaint);
+		canvas.drawLine(_pixelBounds.left, getPixelY(row) + SL.GridSquareSize, _pixelBounds.right, getPixelY(row) + SL.GridSquareSize, SL.Graphics.RedPaint);
 	}
 	
 	public void highlightColumn(Canvas canvas, int col)
 	{
-		canvas.drawLine(getPixelX(col), _pixelBounds.top, getPixelX(col), _pixelBounds.bottom, SL.GraphicsManager.RedPaint);
-		canvas.drawLine(getPixelX(col) + SL.GridSquareSize, _pixelBounds.top, getPixelX(col) + SL.GridSquareSize, _pixelBounds.bottom, SL.GraphicsManager.RedPaint);
+		canvas.drawLine(getPixelX(col), _pixelBounds.top, getPixelX(col), _pixelBounds.bottom, SL.Graphics.RedPaint);
+		canvas.drawLine(getPixelX(col) + SL.GridSquareSize, _pixelBounds.top, getPixelX(col) + SL.GridSquareSize, _pixelBounds.bottom, SL.Graphics.RedPaint);
 	}
 	
 	public void update(float dt) 
