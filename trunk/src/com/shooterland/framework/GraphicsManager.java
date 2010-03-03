@@ -28,7 +28,7 @@ public class GraphicsManager
 	public Bitmap WorldMapBackground;
 	public Bitmap[] WorldBackgrounds = new Bitmap[SL.NumWorlds];
 	public Bitmap[] WorldTitles = new Bitmap[SL.NumWorlds];
-	public Bitmap[][] Tiles = new Bitmap[SL.NumWorlds][10];
+	public Bitmap[][] Tiles = new Bitmap[SL.NumWorlds][17];
 	public Bitmap BottomShooter;
 	public Bitmap RightShooter;
 	public Bitmap RoscoeUp1;
@@ -154,6 +154,13 @@ public class GraphicsManager
 		Tiles[0][7] = BuildBitmap(R.drawable.baddie3, SL.GridSquareSize);
 		Tiles[0][8] = BuildBitmap(R.drawable.baddie4, SL.GridSquareSize);
 		Tiles[0][9] = BuildBitmap(R.drawable.baddie5, SL.GridSquareSize);
+		Tiles[0][10] = BuildBitmap(R.drawable.block, SL.GridSquareSize);
+		Tiles[0][11] = BuildBitmap(R.drawable.baddieblock1, SL.GridSquareSize);
+		Tiles[0][12] = BuildBitmap(R.drawable.baddieblock2, SL.GridSquareSize);
+		Tiles[0][13] = BuildBitmap(R.drawable.baddieblock3, SL.GridSquareSize);
+		Tiles[0][14] = BuildBitmap(R.drawable.baddieblock4, SL.GridSquareSize);
+		Tiles[0][15] = BuildBitmap(R.drawable.baddieblock5, SL.GridSquareSize);
+		Tiles[0][16] = BuildBitmap(R.drawable.crackedblock, SL.GridSquareSize);
 	}
 	
 	private Bitmap BuildBitmap(int id, int size)

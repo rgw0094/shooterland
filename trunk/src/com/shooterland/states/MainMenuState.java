@@ -60,7 +60,7 @@ public class MainMenuState extends AbstractState
 					} 
 					else if (button.getText() == "Clear Data")
 					{
-						if (SL.showPrompt("Are you sure you wish to clear Shooterland application data? All saved progress will be lost"))
+						if (SL.showPrompt("Are you sure you wish to clear Shooterland application data? All saved progress will be lost."))
 						{
 							SL.Session.resetSaveFile();
 						}
