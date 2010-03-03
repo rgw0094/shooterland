@@ -3,7 +3,6 @@ package com.shooterland.framework;
 import java.util.Date;
 import java.util.Random;
 
-import com.shooterland.SL;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;

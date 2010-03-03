@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.Menu;
 
-import com.shooterland.SL;
 import com.shooterland.entities.Button;
 import com.shooterland.entities.MainMenuButton;
 import com.shooterland.enums.MenuOption;

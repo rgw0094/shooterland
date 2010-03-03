@@ -1,7 +1,7 @@
 package com.shooterland.entities;
 
-import com.shooterland.SL;
 import com.shooterland.enums.Tile;
+import com.shooterland.framework.SL;
 import com.shooterland.states.GameState;
 
 import android.graphics.Canvas;

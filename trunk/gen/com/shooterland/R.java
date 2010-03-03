@@ -57,12 +57,17 @@ public final class R {
         public static final int world1level1=0x7f040002;
         public static final int world1level2=0x7f040003;
         public static final int world1level3=0x7f040004;
-        public static final int world2=0x7f040005;
-        public static final int world3=0x7f040006;
-        public static final int world4=0x7f040007;
-        public static final int world5=0x7f040008;
-        public static final int world6=0x7f040009;
-        public static final int world7=0x7f04000a;
+        public static final int world1level4=0x7f040005;
+        public static final int world1level5=0x7f040006;
+        public static final int world1level6=0x7f040007;
+        public static final int world1level7=0x7f040008;
+        public static final int world1level8=0x7f040009;
+        public static final int world2=0x7f04000a;
+        public static final int world3=0x7f04000b;
+        public static final int world4=0x7f04000c;
+        public static final int world5=0x7f04000d;
+        public static final int world6=0x7f04000e;
+        public static final int world7=0x7f04000f;
     }
     public static final class string {
         public static final int app_name=0x7f050001;

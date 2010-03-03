@@ -2,7 +2,7 @@ package com.shooterland.entities;
 
 import java.util.ArrayList;
 
-import com.shooterland.SL;
+import com.shooterland.framework.SL;
 import com.shooterland.framework.Utils;
 
 import android.graphics.Bitmap;

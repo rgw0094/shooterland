@@ -2,6 +2,7 @@ package com.shooterland;
 
 import com.shooterland.enums.MenuOption;
 import com.shooterland.enums.MessageCode;
+import com.shooterland.framework.SL;
 import com.shooterland.framework.Utils;
 
 import android.app.Activity;

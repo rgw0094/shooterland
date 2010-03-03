@@ -9,7 +9,6 @@ import android.graphics.Paint.Align;
 import android.view.Menu;
 import android.widget.Toast;
 
-import com.shooterland.SL;
 import com.shooterland.enums.MenuOption;
 import com.shooterland.framework.*;
 

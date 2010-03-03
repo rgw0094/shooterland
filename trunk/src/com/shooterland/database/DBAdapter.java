@@ -1,7 +1,7 @@
 package com.shooterland.database;
 
 
-import com.shooterland.SL;
+import com.shooterland.framework.SL;
 
 import android.content.ContentValues;
 import android.content.Context;
