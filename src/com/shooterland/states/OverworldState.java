@@ -72,7 +72,7 @@ public class OverworldState extends AbstractState
 		{
 			if (_menuRect.contains(SL.Input.getMouseX(), SL.Input.getMouseY()))
 			{
-				SL.enterState(new MainMenuState());
+				SL.enterState(new MainMenuState(false));
 				return;
 			}
 			else if (_playLevelRect.contains(SL.Input.getMouseX(), SL.Input.getMouseY()))
@@ -101,7 +101,7 @@ public class OverworldState extends AbstractState
 		
 		if (SL.Input.isBackClicked())
 		{
-			SL.enterState(new MainMenuState());
+			SL.enterState(new MainMenuState(false));
 			return;
 		}
 	}

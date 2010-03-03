@@ -121,6 +121,18 @@ public class Utils
 		}
 	}
 	
+	public static void drawLoadScreen(Canvas canvas)
+	{
+		canvas.drawPaint(SL.Graphics.BlackPaint);
+		int size = 15;
+		for (int x = 0; x <= SL.ScreenWidth; x += size)
+			canvas.drawLine(x, 0, x, SL.ScreenHeight, SL.Graphics.DarkGreenPaint);
+		for (int y = 0; y <= SL.ScreenHeight; y += size)
+			canvas.drawLine(0, y, SL.ScreenWidth, y, SL.Graphics.DarkGreenPaint);
+		
+		canvas.drawText("Loading...", SL.ScreenCenterX, SL.ScreenCenterY, SL.Graphics.LoadingPaint);
+	}
+	
 	public static void showExceptionWindow(Exception e)
 	{
 		/**

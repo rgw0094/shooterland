@@ -231,7 +231,6 @@ public class ShooterlandActivity extends Activity
     	public void run()
     	{    		            
     		long millis = 0;
-    		_lastFrameMillis = Utils.currentMillis();
     		
             while (true)
         	{
@@ -251,6 +250,7 @@ public class ShooterlandActivity extends Activity
 					if (Utils.currentMillis() - millis < 1500)
 	            		continue;
 					SL.LoadingDone = true;
+		    		_lastFrameMillis = Utils.currentMillis();
 				}
             	
     			Canvas canvas = null;
@@ -285,11 +285,6 @@ public class ShooterlandActivity extends Activity
     	
     	private void doLoadScreen()
     	{
-    		Paint paint = new Paint();
-			paint.setARGB(255, 255, 255, 255);
-			paint.setTextSize((float)SL.ScreenHeight * 0.2f);
-			paint.setAntiAlias(true);
-			paint.setTextAlign(Align.CENTER);
     		Canvas canvas = null;
     		
     		while (canvas == null)
@@ -299,7 +294,7 @@ public class ShooterlandActivity extends Activity
 					canvas =  _surfaceHolder.lockCanvas();
 					if (canvas != null)
 					{
-						canvas.drawText("Loading...", SL.ScreenCenterX, SL.ScreenCenterY, paint);
+						Utils.drawLoadScreen(canvas);
 					}
 				}
     		}

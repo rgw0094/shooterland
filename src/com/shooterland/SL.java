@@ -68,7 +68,7 @@ public class SL
 		loadResources();
 		Initialized = true;
 		
-		enterState(new MainMenuState());
+		enterState(new MainMenuState(true));
 	}
 	
 	public static void loadResources()

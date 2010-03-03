@@ -13,6 +13,7 @@ import android.graphics.Paint.Style;
 
 public class GraphicsManager 
 {
+	public Paint LoadingPaint;
 	public Paint BlackPaint;
 	public Paint RedPaint;
 	public Paint TitlePaint;
@@ -52,6 +53,15 @@ public class GraphicsManager
 	public Bitmap Pause_U;
 	public Bitmap Pause_S;
 	public Bitmap Pause_E;
+	
+	public GraphicsManager()
+	{
+		LoadingPaint = new Paint();
+		LoadingPaint.setARGB(255, 255, 255, 255);
+		LoadingPaint.setTextSize((float)SL.ScreenHeight * 0.1f);
+		LoadingPaint.setAntiAlias(true);
+		LoadingPaint.setTextAlign(Align.CENTER);
+	}
 	
 	public void initResources()
 	{
