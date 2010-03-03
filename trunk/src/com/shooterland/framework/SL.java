@@ -35,7 +35,6 @@ public class SL
 	public static boolean Initialized = false;
 	public static boolean ResourcesLoadedYet = false;
 	public static boolean LoadingDone = false;
-	public static int BigHackToDoPrompts;
 
 	//Constants
 	public static int ScreenWidth;
@@ -146,13 +145,13 @@ public class SL
 	
 	public static boolean showPrompt(String text)
 	{
-		BigHackToDoPrompts = 3;
+		Activity.BigHackToDoPrompts = 3;
 		Message message = new Message();
 		message.arg1 = MessageCode.Prompt.getId();
 		message.obj = text;
 		
-		Activity.Handler.handleMessage(message);
-		while (BigHackToDoPrompts == 3)
+		Activity.Handler.sendMessage(message);
+		while (Activity.BigHackToDoPrompts == 3)
 		{
 			try
 			{
@@ -160,7 +159,7 @@ public class SL
 			} catch (InterruptedException e) { }
 		}
 		
-		return BigHackToDoPrompts == 1;
+		return Activity.BigHackToDoPrompts == 1;
 	}
 	
 	private static void setScreenSize(int width, int height)

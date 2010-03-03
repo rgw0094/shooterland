@@ -48,6 +48,9 @@ public final class R {
         public static final int world1title=0x7f020022;
         public static final int worldmap=0x7f020023;
     }
+    public static final class id {
+        public static final int ListView01=0x7f060000;
+    }
     public static final class layout {
         public static final int main=0x7f030000;
     }
