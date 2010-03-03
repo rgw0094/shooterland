@@ -31,6 +31,7 @@ import android.widget.Toast;
 public class ShooterlandActivity extends Activity
 {	
 	private ShooterlandView _view;
+	public int BigHackToDoPrompts;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
@@ -64,18 +65,16 @@ public class ShooterlandActivity extends Activity
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) 
 	{
-		
 
         return false;
     }
-
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) 
 	{
 		if (keyCode == KeyEvent.KEYCODE_BACK)
 		{
-			if (SL.BigHackToDoPrompts != 3)
+			if (SL.Activity.BigHackToDoPrompts != 3)
 				SL.Input.handleBackButton();
 			return true;
 		}	
@@ -87,7 +86,6 @@ public class ShooterlandActivity extends Activity
 	protected void onPause()
 	{
 		SL.pauseExecution();
-		//_view.getThread().pauseExecution();
 		super.onPause();
 	}
 	
@@ -96,7 +94,6 @@ public class ShooterlandActivity extends Activity
 	{	
 		SL.resumeExecution();
 		super.onResume();
-		//_view.getThread().resumeExecution();
 	}
 	
 	public Handler Handler = new Handler() 
@@ -110,35 +107,27 @@ public class ShooterlandActivity extends Activity
 			}
 			else if (msg.arg1 == MessageCode.Prompt.getId())
 			{
-				try
-				{
-                Builder builder = new AlertDialog.Builder(SL.Activity);
-                builder.setPositiveButton("Yes", new YesListener());
-                builder.setNegativeButton("No", new NoListener());
-                Dialog dialog = builder.create();
-                dialog.show();
-				} catch (Exception e)
-				{
-					int i = 0;
-				}
-			}
-		}
-		
-		class YesListener implements OnClickListener
-		{
-			public void onClick(DialogInterface arg0, int arg1)
-			{
-				arg0.dismiss();
-				SL.BigHackToDoPrompts = 0;
-			}	
-		}
-		
-		class NoListener implements OnClickListener
-		{
-			public void onClick(DialogInterface arg0, int arg1)
-			{
-				arg0.dismiss();
-				SL.BigHackToDoPrompts = 1;
+				AlertDialog.Builder builder = new AlertDialog.Builder(SL.Activity);
+				builder.setMessage((String)msg.obj);
+				builder.setCancelable(false);
+				
+				builder.setPositiveButton("Yes", 
+						new DialogInterface.OnClickListener() {
+				           public void onClick(DialogInterface dialog, int id) {
+				                SL.Activity.BigHackToDoPrompts = 1;
+				           }
+				       });
+				
+				builder.setNegativeButton("No", 
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.cancel();
+								SL.Activity.BigHackToDoPrompts = 0;
+					        }
+						});
+				
+				Dialog dialog = builder.create();
+				dialog.show();
 			}
 		}
 	};

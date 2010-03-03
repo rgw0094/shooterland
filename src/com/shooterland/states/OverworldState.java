@@ -14,7 +14,6 @@ import com.shooterland.framework.*;
 
 public class OverworldState extends AbstractState
 {	
-	private float _timeEntered;
 	private Paint _connectorPaint;
 	private Paint _levelNumberPaint;
 	private Paint _selectedLevelPaint;
@@ -26,7 +25,6 @@ public class OverworldState extends AbstractState
 	
 	public OverworldState()
 	{
-		_timeEntered = SL.GameTime;
 		_levelPointRadius =  (float)SL.GameAreaHeight * 0.03f;
 		selectLevel(1);
 		
@@ -67,7 +65,7 @@ public class OverworldState extends AbstractState
 	@Override
 	public void update(float dt) 
 	{		
-		if (SL.Input.isMouseClicked() && Utils.timeSince(_timeEntered) > 0.3f)
+		if (SL.Input.isMouseClicked())
 		{
 			if (_menuRect.contains(SL.Input.getMouseX(), SL.Input.getMouseY()))
 			{

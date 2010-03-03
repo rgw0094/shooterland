@@ -16,7 +16,7 @@ public class LevelCompleteState extends AbstractState
 	
 	public LevelCompleteState()
 	{
-		_floatingText = new FloatingText((float)SL.GameAreaX * 0.3f, (float)SL.GameAreaHeight * 0.3f, FloatingText.FloatingTextType.Complete);
+		_floatingText = new FloatingText((float)SL.GameAreaX * 0.4f, (float)SL.GameAreaHeight * 0.3f, FloatingText.FloatingTextType.Complete);
 	}
 	
 	@Override
