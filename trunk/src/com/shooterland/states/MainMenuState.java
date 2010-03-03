@@ -3,25 +3,36 @@ package com.shooterland.states;
 import java.util.ArrayList;
 
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.view.Menu;
 
 import com.shooterland.SL;
 import com.shooterland.entities.Button;
+import com.shooterland.entities.MainMenuButton;
 import com.shooterland.enums.MenuOption;
 import com.shooterland.framework.*;
 
 public class MainMenuState extends AbstractState
 {	
-	private ArrayList<Button> _buttons = new ArrayList<Button>();
+	private ArrayList<MainMenuButton> _buttons = new ArrayList<MainMenuButton>();
+	private float _alpha;
+	private Paint _backgroundPaint;
+	
+	public MainMenuState(boolean fromLoadScreen)
+	{
+		_buttons.add(new MainMenuButton(SL.Graphics.MenuButtonForward, "Play", (float)SL.ScreenWidth * 0.85f, (float)SL.ScreenHeight * 0.83f));
+		_buttons.add(new MainMenuButton(SL.Graphics.MenuButtonBack, "Quit", (float)SL.ScreenWidth * 0.15f, (float)SL.ScreenHeight * 0.83f));
+		_buttons.add(new MainMenuButton(SL.Graphics.MenuButtonRound, "Clear Data", SL.ScreenCenterX, (float)SL.ScreenHeight * 0.83f));
+		
+		_alpha = fromLoadScreen ? 0.0f : 255.0f;
+		_backgroundPaint = new Paint();
+	}
+	
 	
 	@Override
 	public void enterState() 
 	{
 		SL.Sound.playMenuMusic();
-				
-		_buttons.add(new Button(SL.Graphics.MenuButtonForward, "Play", (float)SL.ScreenWidth * 0.85f, (float)SL.ScreenHeight * 0.9f));
-		_buttons.add(new Button(SL.Graphics.MenuButtonBack, "Quit", (float)SL.ScreenWidth * 0.15f, (float)SL.ScreenHeight * 0.9f));
-		_buttons.add(new Button(SL.Graphics.MenuButtonRound, "Clear Data", SL.ScreenCenterX, (float)SL.ScreenHeight * 0.9f));
 	}
 
 	@Override
@@ -32,26 +43,31 @@ public class MainMenuState extends AbstractState
 	@Override
 	public void update(float dt) 
 	{
-		for (Button button : _buttons)
+		_alpha += 300.0f * dt;
+		if (_alpha > 350.0f)
 		{
-			if (button.isClicked())
+			for (MainMenuButton button : _buttons)
 			{
-				if (button.getText() == "Quit")
+				button.update(dt);
+				if (button.isClicked())
 				{
-					System.exit(0);
-				}
-				else if (button.getText() == "Play")
-				{
-					SL.enterState(new OverworldState());
-				} 
-				else if (button.getText() == "Clear Data")
-				{
-					if (SL.showPrompt("Are you sure you wish to clear Shooterland application data? All saved progress will be lost"))
+					if (button.getText() == "Quit")
 					{
-						SL.Session.resetSaveFile();
+						System.exit(0);
 					}
+					else if (button.getText() == "Play")
+					{
+						SL.enterState(new OverworldState());
+					} 
+					else if (button.getText() == "Clear Data")
+					{
+						if (SL.showPrompt("Are you sure you wish to clear Shooterland application data? All saved progress will be lost"))
+						{
+							SL.Session.resetSaveFile();
+						}
+					}
+					break;
 				}
-				break;
 			}
 		}
 	}
@@ -59,9 +75,18 @@ public class MainMenuState extends AbstractState
 	@Override
 	public void draw(Canvas canvas, float dt) 
 	{
-		canvas.drawBitmap(SL.Graphics.MainMenuBackground, 0, 0, null);
+		if (_alpha < 255.0f)
+		{
+			Utils.drawLoadScreen(canvas);
+			_backgroundPaint.setARGB(Math.min(255, (int)_alpha), 255, 255, 255);
+			canvas.drawBitmap(SL.Graphics.MainMenuBackground, 0, 0, _backgroundPaint);
+		}
+		else
+		{
+			canvas.drawBitmap(SL.Graphics.MainMenuBackground, 0, 0, null);
+		}
 				
-		for (Button button : _buttons)
+		for (MainMenuButton button : _buttons)
 		{
 			button.draw(canvas);
 		}

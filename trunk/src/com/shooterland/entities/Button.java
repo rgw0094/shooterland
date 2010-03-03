@@ -10,7 +10,7 @@ import android.graphics.Paint.Align;
 
 public class Button 
 {
-	private float _x, _y;
+	protected float _x, _y;
 	private Bitmap _bitmap;
 	private String _text;
 	private Paint _textPaint;
