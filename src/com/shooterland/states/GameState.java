@@ -66,8 +66,11 @@ public class GameState extends AbstractState
 	{
 		if (SL.Input.isBackClicked())
 		{
-			SL.enterState(new OverworldState());
-			return;
+			if (SL.showPrompt("Are you sure you wish to abandon your progress on this level and return to the main menu?"))
+			{
+				SL.enterState(new OverworldState());
+				return;
+			}
 		}
 		
 		if (_paused)

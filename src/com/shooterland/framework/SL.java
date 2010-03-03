@@ -35,6 +35,7 @@ public class SL
 	public static boolean Initialized = false;
 	public static boolean ResourcesLoadedYet = false;
 	public static boolean LoadingDone = false;
+	public static boolean DialogShowing = false;
 
 	//Constants
 	public static int ScreenWidth;
@@ -79,6 +80,9 @@ public class SL
 	
 	public static void update(float dt)
 	{	
+		if (DialogShowing)
+			return;
+		
 		//If there is a state change queued up, do it now
 		if (_nextState != null)
 		{
@@ -91,7 +95,9 @@ public class SL
 		}
 		
 		RealTime += dt;
-		GameTime += dt;
+		
+		if (!DialogShowing)
+			GameTime += dt;
 		
 		CurrentState.update(dt);
 		Input.update(dt);
@@ -145,21 +151,29 @@ public class SL
 	
 	public static boolean showPrompt(String text)
 	{
-		Activity.BigHackToDoPrompts = 3;
-		Message message = new Message();
-		message.arg1 = MessageCode.Prompt.getId();
-		message.obj = text;
-		
-		Activity.Handler.sendMessage(message);
-		while (Activity.BigHackToDoPrompts == 3)
+		DialogShowing = true;
+		try
 		{
-			try
+			Activity.BigHackToDoPrompts = 3;
+			Message message = new Message();
+			message.arg1 = MessageCode.Prompt.getId();
+			message.obj = text;
+			
+			Activity.Handler.sendMessage(message);
+			while (Activity.BigHackToDoPrompts == 3)
 			{
-				Thread.sleep(100);
-			} catch (InterruptedException e) { }
+				try
+				{
+					Thread.sleep(100);
+				} catch (InterruptedException e) { }
+			}
+			
+			return Activity.BigHackToDoPrompts == 1;
+		} 
+		finally
+		{
+			DialogShowing = false;
 		}
-		
-		return Activity.BigHackToDoPrompts == 1;
 	}
 	
 	private static void setScreenSize(int width, int height)

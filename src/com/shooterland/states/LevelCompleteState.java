@@ -33,7 +33,7 @@ public class LevelCompleteState extends AbstractState
 	{	
 		_timeEnteredState = SL.GameTime;
 		
-		SL.Session.unlockLevel(SL.Session.World, SL.Session.World + 1);
+		SL.Session.unlockLevel(SL.Session.World, SL.Session.Level + 1);
 		
 		SL.Session.save();
 	}
