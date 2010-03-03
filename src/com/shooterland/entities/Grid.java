@@ -7,8 +7,8 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.location.Location;
 
-import com.shooterland.SL;
 import com.shooterland.enums.*;
+import com.shooterland.framework.SL;
 import com.shooterland.framework.Utils;
 import com.shooterland.states.GameState;
 

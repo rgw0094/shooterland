@@ -2,7 +2,7 @@ package com.shooterland.entities;
 
 import android.graphics.Canvas;
 
-import com.shooterland.SL;
+import com.shooterland.framework.SL;
 import com.shooterland.framework.Utils;
 import com.shooterland.states.GameState;
 

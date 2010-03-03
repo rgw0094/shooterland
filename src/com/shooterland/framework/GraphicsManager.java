@@ -1,7 +1,6 @@
 package com.shooterland.framework;
 
 import com.shooterland.R;
-import com.shooterland.SL;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

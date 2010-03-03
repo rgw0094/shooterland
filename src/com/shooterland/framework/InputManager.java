@@ -2,7 +2,6 @@ package com.shooterland.framework;
 
 import android.graphics.Rect;
 
-import com.shooterland.SL;
 
 public class InputManager 
 {

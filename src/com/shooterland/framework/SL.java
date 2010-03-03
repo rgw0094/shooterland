@@ -1,5 +1,6 @@
-package com.shooterland;
+package com.shooterland.framework;
 
+import com.shooterland.ShooterlandActivity;
 import com.shooterland.enums.MessageCode;
 import com.shooterland.framework.*;
 import com.shooterland.states.*;

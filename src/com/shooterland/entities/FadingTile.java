@@ -3,8 +3,8 @@ package com.shooterland.entities;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-import com.shooterland.SL;
 import com.shooterland.enums.*;
+import com.shooterland.framework.SL;
 
 public class FadingTile 
 {

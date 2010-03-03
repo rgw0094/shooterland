@@ -1,6 +1,6 @@
 package com.shooterland.entities;
 
-import com.shooterland.SL;
+import com.shooterland.framework.SL;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

@@ -1,6 +1,5 @@
 package com.shooterland.framework;
 
-import com.shooterland.SL;
 import com.shooterland.database.DBAdapter;
 import com.shooterland.database.User;
 
