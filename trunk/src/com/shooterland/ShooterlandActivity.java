@@ -1,7 +1,9 @@
 package com.shooterland;
 
-import com.shooterland.dialogs.StoreView;
+import com.shooterland.dialogs.StoreDialog;
+import com.shooterland.enums.DialogResult;
 import com.shooterland.enums.MessageCode;
+import com.shooterland.enums.Tile;
 import com.shooterland.framework.SL;
 import com.shooterland.framework.Utils;
 
@@ -26,7 +28,8 @@ import android.widget.Toast;
 public class ShooterlandActivity extends Activity
 {	
 	private ShooterlandView _view;
-	public int BigHackToDoPrompts;
+	public DialogResult BigHackToDoDialogs;
+	public Tile BigHackToDoStore;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
@@ -35,6 +38,8 @@ public class ShooterlandActivity extends Activity
 		
 		Window window = getWindow();
 		window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		window.setFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM, WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+		
 		setRequestedOrientation(0);
 		
 		if (!SL.Initialized)
@@ -69,7 +74,7 @@ public class ShooterlandActivity extends Activity
 	{
 		if (keyCode == KeyEvent.KEYCODE_BACK)
 		{
-			if (SL.Activity.BigHackToDoPrompts != 3)
+			if (!SL.DialogShowing)
 				SL.Input.handleBackButton();
 			return true;
 		}	
@@ -91,46 +96,62 @@ public class ShooterlandActivity extends Activity
 		super.onResume();
 	}
 	
+	@Override
+	protected Dialog onCreateDialog(int id) 
+	{ 
+		StoreDialog dialog = new StoreDialog(this);
+		return dialog;
+	}
+	
 	public Handler Handler = new Handler() 
 	{
 		@Override
 		public void handleMessage(Message msg) 
 		{	
-			if (msg.arg1 == MessageCode.Notification.getId())
+			try
 			{
-				Toast.makeText(SL.Context, (String)msg.obj, Toast.LENGTH_SHORT).show();
+				if (msg.arg1 == MessageCode.Notification.getId())
+				{
+					Toast.makeText(SL.Context, (String)msg.obj, Toast.LENGTH_SHORT).show();
+				}
+				else if (msg.arg1 == MessageCode.Prompt.getId())
+				{
+					AlertDialog.Builder builder = new AlertDialog.Builder(SL.Activity);
+					builder.setMessage((String)msg.obj);
+					builder.setCancelable(false);
+					builder.setPositiveButton("Yes", 
+							new DialogInterface.OnClickListener() {
+					           public void onClick(DialogInterface dialog, int id) {
+					                SL.Activity.BigHackToDoDialogs = DialogResult.Yes;
+					           }
+					       });
+					
+					builder.setNegativeButton("No", 
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int id) {
+									dialog.cancel();
+									SL.Activity.BigHackToDoDialogs = DialogResult.No;
+						        }
+							});
+					
+					Dialog dialog = builder.create();
+					dialog.show();
+				}
+				else if (msg.arg1 == MessageCode.Store.getId())
+				{			
+					SL.Activity.showDialog(0);
+					/**
+					 * StoreView view = new StoreView(SL.Context);
+					AlertDialog.Builder builder = new AlertDialog.Builder(SL.Activity);
+					builder.setView(view);
+					
+					Dialog dialog = builder.create();
+					dialog.show();*/
+				}
 			}
-			else if (msg.arg1 == MessageCode.Prompt.getId())
+			catch (Exception e)
 			{
-				AlertDialog.Builder builder = new AlertDialog.Builder(SL.Activity);
-				builder.setMessage((String)msg.obj);
-				builder.setCancelable(false);
-				builder.setPositiveButton("Yes", 
-						new DialogInterface.OnClickListener() {
-				           public void onClick(DialogInterface dialog, int id) {
-				                SL.Activity.BigHackToDoPrompts = 1;
-				           }
-				       });
-				
-				builder.setNegativeButton("No", 
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								dialog.cancel();
-								SL.Activity.BigHackToDoPrompts = 0;
-					        }
-						});
-				
-				Dialog dialog = builder.create();
-				dialog.show();
-			}
-			else if (msg.arg1 == MessageCode.Prompt.getId())
-			{
-				StoreView view = new StoreView(SL.Context);
-				AlertDialog.Builder builder = new AlertDialog.Builder(SL.Activity);
-				builder.setView(view);
-				
-				Dialog dialog = builder.create();
-				dialog.show();
+				SL.handleException(e);
 			}
 		}
 	};
