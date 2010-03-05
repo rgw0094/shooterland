@@ -54,7 +54,7 @@ public class GameState extends AbstractState
 		_blackScreenPaint.setARGB(180, 0, 0, 0);
 		_blackScreenPaint.setAntiAlias(true);
 		
-		_storeButtonRect = Utils.BuildCollisionRect(0.7f, 0.1f, 0.2f, 0.1f);
+		_storeButtonRect = Utils.BuildCollisionRect(0.83f, 0.12f, 0.14f, 0.09f);
 		
 		SL.Sound.playWorldMusic(SL.Session.World);
 	}
@@ -126,15 +126,16 @@ public class GameState extends AbstractState
 			for (FadingTile ft : fadedTiles)
 				_fadingTiles.remove(ft);
 			
-			if (SL.Input.isMouseDown())
+			if (SL.Input.isClicked(_storeButtonRect))
 			{
-				if (_grid.isInBounds(SL.Input.getMouseX(), SL.Input.getMouseY()))
-				{
-					Point p = _grid.getGridSquare(SL.Input.getMouseX(), SL.Input.getMouseY());
-					moveBottomShooter(p.x);
-					moveRightShooter(p.y);
-				} 
-			}
+				SL.showStore();
+			} 
+			else if (SL.Input.isMouseDown() && _grid.isInBounds(SL.Input.getMouseX(), SL.Input.getMouseY()))
+			{
+				Point p = _grid.getGridSquare(SL.Input.getMouseX(), SL.Input.getMouseY());
+				moveBottomShooter(p.x);
+				moveRightShooter(p.y);
+			}  
 			
 			if (_baddieCount == 0 && _fadingTiles.size() == 0)
 			{
@@ -174,6 +175,8 @@ public class GameState extends AbstractState
 		}
 		
 		Utils.fillExtraSideSpace(canvas);
+		
+		//canvas.drawRect(_storeButtonRect, SL.Graphics.RedPaint);
 	}
 	
 	public float getTimeInState()

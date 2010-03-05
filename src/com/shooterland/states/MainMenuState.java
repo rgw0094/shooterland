@@ -43,6 +43,7 @@ public class MainMenuState extends AbstractState
 	public void update(float dt) 
 	{
 		_alpha += 300.0f * dt;
+		boolean buttonPressed = false;
 		if (_alpha > 350.0f)
 		{
 			for (MainMenuButton button : _buttons)
@@ -65,10 +66,14 @@ public class MainMenuState extends AbstractState
 							SL.Session.resetSaveFile();
 						}
 					}
+					buttonPressed = true;
 					break;
 				}
 			}
 		}
+		
+		if (SL.Input.isMouseClicked() && !buttonPressed)
+			SL.showStore();
 	}
 
 	@Override

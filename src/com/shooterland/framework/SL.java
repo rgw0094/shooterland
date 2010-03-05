@@ -1,6 +1,7 @@
 package com.shooterland.framework;
 
 import com.shooterland.ShooterlandActivity;
+import com.shooterland.enums.DialogResult;
 import com.shooterland.enums.MessageCode;
 import com.shooterland.enums.Tile;
 import com.shooterland.framework.*;
@@ -155,13 +156,13 @@ public class SL
 		DialogShowing = true;
 		try
 		{
-			Activity.BigHackToDoPrompts = 3;
+			Activity.BigHackToDoDialogs = DialogResult.Waiting;
 			Message message = new Message();
 			message.arg1 = MessageCode.Prompt.getId();
 			message.obj = text;
 			
 			Activity.Handler.sendMessage(message);
-			while (Activity.BigHackToDoPrompts == 3)
+			while (Activity.BigHackToDoDialogs == DialogResult.Waiting)
 			{
 				try
 				{
@@ -169,7 +170,7 @@ public class SL
 				} catch (InterruptedException e) { }
 			}
 			
-			return Activity.BigHackToDoPrompts == 1;
+			return Activity.BigHackToDoDialogs == DialogResult.Yes;
 		} 
 		finally
 		{
@@ -183,12 +184,20 @@ public class SL
 	 */
 	public static Tile showStore()
 	{
+		Activity.BigHackToDoDialogs = DialogResult.Waiting;
 		Message message = new Message();
-		message.arg1 = MessageCode.Prompt.getId();
+		message.arg1 = MessageCode.Store.getId();
 		
 		Activity.Handler.sendMessage(message);
+		while (Activity.BigHackToDoDialogs == DialogResult.Waiting)
+		{
+			try
+			{
+				Thread.sleep(100);
+			} catch (InterruptedException e) { }
+		}
 		
-		return null;
+		return Activity.BigHackToDoDialogs == DialogResult.Yes ? Activity.BigHackToDoStore : null;
 	}
 	
 	private static void setScreenSize(int width, int height)
