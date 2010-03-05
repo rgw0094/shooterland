@@ -2,6 +2,7 @@ package com.shooterland.framework;
 
 import com.shooterland.ShooterlandActivity;
 import com.shooterland.enums.MessageCode;
+import com.shooterland.enums.Tile;
 import com.shooterland.framework.*;
 import com.shooterland.states.*;
 
@@ -174,6 +175,20 @@ public class SL
 		{
 			DialogShowing = false;
 		}
+	}
+	
+	/**
+	 * Shows the store and returns what item was bought, or null if they
+	 * cancelled out of the store.
+	 */
+	public static Tile showStore()
+	{
+		Message message = new Message();
+		message.arg1 = MessageCode.Prompt.getId();
+		
+		Activity.Handler.sendMessage(message);
+		
+		return null;
 	}
 	
 	private static void setScreenSize(int width, int height)

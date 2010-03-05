@@ -34,6 +34,7 @@ public class GameState extends AbstractState
 	private boolean _paused;
 	private Paint _blackScreenPaint;
 	private FloatingText _pauseFloatingText;
+	private Rect _storeButtonRect;
 
 	@Override
 	public void enterState() 
@@ -52,6 +53,8 @@ public class GameState extends AbstractState
 		_blackScreenPaint = new Paint();
 		_blackScreenPaint.setARGB(180, 0, 0, 0);
 		_blackScreenPaint.setAntiAlias(true);
+		
+		_storeButtonRect = Utils.BuildCollisionRect(0.7f, 0.1f, 0.2f, 0.1f);
 		
 		SL.Sound.playWorldMusic(SL.Session.World);
 	}
