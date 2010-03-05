@@ -56,10 +56,12 @@ public final class R {
         public static final int worldmap=0x7f02002a;
     }
     public static final class id {
+        public static final int LinearLayout01=0x7f060001;
         public static final int ListView01=0x7f060000;
     }
     public static final class layout {
         public static final int main=0x7f030000;
+        public static final int store=0x7f030001;
     }
     public static final class raw {
         public static final int titlescreen=0x7f040000;

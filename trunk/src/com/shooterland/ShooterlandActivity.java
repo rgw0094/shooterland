@@ -1,6 +1,6 @@
 package com.shooterland;
 
-import com.shooterland.enums.MenuOption;
+import com.shooterland.dialogs.StoreView;
 import com.shooterland.enums.MessageCode;
 import com.shooterland.framework.SL;
 import com.shooterland.framework.Utils;
@@ -8,13 +8,8 @@ import com.shooterland.framework.Utils;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.AlertDialog.Builder;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Paint.Align;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -110,7 +105,6 @@ public class ShooterlandActivity extends Activity
 				AlertDialog.Builder builder = new AlertDialog.Builder(SL.Activity);
 				builder.setMessage((String)msg.obj);
 				builder.setCancelable(false);
-				
 				builder.setPositiveButton("Yes", 
 						new DialogInterface.OnClickListener() {
 				           public void onClick(DialogInterface dialog, int id) {
@@ -125,6 +119,15 @@ public class ShooterlandActivity extends Activity
 								SL.Activity.BigHackToDoPrompts = 0;
 					        }
 						});
+				
+				Dialog dialog = builder.create();
+				dialog.show();
+			}
+			else if (msg.arg1 == MessageCode.Prompt.getId())
+			{
+				StoreView view = new StoreView(SL.Context);
+				AlertDialog.Builder builder = new AlertDialog.Builder(SL.Activity);
+				builder.setView(view);
 				
 				Dialog dialog = builder.create();
 				dialog.show();
