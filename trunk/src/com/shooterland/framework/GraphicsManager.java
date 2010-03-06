@@ -38,6 +38,8 @@ public class GraphicsManager
 	public Bitmap MenuButtonForward;
 	public Bitmap MenuButtonBack;
 	public Bitmap MenuButtonRound;
+	public Bitmap WorldMapButtonForward;
+	public Bitmap WorldMapButtonBack;
 	
 	public Bitmap Complete_C;
 	public Bitmap Complete_O;
@@ -117,9 +119,13 @@ public class GraphicsManager
 		RoscoeDown1 = BuildBitmap(R.drawable.roscoedown1, SL.GridSquareSize);
 		RoscoeDown2 = BuildBitmap(R.drawable.roscoedown2, SL.GridSquareSize);
 		WorldMapBackground = BuildBitmap(R.drawable.worldmap, SL.GameAreaWidth, SL.GameAreaHeight);
+		
 		MenuButtonForward = BuildBitmap(R.drawable.menubutton, (int)((float)SL.GameAreaWidth * 0.288f), (int)((float)SL.GameAreaHeight * 0.120833));
 		MenuButtonRound = BuildBitmap(R.drawable.menubutton2, (int)((float)SL.GameAreaWidth * 0.288f), (int)((float)SL.GameAreaHeight * 0.120833));
 		MenuButtonBack = CreateRotatedBitmap(MenuButtonForward, 180);
+		
+		WorldMapButtonForward = BuildBitmap(R.drawable.menubutton, (int)((float)SL.GameAreaWidth * 0.180555), (int)((float)SL.GameAreaHeight * 0.09375f));
+		WorldMapButtonBack = CreateRotatedBitmap(WorldMapButtonForward, 180);
 		
 		int w = (int)((float)SL.GameAreaWidth * 0.083333f);
 		int h = (int)((float)SL.GameAreaWidth * 0.083333f * (5.0f/6.0f));

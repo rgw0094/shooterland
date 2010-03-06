@@ -54,6 +54,7 @@ public final class R {
         public static final int world1thingie6=0x7f020028;
         public static final int world1title=0x7f020029;
         public static final int worldmap=0x7f02002a;
+        public static final int worldmapbutton=0x7f02002b;
     }
     public static final class id {
         public static final int ListView01=0x7f060000;

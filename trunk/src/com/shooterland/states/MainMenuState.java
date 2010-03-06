@@ -57,7 +57,7 @@ public class MainMenuState extends AbstractState
 					}
 					else if (button.getText() == "Play")
 					{
-						SL.enterState(new OverworldState());
+						SL.enterState(new WorldMapState());
 					} 
 					else if (button.getText() == "Clear Data")
 					{
@@ -102,5 +102,11 @@ public class MainMenuState extends AbstractState
 		MenuOption.Achievements.addToMenu(menu);
 		MenuOption.ToggleSound.addToMenu(menu);
 		MenuOption.Help.addToMenu(menu);
+	}
+	
+	@Override
+	public boolean isFinished() 
+	{
+		return true;
 	}
 }

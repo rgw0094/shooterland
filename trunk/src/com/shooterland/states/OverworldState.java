@@ -9,6 +9,8 @@ import android.graphics.Paint.Align;
 import android.view.Menu;
 import android.widget.Toast;
 
+import com.shooterland.entities.Button;
+import com.shooterland.entities.MainMenuButton;
 import com.shooterland.enums.MenuOption;
 import com.shooterland.framework.*;
 
@@ -20,8 +22,8 @@ public class OverworldState extends AbstractState
 	private Point[] _levelPoints;
 	private float _levelPointRadius;
 	private String _selectedLevelString;
-	private Rect _playLevelRect;
-	private Rect _menuRect;
+	private Button _backButton;
+	private Button _playButton;
 	
 	public OverworldState()
 	{
@@ -44,9 +46,9 @@ public class OverworldState extends AbstractState
 		_selectedLevelPaint.setTextAlign(Align.CENTER);
 		_selectedLevelPaint.setTextSize((float)SL.GameAreaHeight * 0.06f);
 		
-		_playLevelRect = Utils.BuildCollisionRect(0.8f, 0.76f, 0.105f, 0.16f);
-		_menuRect = Utils.BuildCollisionRect(0.105f, 0.76f, 0.105f, 0.16f);
-		
+		_backButton = new Button(SL.Graphics.WorldMapButtonBack, "Back", (float)SL.GameAreaX + (float)SL.GameAreaWidth * 0.2f, (float)SL.GameAreaHeight * 0.86f);
+		_playButton = new Button(SL.Graphics.WorldMapButtonForward, "Play", (float)SL.GameAreaX + (float)SL.GameAreaWidth * 0.8f, (float)SL.GameAreaHeight * 0.86f);
+
 		initLevelPoints();
 	}
 	
@@ -65,33 +67,30 @@ public class OverworldState extends AbstractState
 	@Override
 	public void update(float dt) 
 	{		
-		if (SL.Input.isMouseClicked())
+		if (_backButton.isClicked())
 		{
-			if (_menuRect.contains(SL.Input.getMouseX(), SL.Input.getMouseY()))
+			SL.enterState(new WorldMapState());
+			return;
+		}
+		else if (_playButton.isClicked())
+		{
+			if (SL.Session.isLevelUnlocked(SL.Session.World, SL.Session.Level))
 			{
-				SL.enterState(new MainMenuState(false));
+				SL.enterState(new GameState());
 				return;
-			}
-			else if (_playLevelRect.contains(SL.Input.getMouseX(), SL.Input.getMouseY()))
-			{
-				if (SL.Session.isLevelUnlocked(SL.Session.World, SL.Session.Level))
-				{
-					SL.enterState(new GameState());
-					return;
-				}			
-				else
-				{
-					SL.showNotification("Level not unlocked yet.", Toast.LENGTH_SHORT);
-				}
-			}
+			}			
 			else
 			{
-				for (int i = 0; i < _levelPoints.length; i++)
+				SL.showNotification("Level not unlocked yet.", Toast.LENGTH_SHORT);
+			}
+		}
+		else if (SL.Input.isMouseClicked())
+		{
+			for (int i = 0; i < _levelPoints.length; i++)
+			{
+				if (Utils.distance(_levelPoints[i].x, _levelPoints[i].y, SL.Input.getMouseX(), SL.Input.getMouseY()) <= (_levelPointRadius * 2.0f))
 				{
-					if (Utils.distance(_levelPoints[i].x, _levelPoints[i].y, SL.Input.getMouseX(), SL.Input.getMouseY()) <= (_levelPointRadius * 2.0f))
-					{
-						selectLevel(i + 1);
-					}
+					selectLevel(i + 1);
 				}
 			}
 		}
@@ -151,7 +150,10 @@ public class OverworldState extends AbstractState
 		//Draw level selection
 		canvas.drawBitmap(SL.Graphics.BottomShooter, _levelPoints[SL.Session.Level - 1].x - ((float)SL.Graphics.BottomShooter.getWidth() * 0.5f), 
 				_levelPoints[SL.Session.Level - 1].y - ((float)SL.Graphics.BottomShooter.getHeight() * 0.5f), null);
-		canvas.drawText(_selectedLevelString, SL.GameAreaX + (float)SL.GameAreaWidth * 0.2f, SL.GameAreaHeight * 0.69f, _selectedLevelPaint);
+		//canvas.drawText(_selectedLevelString, SL.GameAreaX + (float)SL.GameAreaWidth * 0.2f, SL.GameAreaHeight * 0.69f, _selectedLevelPaint);
+		
+		_backButton.draw(canvas);
+		_playButton.draw(canvas);
 	}
 
 	@Override
@@ -190,7 +192,7 @@ public class OverworldState extends AbstractState
 				angle += angleDt;
 			
 			x = (float)SL.ScreenCenterX + (angle * (float)SL.GameAreaWidth * 0.0208333f) * (float)Math.cos(angle);
-			y = (float)SL.GameAreaHeight * 0.45f + (angle * (float)SL.GameAreaHeight * 0.011875f) * (float)Math.sin(angle);
+			y = (float)SL.GameAreaHeight * 0.5f + (angle * (float)SL.GameAreaHeight * 0.015f) * (float)Math.sin(angle);
 			
 			if (i == 0)
 			{
@@ -200,5 +202,11 @@ public class OverworldState extends AbstractState
 				
 			_levelPoints[SL.LevelsPerWorld - 1 - i] = new Point((int)x, (int)y);
 		}
+	}
+	
+	@Override
+	public boolean isFinished() 
+	{
+		return true;
 	}
 }
