@@ -1,5 +1,7 @@
 === Programming To Do ===
- * Dickens
+ * Defeat Screen
+ * Complete Screen
+ * World Map
 
 === Graphics To Do ===
  * World Map
