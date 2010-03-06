@@ -7,7 +7,7 @@
  * Bombs
  * Ramps
  * Baddies
- * Help FRAMEWORK
+ * Help/Tutorial FRAMEWORK
  * Achievements FRAMEWORK
 
 === Graphics To Do ===
