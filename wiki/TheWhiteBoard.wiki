@@ -4,6 +4,8 @@
  * World Map
  * Store
  * Time to beat
+ * Bombs
+ * Ramps
 
 === Graphics To Do ===
  * World Map
