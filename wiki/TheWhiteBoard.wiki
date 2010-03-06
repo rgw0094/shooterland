@@ -2,9 +2,12 @@
  * Defeat Screen
  * Complete Screen
  * World Map
+ * Store
+ * Time to beat
 
 === Graphics To Do ===
  * World Map
+ * Buttons
 
 === Bugs ===
  * Dickens
