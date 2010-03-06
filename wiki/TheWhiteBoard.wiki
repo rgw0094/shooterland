@@ -7,6 +7,8 @@
  * Bombs
  * Ramps
  * Baddies
+ * Help FRAMEWORK
+ * Achievements FRAMEWORK
 
 === Graphics To Do ===
  * World Map
