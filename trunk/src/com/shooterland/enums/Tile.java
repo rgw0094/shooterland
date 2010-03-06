@@ -15,7 +15,7 @@ public enum Tile
 	Thingie5 (5),
 	Baddie1 (6),
 	Baddie2 (7),
-	Baddle3 (8),
+	Baddie3 (8),
 	Baddie4 (9),
 	Baddie5 (10),
 	Block (11),
@@ -24,7 +24,15 @@ public enum Tile
 	BaddieBlock3 (14),
 	BaddieBlock4 (15),
 	BaddieBlock5 (16),
-	CrackedBlock (17);
+	CrackedBlock (17),
+	Weight (18),
+	Weight_1 (19),
+	Weight_2 (20),
+	Weight_3 (21),
+	Ramp_UpRight (22),
+	Ramp_UpLeft (23),
+	Ramp_BottomRight (24),
+	Ramp_BottomLeft (25);
 	
 	private int _id;
 	
