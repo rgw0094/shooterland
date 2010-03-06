@@ -35,12 +35,14 @@ public class GameState extends AbstractState
 	private Paint _blackScreenPaint;
 	private FloatingText _pauseFloatingText;
 	private Rect _storeButtonRect;
+	private Store _store;
 
 	@Override
 	public void enterState() 
 	{		
 		_grid = new Grid(this);
 		_menu = new GameMenu(this);
+		_store = new Store(this);
 		_roscoe = new Roscoe(this, 2.0f, 5.0f, _menu.getLeftX() + (float)_menu.getWidth() * 0.1f);
 		_bottomShooter = new Shooter(_grid, ShooterType.SingleBottom);
 		_rightShooter = new Shooter(_grid, ShooterType.SingleRight);
@@ -79,6 +81,10 @@ public class GameState extends AbstractState
 		if (_paused)
 		{
 		
+		}
+		else if (_store.IsShowing)
+		{
+			_store.update(dt);
 		}
 		else
 		{
@@ -128,7 +134,7 @@ public class GameState extends AbstractState
 			
 			if (SL.Input.isClicked(_storeButtonRect))
 			{
-				SL.showStore();
+				_store.IsShowing = !_store.IsShowing;
 			} 
 			else if (SL.Input.isMouseDown() && _grid.isInBounds(SL.Input.getMouseX(), SL.Input.getMouseY()))
 			{
@@ -175,6 +181,9 @@ public class GameState extends AbstractState
 		}
 		
 		Utils.fillExtraSideSpace(canvas);
+		
+		if (_store.IsShowing)
+			_store.draw(canvas);
 		
 		//canvas.drawRect(_storeButtonRect, SL.Graphics.RedPaint);
 	}

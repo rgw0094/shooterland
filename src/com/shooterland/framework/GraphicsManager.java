@@ -1,6 +1,7 @@
 package com.shooterland.framework;
 
 import com.shooterland.R;
+import com.shooterland.enums.Tile;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -26,6 +27,7 @@ public class GraphicsManager
 	//Keep any images that don't need to be transformed as bitmaps because they draw faster.
 	public Bitmap MainMenuBackground;
 	public Bitmap WorldMapBackground;
+	public Bitmap StoreBackground;
 	public Bitmap[] WorldBackgrounds = new Bitmap[SL.NumWorlds];
 	public Bitmap[] WorldTitles = new Bitmap[SL.NumWorlds];
 	public Bitmap[][] Tiles = new Bitmap[SL.NumWorlds][17];
@@ -119,6 +121,7 @@ public class GraphicsManager
 		RoscoeDown1 = BuildBitmap(R.drawable.roscoedown1, SL.GridSquareSize);
 		RoscoeDown2 = BuildBitmap(R.drawable.roscoedown2, SL.GridSquareSize);
 		WorldMapBackground = BuildBitmap(R.drawable.worldmap, SL.GameAreaWidth, SL.GameAreaHeight);
+		StoreBackground = BuildBitmap(R.drawable.store, (int)((float)SL.GameAreaWidth * 0.29027777777777777777777777777778f), (int)((float)SL.GameAreaHeight * 0.76041666666666666666666666666667f));
 		
 		MenuButtonForward = BuildBitmap(R.drawable.menubutton, (int)((float)SL.GameAreaWidth * 0.288f), (int)((float)SL.GameAreaHeight * 0.120833));
 		MenuButtonRound = BuildBitmap(R.drawable.menubutton2, (int)((float)SL.GameAreaWidth * 0.288f), (int)((float)SL.GameAreaHeight * 0.120833));
@@ -150,23 +153,31 @@ public class GraphicsManager
 	{
 		WorldBackgrounds[0] = BuildBitmap(R.drawable.world1background, SL.GameAreaWidth, SL.GameAreaHeight);
 		WorldTitles[0] = BuildBitmap(R.drawable.world1title, (int)((float)SL.GameAreaWidth * 0.284f), (int)((float)SL.GameAreaHeight * 0.05f));
-		Tiles[0][0] = BuildBitmap(R.drawable.world1thingie1, SL.GridSquareSize);
-		Tiles[0][1] = BuildBitmap(R.drawable.world1thingie2, SL.GridSquareSize);
-		Tiles[0][2] = BuildBitmap(R.drawable.world1thingie3, SL.GridSquareSize);
-		Tiles[0][3] = BuildBitmap(R.drawable.world1thingie4, SL.GridSquareSize);
-		Tiles[0][4] = BuildBitmap(R.drawable.world1thingie5, SL.GridSquareSize);
-		Tiles[0][5] = BuildBitmap(R.drawable.baddie1, SL.GridSquareSize);
-		Tiles[0][6] = BuildBitmap(R.drawable.baddie2, SL.GridSquareSize);
-		Tiles[0][7] = BuildBitmap(R.drawable.baddie3, SL.GridSquareSize);
-		Tiles[0][8] = BuildBitmap(R.drawable.baddie4, SL.GridSquareSize);
-		Tiles[0][9] = BuildBitmap(R.drawable.baddie5, SL.GridSquareSize);
-		Tiles[0][10] = BuildBitmap(R.drawable.block, SL.GridSquareSize);
-		Tiles[0][11] = BuildBitmap(R.drawable.baddieblock1, SL.GridSquareSize);
-		Tiles[0][12] = BuildBitmap(R.drawable.baddieblock2, SL.GridSquareSize);
-		Tiles[0][13] = BuildBitmap(R.drawable.baddieblock3, SL.GridSquareSize);
-		Tiles[0][14] = BuildBitmap(R.drawable.baddieblock4, SL.GridSquareSize);
-		Tiles[0][15] = BuildBitmap(R.drawable.baddieblock5, SL.GridSquareSize);
-		Tiles[0][16] = BuildBitmap(R.drawable.crackedblock, SL.GridSquareSize);
+		Tiles[0][Tile.Thingie1.getId()] = BuildBitmap(R.drawable.world1thingie1, SL.GridSquareSize);
+		Tiles[0][Tile.Thingie2.getId()] = BuildBitmap(R.drawable.world1thingie2, SL.GridSquareSize);
+		Tiles[0][Tile.Thingie3.getId()] = BuildBitmap(R.drawable.world1thingie3, SL.GridSquareSize);
+		Tiles[0][Tile.Thingie4.getId()] = BuildBitmap(R.drawable.world1thingie4, SL.GridSquareSize);
+		Tiles[0][Tile.Thingie5.getId()] = BuildBitmap(R.drawable.world1thingie5, SL.GridSquareSize);
+		Tiles[0][Tile.Baddie1.getId()] = BuildBitmap(R.drawable.baddie1, SL.GridSquareSize);
+		Tiles[0][Tile.Baddie2.getId()] = BuildBitmap(R.drawable.baddie2, SL.GridSquareSize);
+		Tiles[0][Tile.Baddie3.getId()] = BuildBitmap(R.drawable.baddie3, SL.GridSquareSize);
+		Tiles[0][Tile.Baddie4.getId()] = BuildBitmap(R.drawable.baddie4, SL.GridSquareSize);
+		Tiles[0][Tile.Baddie5.getId()] = BuildBitmap(R.drawable.baddie5, SL.GridSquareSize);
+		Tiles[0][Tile.Block.getId()] = BuildBitmap(R.drawable.block, SL.GridSquareSize);
+		Tiles[0][Tile.BaddieBlock1.getId()] = BuildBitmap(R.drawable.baddieblock1, SL.GridSquareSize);
+		Tiles[0][Tile.BaddieBlock2.getId()] = BuildBitmap(R.drawable.baddieblock2, SL.GridSquareSize);
+		Tiles[0][Tile.BaddieBlock3.getId()] = BuildBitmap(R.drawable.baddieblock3, SL.GridSquareSize);
+		Tiles[0][Tile.BaddieBlock4.getId()] = BuildBitmap(R.drawable.baddieblock4, SL.GridSquareSize);
+		Tiles[0][Tile.BaddieBlock5.getId()] = BuildBitmap(R.drawable.baddieblock5, SL.GridSquareSize);
+		Tiles[0][Tile.CrackedBlock.getId()] = BuildBitmap(R.drawable.crackedblock, SL.GridSquareSize);
+		Tiles[0][Tile.Weight.getId()] = BuildBitmap(R.drawable.weight, SL.GridSquareSize);
+		Tiles[0][Tile.Weight_1.getId()] = BuildBitmap(R.drawable.weight_1, SL.GridSquareSize);
+		Tiles[0][Tile.Weight_2.getId()] = BuildBitmap(R.drawable.weight_2, SL.GridSquareSize);
+		Tiles[0][Tile.Weight_3.getId()] = BuildBitmap(R.drawable.weight_3, SL.GridSquareSize);
+		Tiles[0][Tile.Ramp_UpRight.getId()] = BuildBitmap(R.drawable.ramp_ur, SL.GridSquareSize);
+		Tiles[0][Tile.Ramp_UpLeft.getId()] = BuildBitmap(R.drawable.ramp_ul, SL.GridSquareSize);
+		Tiles[0][Tile.Ramp_BottomRight.getId()] = BuildBitmap(R.drawable.ramp_br, SL.GridSquareSize);
+		Tiles[0][Tile.Ramp_BottomLeft.getId()] = BuildBitmap(R.drawable.ramp_bl, SL.GridSquareSize);
 	}
 	
 	private Bitmap BuildBitmap(int id, int size)
