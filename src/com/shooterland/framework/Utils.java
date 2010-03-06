@@ -40,6 +40,16 @@ public class Utils
 		return (int)((float)SL.ScreenHeight * percent);
 	}
 	
+	public static int percentOfGameAreaWidth(float percent)
+	{
+		return (int)((float)SL.GameAreaWidth * percent);
+	}
+	
+	public static int percentOfGameAreaHeight(float percent)
+	{
+		return (int)((float)SL.GameAreaHeight * percent);
+	}
+	
 	public static Rect BuildCollisionRect(float percentStartX, float percentStartY, float percentWidth, float percentHeight)
 	{
 		Rect rect = new Rect();

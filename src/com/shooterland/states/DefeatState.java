@@ -35,4 +35,10 @@ public class DefeatState extends AbstractState
 	public void update(float dt) 
 	{
 	}
+	
+	@Override
+	public boolean isFinished() 
+	{
+		return true;
+	}
 }

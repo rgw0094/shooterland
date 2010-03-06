@@ -362,4 +362,10 @@ public class GameState extends AbstractState
 	{
 		_paused = true;
 	}
+	
+	@Override
+	public boolean isFinished() 
+	{
+		return true;
+	}
 }

@@ -65,4 +65,10 @@ public class LevelCompleteState extends AbstractState
 		MenuOption.ToggleSound.addToMenu(menu);
 		MenuOption.Help.addToMenu(menu);	
 	}
+	
+	@Override
+	public boolean isFinished() 
+	{
+		return true;
+	}
 }

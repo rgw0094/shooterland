@@ -10,4 +10,5 @@ public abstract class AbstractState
 	public abstract void enterState();
 	public abstract void leaveState();	
 	public abstract void buildMenu(Menu menu);
+	public abstract boolean isFinished();
 }
