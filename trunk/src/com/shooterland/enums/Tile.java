@@ -32,7 +32,8 @@ public enum Tile
 	Ramp_UpRight (22),
 	Ramp_UpLeft (23),
 	Ramp_BottomRight (24),
-	Ramp_BottomLeft (25);
+	Ramp_BottomLeft (25),
+	Bomb (26);
 	
 	private int _id;
 	
@@ -50,7 +51,7 @@ public enum Tile
 	{
 		try
 		{
-			return SL.Graphics.Tiles[SL.Session.World - 1][_id - 1]; 
+			return SL.Graphics.Tiles[SL.Session.World - 1][_id]; 
 		}
 		catch (ArrayIndexOutOfBoundsException e)
 		{

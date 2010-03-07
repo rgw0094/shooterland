@@ -8,6 +8,7 @@ import android.view.Menu;
 
 import com.shooterland.entities.Button;
 import com.shooterland.entities.MainMenuButton;
+import com.shooterland.entities.Store;
 import com.shooterland.enums.MenuOption;
 import com.shooterland.framework.*;
 
@@ -16,7 +17,7 @@ public class MainMenuState extends AbstractState
 	private ArrayList<MainMenuButton> _buttons = new ArrayList<MainMenuButton>();
 	private float _alpha;
 	private Paint _backgroundPaint;
-	
+
 	public MainMenuState(boolean fromLoadScreen)
 	{
 		_buttons.add(new MainMenuButton(SL.Graphics.MenuButtonForward, "Play", (float)SL.ScreenWidth * 0.85f, (float)SL.ScreenHeight * 0.83f));

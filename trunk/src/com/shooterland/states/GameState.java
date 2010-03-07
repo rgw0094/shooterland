@@ -44,8 +44,8 @@ public class GameState extends AbstractState
 		_menu = new GameMenu(this);
 		_store = new Store(this);
 		_roscoe = new Roscoe(this, 2.0f, 5.0f, _menu.getLeftX() + (float)_menu.getWidth() * 0.1f);
-		_bottomShooter = new Shooter(_grid, ShooterType.SingleBottom);
-		_rightShooter = new Shooter(_grid, ShooterType.SingleRight);
+		_bottomShooter = new Shooter(this, _grid, ShooterType.SingleBottom);
+		_rightShooter = new Shooter(this, _grid, ShooterType.SingleRight);
 		_pauseFloatingText = new FloatingText((float)SL.GameAreaWidth * 0.3f, (float)SL.GameAreaHeight * 0.3f, FloatingText.FloatingTextType.Pause);
 		moveBottomShooter(4);
 		moveRightShooter(4);
@@ -136,7 +136,8 @@ public class GameState extends AbstractState
 			{
 				_store.IsShowing = !_store.IsShowing;
 			} 
-			else if (SL.Input.isMouseDown() && _grid.isInBounds(SL.Input.getMouseX(), SL.Input.getMouseY()))
+			
+			if (SL.Input.isMouseDown() && _grid.isInBounds(SL.Input.getMouseX(), SL.Input.getMouseY()))
 			{
 				Point p = _grid.getGridSquare(SL.Input.getMouseX(), SL.Input.getMouseY());
 				moveBottomShooter(p.x);
@@ -161,8 +162,11 @@ public class GameState extends AbstractState
 		_bottomShooter.draw(canvas, dt);
 		_rightShooter.draw(canvas, dt);
 		
-		_grid.highlightRow(canvas, _rightShooter.getGridCoord());
-		_grid.highlightColumn(canvas, _bottomShooter.getGridCoord());
+		if (!_store.IsShowing)
+		{
+			_grid.highlightRow(canvas, _rightShooter.getGridCoord());
+			_grid.highlightColumn(canvas, _bottomShooter.getGridCoord());
+		}
 		
 		for (FlyingTile t : _flyingTiles)
 		{
@@ -198,6 +202,16 @@ public class GameState extends AbstractState
 		return _paused;
 	}
 	
+	public boolean isStoreShowing()
+	{
+		return _store.IsShowing;
+	}
+	
+	public GameMenu getGameMenu()
+	{
+		return _menu;
+	}
+	
 	public void onShootButtonClicked()
 	{
 		//If the shooters are empty, don't do anything
@@ -214,7 +228,6 @@ public class GameState extends AbstractState
 		//Find bottom shooter target
 		int targetCol = _bottomShooter.getGridCoord();
 		int targetRow = _grid.getFirstOpenRow(targetCol);
-		
 		
 		//Find right shooter target
 		int targetRow2 = _rightShooter.getGridCoord();
@@ -248,6 +261,19 @@ public class GameState extends AbstractState
 		}
 		
 		_menu.setMoney(_menu.getMoney() - 1);
+	}
+	
+	/**
+	 * Notifies the game state that an item has been dragged and dropped
+	 * from the store. Returns whether or not the item was dropped onto
+	 * a shooter.
+	 */
+	public boolean onDraggedTileReleased(Tile tile, int x, int y)
+	{
+		if (_rightShooter.tryDropItem(tile, x, y))
+			return true;
+		
+		return _bottomShooter.tryDropItem(tile, x, y);
 	}
 	
 	private void replenishShooters()
@@ -339,7 +365,7 @@ public class GameState extends AbstractState
 		}
 		catch (Exception e)
 		{
-			Log.e("Loading Level", Utils.formatException(e));
+			SL.handleException(e);
 		}
 		finally
 		{
