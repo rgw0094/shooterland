@@ -30,7 +30,7 @@ public class GraphicsManager
 	public Bitmap StoreBackground;
 	public Bitmap[] WorldBackgrounds = new Bitmap[SL.NumWorlds];
 	public Bitmap[] WorldTitles = new Bitmap[SL.NumWorlds];
-	public Bitmap[][] Tiles = new Bitmap[SL.NumWorlds][17];
+	public Bitmap[][] Tiles = new Bitmap[SL.NumWorlds][28];
 	public Bitmap BottomShooter;
 	public Bitmap RightShooter;
 	public Bitmap RoscoeUp1;
@@ -42,6 +42,7 @@ public class GraphicsManager
 	public Bitmap MenuButtonRound;
 	public Bitmap WorldMapButtonForward;
 	public Bitmap WorldMapButtonBack;
+	public Bitmap Bubble;
 	
 	public Bitmap Complete_C;
 	public Bitmap Complete_O;
@@ -120,6 +121,7 @@ public class GraphicsManager
 		RoscoeUp2 = BuildBitmap(R.drawable.roscoeup2, SL.GridSquareSize);
 		RoscoeDown1 = BuildBitmap(R.drawable.roscoedown1, SL.GridSquareSize);
 		RoscoeDown2 = BuildBitmap(R.drawable.roscoedown2, SL.GridSquareSize);
+		Bubble = BuildBitmap(R.drawable.bubble, (int)((float)SL.GridSquareSize * 2.5f), (int)((float)SL.GridSquareSize * 2.5f));
 		WorldMapBackground = BuildBitmap(R.drawable.worldmap, SL.GameAreaWidth, SL.GameAreaHeight);
 		StoreBackground = BuildBitmap(R.drawable.store, (int)((float)SL.GameAreaWidth * 0.29027777777777777777777777777778f), (int)((float)SL.GameAreaHeight * 0.76041666666666666666666666666667f));
 		
@@ -178,6 +180,7 @@ public class GraphicsManager
 		Tiles[0][Tile.Ramp_UpLeft.getId()] = BuildBitmap(R.drawable.ramp_ul, SL.GridSquareSize);
 		Tiles[0][Tile.Ramp_BottomRight.getId()] = BuildBitmap(R.drawable.ramp_br, SL.GridSquareSize);
 		Tiles[0][Tile.Ramp_BottomLeft.getId()] = BuildBitmap(R.drawable.ramp_bl, SL.GridSquareSize);
+		Tiles[0][Tile.Bomb.getId()] = BuildBitmap(R.drawable.bomb, SL.GridSquareSize);
 	}
 	
 	private Bitmap BuildBitmap(int id, int size)

@@ -179,12 +179,8 @@ public class ShooterlandActivity extends Activity
 		
 	    public boolean onTouchEvent(MotionEvent me) 
 		{
-	    	if (me.getAction() == MotionEvent.ACTION_DOWN)
-	    	{
-		    	SL.Input.handleClick(me.getX(), me.getY());
-		    	return true;
-	    	}
-	    	return false;
+	    	SL.Input.handleInputEvent(me);
+	    	return true;
 		}
 		
 		public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) 

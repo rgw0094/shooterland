@@ -50,10 +50,14 @@ public class Utils
 		return (int)((float)SL.GameAreaHeight * percent);
 	}
 	
+	public static Rect BuildCollisionRect(float percentStartX, float percentStartY, float percentSize)
+	{
+		return BuildCollisionRect(percentStartX, percentStartY, percentSize, percentSize);
+	}
+	
 	public static Rect BuildCollisionRect(float percentStartX, float percentStartY, float percentWidth, float percentHeight)
 	{
 		Rect rect = new Rect();
-		
 
 		rect.left = (int)((float)SL.GameAreaX + (float)SL.GameAreaWidth * percentStartX);
 		rect.top = (int)((float)SL.GameAreaHeight * percentStartY);

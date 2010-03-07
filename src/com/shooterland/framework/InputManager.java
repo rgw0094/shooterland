@@ -1,22 +1,20 @@
 package com.shooterland.framework;
 
 import android.graphics.Rect;
+import android.view.MotionEvent;
 
 
 public class InputManager 
 {
 	private boolean _mouseDown;
-	private boolean _mouseDownLastFrame;
-	private boolean _backDown;
-	private boolean _backDownLastFrame;
+	private boolean _backPressed;
 	private int _mouseX, _mouseY;
+	private boolean _clicked;
 	
 	public void update(float dt)
 	{
-		_mouseDownLastFrame = _mouseDown;
-		_mouseDown = false;
-		_backDownLastFrame = _backDown;
-		_backDown = false;
+		_clicked = false;
+		_backPressed = false;
 	}
 	
 	/**
@@ -32,7 +30,7 @@ public class InputManager
 	 */
 	public boolean isMouseClicked()
 	{
-		return _mouseDown && !_mouseDownLastFrame;
+		return _clicked;
 	}
 	
 	/**
@@ -40,26 +38,36 @@ public class InputManager
 	 */
 	public boolean isBackClicked()
 	{
-		return _backDown && !_backDownLastFrame;
+		return _backPressed;
 	}
 	
 	public void handleBackButton()
 	{
-		_backDown = true;
+		_backPressed = true;
+	}
+	
+	public void handleInputEvent(MotionEvent e)
+	{
+		if (e.getAction() == MotionEvent.ACTION_DOWN)
+    	{
+			_mouseDown = true;
+			_clicked = true;
+			_mouseX = (int)e.getX();
+			_mouseY = (int)e.getY();
+    	}
+		else if (e.getAction() == MotionEvent.ACTION_UP)
+		{
+			_mouseDown = false;
+			_mouseX = (int)e.getX();
+			_mouseY = (int)e.getY();
+		}
 	}
 	
 	public boolean isClicked(Rect rect)
 	{
 		return isMouseClicked() && rect.contains(_mouseX, _mouseY);
 	}
-	
-	public void handleClick(float x, float y)
-	{
-		_mouseDown = true;
-		_mouseX = (int)x;
-		_mouseY = (int)y;
-	}
-	
+		
 	public int getMouseX()
 	{
 		return _mouseX;
