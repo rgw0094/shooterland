@@ -2,7 +2,6 @@
  * Defeat Screen
  * Complete Screen
  * World Map
- * Store
  * Time to beat
  * Bombs
  * Ramps
@@ -27,5 +26,6 @@
 
 ===Done===
 ||Item||Date||Done By||
+||Implemented the STORE||3/6/2010||RGW||
+||Added the rest of the tiles||3/6/2010||RGW||
 ||Added TheWhiteBoard||3/6/2010||ETI||
-||Added the rest of the TILES||3/6/2010||RGW||
