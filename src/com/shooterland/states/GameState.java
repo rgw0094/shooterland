@@ -19,7 +19,7 @@ import com.shooterland.entities.*;
 import com.shooterland.framework.*;
 import com.shooterland.enums.*;
 
-public class GameState extends AbstractState
+public class GameState extends AbstractState implements EntityManager.EntityManagerListener
 {
 	private Grid _grid;
 	private GameMenu _menu;
@@ -27,9 +27,7 @@ public class GameState extends AbstractState
 	private Shooter _rightShooter;
 	private Roscoe _roscoe;
 	private int _baddieCount;
-	private ArrayList<FlyingTile> _flyingTiles = new ArrayList<FlyingTile>();
 	private ArrayList<Point> _recentlyPlacedThingies = new ArrayList<Point>();
-	private ArrayList<FadingTile> _fadingTiles = new ArrayList<FadingTile>();
 	private float _timeInState = 0.0f;
 	private boolean _paused;
 	private Paint _blackScreenPaint;
@@ -42,6 +40,7 @@ public class GameState extends AbstractState
 	public void enterState() 
 	{		
 		_entityManager = new EntityManager();
+		_entityManager.addListener(this);
 		_grid = new Grid(this);
 		_menu = new GameMenu(this);
 		_store = new Store(this);
@@ -96,54 +95,6 @@ public class GameState extends AbstractState
 			_menu.update(dt);
 			_roscoe.update(dt);
 			
-			boolean areFlyingTiles = _flyingTiles.size() > 0;
-			for (FlyingTile t : _flyingTiles)
-			{
-				t.update(dt);
-				
-				if (t.reachedTarget())
-				{
-					if (t.getTile() == Tile.Bomb)
-					{
-						_flyingTiles.remove(t);
-						_grid.setTile(t.getTargetCol(), t.getTargetRow(), Tile.Empty);
-						_entityManager.add(new BombExplosion(t.getX(), t.getY()));
-					}
-					else
-					{
-						_grid.setTile(t.getTargetCol(), t.getTargetRow(), t.getTile());
-						_flyingTiles.remove(t);
-						
-						//If this is a thingie, remember where it landed so we can check for combos
-						//once all the flying thingies have landed.
-						if (t.getTile().isThingie())
-						{
-							_recentlyPlacedThingies.add(new Point(t.getTargetCol(), t.getTargetRow()));
-						}
-					}
-				}
-			}
-			
-			//When all of the thingies reach their destination, replenish the shooters
-			//and check for combos.
-			if (areFlyingTiles && _flyingTiles.size() == 0)
-			{
-				doCombos(_recentlyPlacedThingies);
-				replenishShooters();
-				_recentlyPlacedThingies.clear();
-			}
-			
-			//Update fading tiles
-			ArrayList<FadingTile> fadedTiles = new ArrayList<FadingTile>();
-			for (FadingTile ft : _fadingTiles)
-			{
-				ft.update(dt);
-				if (ft.doneFading())
-					fadedTiles.add(ft);
-			}
-			for (FadingTile ft : fadedTiles)
-				_fadingTiles.remove(ft);
-			
 			if (SL.Input.isClicked(_storeButtonRect))
 			{
 				_store.IsShowing = !_store.IsShowing;
@@ -156,7 +107,7 @@ public class GameState extends AbstractState
 				moveRightShooter(p.y);
 			}  
 			
-			if (_baddieCount == 0 && _fadingTiles.size() == 0)
+			if (_baddieCount == 0 && _entityManager.numFadingTiles() == 0)
 			{
 				SL.enterState(new LevelCompleteState());
 			}
@@ -180,17 +131,7 @@ public class GameState extends AbstractState
 			_grid.highlightRow(canvas, _rightShooter.getGridCoord());
 			_grid.highlightColumn(canvas, _bottomShooter.getGridCoord());
 		}
-		
-		for (FlyingTile t : _flyingTiles)
-		{
-			t.draw(canvas, dt);
-		}
-		
-		for (FadingTile ft : _fadingTiles)
-		{
-			ft.draw(canvas, dt);
-		}
-		
+						
 		if (_paused)
 		{
 			canvas.drawRect(new Rect(SL.GameAreaX, 0, SL.GameAreaX + SL.GameAreaWidth, SL.GameAreaHeight), _blackScreenPaint);
@@ -225,11 +166,40 @@ public class GameState extends AbstractState
 		return _menu;
 	}
 	
-	public void onFlyingTileReachedTarget()
+	public void onEntityRemoved(AbstractEntity entity) 
 	{
+		if (!(entity instanceof FlyingTile))
+			return;
 		
+		FlyingTile t = (FlyingTile)entity;
+		
+		if (t.getTile() == Tile.Bomb)
+		{
+			_grid.setTile(t.getTargetCol(), t.getTargetRow(), Tile.Empty);
+			_entityManager.add(new BombExplosion(t.getX(), t.getY()));
+		}
+		else
+		{
+			_grid.setTile(t.getTargetCol(), t.getTargetRow(), t.getTile());
+			
+			//If this is a thingie, remember where it landed so we can check for combos
+			//once all the flying thingies have landed.
+			if (t.getTile().isThingie())
+			{
+				_recentlyPlacedThingies.add(new Point(t.getTargetCol(), t.getTargetRow()));
+			}
+		}
+		
+		//If this was the last flying tile, replenish the shooters
+		//and check for combos.
+		if (_entityManager.numFlyingTiles() == 0)
+		{
+			doCombos(_recentlyPlacedThingies);
+			replenishShooters();
+			_recentlyPlacedThingies.clear();
+		}
 	}
-	
+		
 	public void onShootButtonClicked()
 	{
 		//If the shooters are empty, don't do anything
@@ -268,12 +238,12 @@ public class GameState extends AbstractState
 		
 		float targetX = _grid.getPixelBounds().left + targetCol * SL.GridSquareSize;
 		float targetY = _grid.getPixelBounds().top + targetRow * SL.GridSquareSize;
-		_flyingTiles.add(new FlyingTile(_bottomShooter.getTile(), _bottomShooter.getX(), _bottomShooter.getY(), targetX, targetY, targetRow, targetCol));
+		_entityManager.add(new FlyingTile(this, _bottomShooter.getTile(), _bottomShooter.getX(), _bottomShooter.getY(), targetX, targetY, targetRow, targetCol));
 		_bottomShooter.setTile(Tile.Empty);
 		
 		targetX = _grid.getPixelBounds().left + targetCol2 * SL.GridSquareSize;
 		targetY = _grid.getPixelBounds().top + targetRow2 * SL.GridSquareSize;
-		_flyingTiles.add(new FlyingTile(_rightShooter.getTile(), _rightShooter.getX(), _rightShooter.getY(), targetX, targetY, targetRow2, targetCol2));
+		_entityManager.add(new FlyingTile(this, _rightShooter.getTile(), _rightShooter.getX(), _rightShooter.getY(), targetX, targetY, targetRow2, targetCol2));
 		_rightShooter.setTile(Tile.Empty);
 	}
 		
@@ -321,7 +291,7 @@ public class GameState extends AbstractState
 				_menu.setMoney(_menu.getMoney() + (combo.size() - 2));
 				for (Point p : combo)
 				{
-					_fadingTiles.add(new FadingTile(_grid.getTile(p.x, p.y), _grid.getPixelX(p.x), _grid.getPixelY(p.y)));
+					_entityManager.add(new FadingTile(_grid.getTile(p.x, p.y), _grid.getPixelX(p.x), _grid.getPixelY(p.y)));
 					_grid.setTile(p.x, p.y, Tile.Empty);
 					
 					//Kill adjacent cronies
@@ -331,7 +301,7 @@ public class GameState extends AbstractState
 						{
 							if (_grid.isInGridBounds(i, j) && _grid.getTile(i, j) == Tile.Baddie1)
 							{
-								_fadingTiles.add(new FadingTile(Tile.Baddie1, _grid.getPixelX(i), _grid.getPixelY(j)));
+								_entityManager.add(new FadingTile(Tile.Baddie1, _grid.getPixelX(i), _grid.getPixelY(j)));
 								_grid.setTile(i, j, Tile.Empty);
 								_baddieCount--;
 							}
