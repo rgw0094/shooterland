@@ -4,6 +4,7 @@
  * World Map
  * Time to beat
  * Ramps
+ * Weights
  * Baddies
  * Help/Tutorial FRAMEWORK
  * Achievements FRAMEWORK
