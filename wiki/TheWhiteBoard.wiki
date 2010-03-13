@@ -1,10 +1,8 @@
 === Programming To Do ===
- * Entity FRAMEWORK
  * Defeat Screen
  * Complete Screen
  * World Map
  * Time to beat
- * Bombs
  * Ramps
  * Baddies
  * Help/Tutorial FRAMEWORK
@@ -27,6 +25,8 @@
 
 ===Done===
 ||Item||Date||Done By||
+||Implemented bombs||3/13/2010||RGW||
+||Entity framework||3/13/2010||RGW||
 ||Implemented the STORE||3/6/2010||RGW||
 ||Added the rest of the tiles||3/6/2010||RGW||
 ||Added TheWhiteBoard||3/6/2010||ETI||
