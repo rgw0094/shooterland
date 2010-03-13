@@ -4,9 +4,10 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 
 import com.shooterland.enums.*;
+import com.shooterland.framework.AbstractEntity;
 import com.shooterland.framework.SL;
 
-public class FadingTile 
+public class FadingTile extends AbstractEntity
 {
 	private Tile _tile;
 	private Paint _paint;
@@ -22,12 +23,8 @@ public class FadingTile
 		_paint.setARGB(255, 255, 255, 255);
 		_alpha = 255.0f;
 	}
-	
-	public boolean doneFading()
-	{
-		return _alpha == 0.0f;
-	}
-	
+		
+	@Override
 	public void update(float dt)
 	{
 		_alpha -= 400.0f * dt;
@@ -37,8 +34,15 @@ public class FadingTile
 		_paint.setAlpha((int)_alpha);
 	}
 	
-	public void draw(Canvas canvas, float dt)
+	@Override
+	public void draw(Canvas canvas)
 	{
 		canvas.drawBitmap(_tile.getBitmap(), _x, _y, _paint);
+	}
+
+	@Override
+	public boolean isDead() 
+	{
+		return _alpha == 0.0f;
 	}
 }
