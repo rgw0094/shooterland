@@ -43,6 +43,7 @@ public class GraphicsManager
 	public Bitmap WorldMapButtonForward;
 	public Bitmap WorldMapButtonBack;
 	public Bitmap Bubble;
+	public Bitmap[] BombFrames;
 	
 	public Bitmap Complete_C;
 	public Bitmap Complete_O;
@@ -148,6 +149,8 @@ public class GraphicsManager
 		Pause_S = BuildBitmap(R.drawable.pause_s, BottomShooter.getWidth() * 2, BottomShooter.getHeight() * 2);
 		Pause_E = BuildBitmap(R.drawable.pause_e, BottomShooter.getWidth() * 2, BottomShooter.getHeight() * 2);
 		
+		BombFrames = this.CreateAnimation(11, R.drawable.bomb_anim, SL.GridSquareSize, SL.GridSquareSize);
+		
 		LoadWorld1();
 	}
 	
@@ -186,6 +189,19 @@ public class GraphicsManager
 	private Bitmap BuildBitmap(int id, int size)
 	{
 		return BuildBitmap(id, size, size);
+	}
+	
+	private Bitmap[] CreateAnimation(int numFrames, int sourceId, int width, int height)
+	{
+		Bitmap[] animation = new Bitmap[numFrames];
+		
+		Bitmap source = BuildBitmap(sourceId, width * numFrames, height);
+		for (int i = 0; i < numFrames; i++)
+		{
+			animation[i] = Bitmap.createBitmap(source, i * width, 0, width, height);
+		}
+		
+		return animation;
 	}
 	
 	private Bitmap BuildBitmap(int id, int width, int height)

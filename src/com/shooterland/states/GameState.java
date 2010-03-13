@@ -36,10 +36,12 @@ public class GameState extends AbstractState
 	private FloatingText _pauseFloatingText;
 	private Rect _storeButtonRect;
 	private Store _store;
+	private EntityManager _entityManager;
 
 	@Override
 	public void enterState() 
 	{		
+		_entityManager = new EntityManager();
 		_grid = new Grid(this);
 		_menu = new GameMenu(this);
 		_store = new Store(this);
@@ -90,6 +92,7 @@ public class GameState extends AbstractState
 		{
 			_timeInState += dt;
 			
+			_entityManager.update(dt);
 			_menu.update(dt);
 			_roscoe.update(dt);
 			
@@ -100,14 +103,23 @@ public class GameState extends AbstractState
 				
 				if (t.reachedTarget())
 				{
-					_grid.setTile(t.getTargetCol(), t.getTargetRow(), t.getTile());
-					_flyingTiles.remove(t);
-					
-					//If this is a thingie, remember where it landed so we can check for combos
-					//once all the flying thingies have landed.
-					if (t.getTile().isThingie())
+					if (t.getTile() == Tile.Bomb)
 					{
-						_recentlyPlacedThingies.add(new Point(t.getTargetCol(), t.getTargetRow()));
+						_flyingTiles.remove(t);
+						_grid.setTile(t.getTargetCol(), t.getTargetRow(), Tile.Empty);
+						_entityManager.add(new BombExplosion(t.getX(), t.getY()));
+					}
+					else
+					{
+						_grid.setTile(t.getTargetCol(), t.getTargetRow(), t.getTile());
+						_flyingTiles.remove(t);
+						
+						//If this is a thingie, remember where it landed so we can check for combos
+						//once all the flying thingies have landed.
+						if (t.getTile().isThingie())
+						{
+							_recentlyPlacedThingies.add(new Point(t.getTargetCol(), t.getTargetRow()));
+						}
 					}
 				}
 			}
@@ -161,6 +173,7 @@ public class GameState extends AbstractState
 		_grid.draw(canvas, dt);
 		_bottomShooter.draw(canvas, dt);
 		_rightShooter.draw(canvas, dt);
+		_entityManager.draw(canvas);
 		
 		if (!_store.IsShowing)
 		{
@@ -212,6 +225,11 @@ public class GameState extends AbstractState
 		return _menu;
 	}
 	
+	public void onFlyingTileReachedTarget()
+	{
+		
+	}
+	
 	public void onShootButtonClicked()
 	{
 		//If the shooters are empty, don't do anything
@@ -229,9 +247,15 @@ public class GameState extends AbstractState
 		int targetCol = _bottomShooter.getGridCoord();
 		int targetRow = _grid.getFirstOpenRow(targetCol);
 		
+		if (_bottomShooter.getTile() == Tile.Bomb && targetRow > 0)
+			targetRow--;
+		
 		//Find right shooter target
 		int targetRow2 = _rightShooter.getGridCoord();
 		int targetCol2 = _grid.getFirstOpenColumn(targetRow2);
+		
+		if (_rightShooter.getTile() == Tile.Bomb && targetCol2 > 0)
+			targetCol2--;
 		
 		//Make sure the right shooter isn't going to hit the same target as the bottom shooter!
 		if (targetRow == targetRow2 && targetCol == targetCol2)
