@@ -3,6 +3,7 @@ package com.shooterland.states;
 import android.graphics.Canvas;
 import android.view.Menu;
 
+import com.shooterland.enums.MenuOption;
 import com.shooterland.framework.AbstractState;
 import com.shooterland.framework.SL;
 import com.shooterland.framework.Utils;
@@ -12,6 +13,10 @@ public class DefeatState extends AbstractState
 	@Override
 	public void buildMenu(Menu menu) 
 	{
+		MenuOption.Achievements.addToMenu(menu);
+		MenuOption.Stats.addToMenu(menu);
+		MenuOption.ToggleSound.addToMenu(menu);
+		MenuOption.Help.addToMenu(menu);
 	}
 
 	@Override

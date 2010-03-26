@@ -15,6 +15,7 @@ public class FlyingTile extends AbstractEntity
 	private float _x, _y, _targetX, _targetY;
 	private float _speed;
 	private GameState _gameState;
+	private boolean _movingLeft;
 	
 	public FlyingTile(GameState gameState, Tile tile, float x, float y, float targetX, float targetY, int targetRow, int targetCol)
 	{
@@ -28,9 +29,15 @@ public class FlyingTile extends AbstractEntity
 		_targetCol = targetCol;
 		
 		if (targetX != x)
+		{
 			_speed = (float)SL.GridHeight * (float)SL.GridSquareSize * 3.2f;
+			_movingLeft = true;
+		}
 		else if (targetY != y)
+		{
 			_speed = (float)SL.GridHeight * (float)SL.GridSquareSize * 3.2f;
+			_movingLeft = false;
+		}
 	}
 	
 	@Override
@@ -61,6 +68,11 @@ public class FlyingTile extends AbstractEntity
 	public boolean isDead() 
 	{
 		return _x == _targetX && _y == _targetY;
+	}
+	
+	public boolean movingLeft()
+	{
+		return _movingLeft;
 	}
 	
 	public float getX()

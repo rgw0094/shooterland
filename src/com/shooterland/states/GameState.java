@@ -5,13 +5,10 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-import android.R.raw;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.media.MediaPlayer;
-import android.util.Log;
 import android.view.Menu;
 
 import com.shooterland.*;
@@ -166,6 +163,9 @@ public class GameState extends AbstractState implements EntityManager.EntityMana
 		return _menu;
 	}
 	
+	/**
+	 * Called when an entity has been destroyed by the EntityManager.
+	 */
 	public void onEntityRemoved(AbstractEntity entity) 
 	{
 		if (!(entity instanceof FlyingTile))
@@ -173,21 +173,23 @@ public class GameState extends AbstractState implements EntityManager.EntityMana
 		
 		FlyingTile t = (FlyingTile)entity;
 		
+		if (t.getTile().isWeight())
+		{
+			doWeight(t.getTile(), t.movingLeft(), t.getTargetCol(), t.getTargetRow());
+		}
+		else if (t.getTile().isRamp())
+		{
+			_grid.setTile(t.getTargetCol(), t.getTargetRow(), t.getTile());
+		}
 		if (t.getTile() == Tile.Bomb)
 		{
 			_grid.setTile(t.getTargetCol(), t.getTargetRow(), Tile.Empty);
 			_entityManager.add(new BombExplosion(t.getX(), t.getY()));
 		}
-		else
+		else if (t.getTile().isThingie())
 		{
 			_grid.setTile(t.getTargetCol(), t.getTargetRow(), t.getTile());
-			
-			//If this is a thingie, remember where it landed so we can check for combos
-			//once all the flying thingies have landed.
-			if (t.getTile().isThingie())
-			{
-				_recentlyPlacedThingies.add(new Point(t.getTargetCol(), t.getTargetRow()));
-			}
+			_recentlyPlacedThingies.add(new Point(t.getTargetCol(), t.getTargetRow()));
 		}
 		
 		//If this was the last flying tile, replenish the shooters
@@ -275,6 +277,28 @@ public class GameState extends AbstractState implements EntityManager.EntityMana
 		_bottomShooter.setTile(_menu.getNextBottomThingie());
 		_rightShooter.setTile(_menu.getNextRightThingie());
 		_menu.generateNextThingies();
+	}
+	
+	/**
+	 * Handles a recently landed weight of the given direction and size.
+	 */
+	private void doWeight(Tile weight, boolean movingLeft, int gridX, int gridY)
+	{
+		int size = 1;
+		if (weight == Tile.Weight_2)
+			size = 2;
+		else if (weight == Tile.Weight_3)
+			size = 3;
+		
+		for (int i = 1; i <= size; i++)
+		{
+			if (movingLeft)
+			{
+				//if (gridX - i >= )
+				
+				_grid.getTile(gridX - i, gridY);
+			}
+		}
 	}
 	
 	private void doCombos(ArrayList<Point> recentlyPlacedThingies)
