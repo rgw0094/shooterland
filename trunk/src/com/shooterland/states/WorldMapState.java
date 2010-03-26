@@ -6,6 +6,7 @@ import android.view.Menu;
 
 import com.shooterland.entities.Button;
 import com.shooterland.entities.MainMenuButton;
+import com.shooterland.enums.MenuOption;
 import com.shooterland.framework.AbstractState;
 import com.shooterland.framework.SL;
 
@@ -16,6 +17,10 @@ public class WorldMapState extends AbstractState
 	
 	public void buildMenu(Menu menu) 
 	{		
+		MenuOption.Achievements.addToMenu(menu);
+		MenuOption.Stats.addToMenu(menu);
+		MenuOption.ToggleSound.addToMenu(menu);
+		MenuOption.Help.addToMenu(menu);
 	}
 
 	@Override

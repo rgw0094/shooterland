@@ -62,8 +62,9 @@ public class LevelCompleteState extends AbstractState
 	public void buildMenu(Menu menu) 
 	{
 		MenuOption.Achievements.addToMenu(menu);
+		MenuOption.Stats.addToMenu(menu);
 		MenuOption.ToggleSound.addToMenu(menu);
-		MenuOption.Help.addToMenu(menu);	
+		MenuOption.Help.addToMenu(menu);
 	}
 	
 	@Override

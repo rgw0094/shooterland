@@ -74,6 +74,16 @@ public enum Tile
 		return _id >= Baddie1.getId() && _id <= Baddie5.getId();
 	}
 	
+	public boolean isWeight()
+	{
+		return _id == Weight_1.getId() || _id == Weight_2.getId() || _id == Weight_3.getId();
+	}
+	
+	public boolean isRamp()
+	{
+		return _id == Ramp_UpRight.getId() || _id == Ramp_UpLeft.getId() || _id == Ramp_BottomRight.getId() || _id == Ramp_BottomLeft.getId();
+	}
+	
 	public static Tile randomThingie()
 	{
 		switch (Utils.randomInt(0, 5))

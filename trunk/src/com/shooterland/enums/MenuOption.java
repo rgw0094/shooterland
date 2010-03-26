@@ -9,6 +9,7 @@ public enum MenuOption
 	Achievements (2, "Achievements"),
 	Help (3, "Help"),
 	ToggleSound (4, "Toggle Sound"),
+	Stats (4, "Stats"),
 	Resume (5, "Resume");
 	
 	private int _id;
