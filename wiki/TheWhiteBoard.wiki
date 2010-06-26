@@ -2,7 +2,6 @@
  * Defeat Screen
  * Complete Screen
  * World Map
- * Time to beat
  * Ramps
  * Weights
  * Baddies
