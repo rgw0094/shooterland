@@ -7,7 +7,6 @@
  * Weights
  * Baddies
  * Help/Tutorial FRAMEWORK
- * Achievements FRAMEWORK
 
 === Graphics To Do ===
  * World Map
