@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.Menu;
 
 import com.shooterland.*;
@@ -342,6 +343,7 @@ public class GameState extends AbstractState implements EntityManager.EntityMana
 	 */
 	private void moveBottomShooter(int gridX)
 	{
+		Log.v("Shooterland", "CUNT ASS SHIT" + gridX);
 		_bottomShooter.moveTo(gridX, _grid.getPixelBounds().left + SL.GridSquareSize * gridX, _grid.getPixelBounds().bottom);
 	}
 	
