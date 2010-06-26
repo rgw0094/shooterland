@@ -61,6 +61,11 @@ public class InputManager
 			_mouseX = (int)e.getX();
 			_mouseY = (int)e.getY();
 		}
+		else if (e.getAction() == MotionEvent.ACTION_MOVE)
+		{
+			_mouseX = (int)e.getX();
+			_mouseY = (int)e.getY();
+		}
 	}
 	
 	public boolean isClicked(Rect rect)
